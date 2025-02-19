@@ -1,1 +1,55 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('../assets/fonts//Rubik-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('../assets/fonts//Rubik-Medium.ttf');
+  font-weight: medium;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('../assets/fonts//Rubik-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('../assets/fonts//Rubik-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('../assets/fonts//Rubik-MediumItalic.ttf');
+  font-weight: medium;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('../assets/fonts//Rubik-BoldItalic.ttf');
+  font-weight: bold;
+  font-style: italic;
+}
+
+:root {
+  --primary: #FFDC64;
+  --secondary: #A7D8B9;
+  --accent: #FFFFFB;
+}
+
+@layer base {
+  body {
+    font-family: 'Rubik', sans-serif;
+  }
+}
