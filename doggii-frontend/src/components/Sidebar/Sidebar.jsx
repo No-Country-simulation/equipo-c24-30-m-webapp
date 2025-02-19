@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
 
   return (
-    <div className="h-screen p-3 space-y-2 w-60 dark:bg-gray-50 dark:text-gray-800 flex flex-col">
+    <div className="h-full p-3 space-y-2 dark:bg-gray-50 dark:text-gray-800 flex flex-col">
       <div className="p-2 space-x-4">
         <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
       </div>
