@@ -1,10 +1,19 @@
+import AdopterDashboard from "./DashboardViews/AdopterDashboard";
+import ShelterDashboard from "./DashboardViews/ShelterDashboard";
 
 const Dashboard = () => {
+  const userRole = "adopter";
 
   return (
-    <>
-      <h1>DASHBOARD</h1>
-    </>
+    <div>
+      <h1 className="m-9">¡Hola, NOMBRE!</h1>
+
+      {userRole === "adopter" ?
+        <AdopterDashboard />
+        :
+        <ShelterDashboard />
+      }
+    </div>
   )
 }
 
