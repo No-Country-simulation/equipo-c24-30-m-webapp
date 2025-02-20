@@ -1,20 +1,65 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {useNavigate} from 'react-router-dom';
+import axios from "axios";
+import { loginSuccess } from "../../redux/slices/authSlice";
+
 export default function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("https://tu-api.com/auth/login", {
+        email,
+        password,
+      });
+
+      const user = response.data.user;
+
+      if (!user) {
+        alert("Usuario no encontrado. Verifica tus credenciales.");
+        return;
+      }
+
+      dispatch(loginSuccess(user));
+
+      if (!user.shelterName && !user.admin) {
+        navigate("/dashboard/adopter");
+      } else if (user.shelterName && !user.admin) {
+        navigate("/dashboard/shelter");
+      } else if (user.admin) {
+        navigate("/dashboard/admin");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      alert("Hubo un error al iniciar sesión. Intenta nuevamente.");
+    }
+  };
+
   return (
     <div className='mx-auto w-1/2 max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
       <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
 
       <h1 className='py-4 text-center text-2xl font-bold'>Iniciar sesión</h1>
 
-      <form noValidate='' action='' className='space-y-6'>
+      <form onSubmit={handleLogin} noValidate='' action='' className='space-y-6'>
         <div className='space-y-1 text-sm'>
-          <label htmlFor='username' className='block dark:text-gray-600'>
+          <label htmlFor='email' className='block dark:text-gray-600'>
             Correo electrónico
           </label>
           <input
-            type='text'
-            name='username'
-            id='username'
-            placeholder='Username'
+            type='email'
+            name='email'
+            id='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder='Correo electrónico'
             className='w-full rounded-md px-4 py-3 dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600'
           />
         </div>
@@ -26,6 +71,8 @@ export default function Login() {
             type='password'
             name='password'
             id='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder='Password'
             className='w-full rounded-md px-4 py-3 dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600'
           />
