@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import Button from './Button';
+import Button from '../Button';
 
-const Card = ({image, title, description}) => {
+const VerticalCard = ({image, title, description}) => {
 
   return (
     <div className='max-w-xs min-w-3xs rounded-md shadow-md dark:bg-gray-50'>
@@ -19,9 +19,9 @@ const Card = ({image, title, description}) => {
   )
 }
 
-export default Card;
+export default VerticalCard;
 
-Card.propTypes = {
+VerticalCard.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
