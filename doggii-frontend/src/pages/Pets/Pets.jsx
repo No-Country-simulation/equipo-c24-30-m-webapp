@@ -6,7 +6,7 @@ const Pets = () => {
 
   return (
     <div>
-      <h1 className="m-9">¡Hola, NOMBRE!</h1>
+      <h1 className="m-9 mb-4">Mascotas</h1>
 
       {userRole === "adopter" ?
         <AdopterPets />
