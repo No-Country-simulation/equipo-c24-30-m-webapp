@@ -1,45 +1,96 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {useNavigate} from 'react-router-dom';
+import axios from "axios";
+import { loginSuccess } from "../../redux/slices/authSlice";
+
 export default function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      //reeemplazar por la url de la api
+      const response = await axios.post("https://tu-api.com/auth/login", {
+        email,
+        password,
+      });
+
+      const user = response.data.user;
+
+      if (!user) {
+        alert("Usuario no encontrado. Verifica tus credenciales.");
+        return;
+      }
+
+      dispatch(loginSuccess(user));
+
+      if (!user.shelterName && !user.admin) {
+        navigate("/dashboard/adopter");
+      } else if (user.shelterName && !user.admin) {
+        navigate("/dashboard/shelter");
+      } else if (user.admin) {
+        navigate("/dashboard/admin");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      alert("Hubo un error al iniciar sesión. Intenta nuevamente.");
+    }
+  };
+
   return (
-    <div className='w-full max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
-      <h1 className='text-center text-2xl font-bold'>Login</h1>
-      <form noValidate='' action='' className='space-y-6'>
+    <div className='mx-auto w-1/2 max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
+      <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
+
+      <h1 className='py-4 text-center text-2xl font-bold'>Iniciar sesión</h1>
+
+      <form onSubmit={handleLogin} noValidate='' action='' className='space-y-6'>
         <div className='space-y-1 text-sm'>
-          <label htmlFor='username' className='block dark:text-gray-600'>
-            Username
+          <label htmlFor='email' className='block dark:text-gray-600'>
+            Correo electrónico
           </label>
           <input
-            type='text'
-            name='username'
-            id='username'
-            placeholder='Username'
+            type='email'
+            name='email'
+            id='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder='Correo electrónico'
             className='w-full rounded-md px-4 py-3 dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600'
           />
         </div>
         <div className='space-y-1 text-sm'>
           <label htmlFor='password' className='block dark:text-gray-600'>
-            Password
+            Contraseña
           </label>
           <input
             type='password'
             name='password'
             id='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder='Password'
             className='w-full rounded-md px-4 py-3 dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600'
           />
           <div className='flex justify-end text-xs dark:text-gray-600'>
             <a rel='noopener noreferrer' href='#'>
-              Forgot Password?
+              ¿Olvidaste la contraseña?
             </a>
           </div>
         </div>
-        <button className='block w-full rounded-sm p-3 text-center dark:bg-violet-600 dark:text-gray-50'>
-          Sign in
+        <button className='block w-full rounded-sm p-3 text-center bg-gray-50 dark:bg-violet-600 dark:text-gray-50'>
+          Iniciar sesión
         </button>
       </form>
-      <div className='flex items-center space-x-1 pt-4'>
+{/*       <div className='flex items-center space-x-1 pt-4'>
         <div className='h-px flex-1 sm:w-16 dark:bg-gray-300'></div>
         <p className='px-3 text-sm dark:text-gray-600'>
-          Login with social accounts
+          Iniciar sesión con redes sociales
         </p>
         <div className='h-px flex-1 sm:w-16 dark:bg-gray-300'></div>
       </div>
@@ -71,15 +122,15 @@ export default function Login() {
             <path d='M16 0.396c-8.839 0-16 7.167-16 16 0 7.073 4.584 13.068 10.937 15.183 0.803 0.151 1.093-0.344 1.093-0.772 0-0.38-0.009-1.385-0.015-2.719-4.453 0.964-5.391-2.151-5.391-2.151-0.729-1.844-1.781-2.339-1.781-2.339-1.448-0.989 0.115-0.968 0.115-0.968 1.604 0.109 2.448 1.645 2.448 1.645 1.427 2.448 3.744 1.74 4.661 1.328 0.14-1.031 0.557-1.74 1.011-2.135-3.552-0.401-7.287-1.776-7.287-7.907 0-1.751 0.62-3.177 1.645-4.297-0.177-0.401-0.719-2.031 0.141-4.235 0 0 1.339-0.427 4.4 1.641 1.281-0.355 2.641-0.532 4-0.541 1.36 0.009 2.719 0.187 4 0.541 3.043-2.068 4.381-1.641 4.381-1.641 0.859 2.204 0.317 3.833 0.161 4.235 1.015 1.12 1.635 2.547 1.635 4.297 0 6.145-3.74 7.5-7.296 7.891 0.556 0.479 1.077 1.464 1.077 2.959 0 2.14-0.020 3.864-0.020 4.385 0 0.416 0.28 0.916 1.104 0.755 6.4-2.093 10.979-8.093 10.979-15.156 0-8.833-7.161-16-16-16z'></path>
           </svg>
         </button>
-      </div>
+      </div> */}
       <p className='text-center text-xs sm:px-6 dark:text-gray-600'>
-        Don`&apos;`t have an account?
+        No tienes una cuenta?{' '}
         <a
           rel='noopener noreferrer'
           href='#'
           className='underline dark:text-gray-800'
         >
-          Sign up
+          Crear cuenta
         </a>
       </p>
     </div>
