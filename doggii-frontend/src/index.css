@@ -1,1 +1,82 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-Light.ttf');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-Medium.ttf');
+  font-weight: medium;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-MediumItalic.ttf');
+  font-weight: medium;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-BoldItalic.ttf');
+  font-weight: bold;
+  font-style: italic;
+}
+
+:root {
+  --primary: #FFDC64;
+  --secondary: #A7D8B9;
+  --accent: #FFFFFB;
+}
+
+@layer base {
+  body {
+    font-family: 'Rubik', sans-serif;
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+    font-weight: medium;
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+    font-weight: medium;
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    font-weight: medium;
+  }
+
+  p {
+    font-size: var(--text-lg);
+    font-weight: 100;
+  }
+}

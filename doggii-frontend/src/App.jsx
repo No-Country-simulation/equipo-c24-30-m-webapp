@@ -14,7 +14,7 @@ function App() {
         {/* <Route path='/' element={<Home />} /> */}
         <Route path='/login' element={<Login />} />
         <Route element={<PlatformLayout/>}>
-          <Route path='/inicio' element={<Dashboard />} />
+          <Route path='/' element={<Dashboard />} />
           <Route path='/perfil' element={<Profile />} />
           <Route path='/mascotas' element={<Pets />} />
           <Route path='/solicitudes' element={<Applications />} />
