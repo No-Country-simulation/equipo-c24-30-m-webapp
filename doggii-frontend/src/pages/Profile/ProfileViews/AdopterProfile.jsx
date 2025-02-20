@@ -3,7 +3,11 @@
 const AdopterProfile = () => {
 
   return(
-    <h2>Perfil de adoptante</h2>
+    <div className="pl-8 pr-8">
+    <p>Estos son tus datos personales. Recordá que, para poder iniciar una solicitud de adopción, los datos tienen que estar completados.</p>
+    
+
+  </div>
   )
 }
 

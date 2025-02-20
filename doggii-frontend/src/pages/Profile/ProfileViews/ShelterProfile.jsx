@@ -3,7 +3,9 @@
 const ShelterProfile = () => {
 
   return(
-    <h2>Perfil de refugio</h2>
+    <div className="pl-8 pr-8">
+      <p>Estos son los datos de tu asociación y su representante.</p>
+    </div>
   )
 }
 
