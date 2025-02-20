@@ -70,6 +70,11 @@
     font-weight: medium;
   }
 
+  h3 {
+    font-size: var(--text-xl);
+    font-weight: medium;
+  }
+
   p {
     font-size: var(--text-lg);
     font-weight: 100;
