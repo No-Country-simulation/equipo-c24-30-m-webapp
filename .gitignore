@@ -1,6 +1,6 @@
-# Node.js dependencies
-node_modules
-node_modules/
+# Node.js dependencies 
+backend/node_modules/
+doggi-frontend/node_modules/
 npm-debug.log
 yarn-error.log
 yarn-debug.log
@@ -28,7 +28,9 @@ coverage/
 bower_components/
 
 # Compiled source
-dist/
+backend/dist/
+doggi-frontend/.next/
+doggi-frontend/out/
 build/
 
 # Misc
@@ -67,11 +69,12 @@ build/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+backend/.env
+doggi-frontend/.env
 
-# next.js build output
-.next/
-out/
+# Next.js build output
+doggi-frontend/.next/
+doggi-frontend/out/
 
 # SvelteKit build output
 .svelte-kit/
