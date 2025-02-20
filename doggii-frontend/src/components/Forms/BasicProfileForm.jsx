@@ -1,4 +1,4 @@
-
+import Button from "../Button";
 
 const BasicProfileForm = () => {
   return (
@@ -42,6 +42,9 @@ const BasicProfileForm = () => {
               <label htmlFor="country" className="text-sm">País</label>
               <input id="country" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
             </div>
+            <Button className="col-span-full mx-auto mt-6">
+              Guardar
+            </Button>
           </div>
         </fieldset>
       </form>
