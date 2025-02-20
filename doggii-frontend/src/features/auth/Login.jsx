@@ -15,6 +15,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
+      //reeemplazar por la url de la api
       const response = await axios.post("https://tu-api.com/auth/login", {
         email,
         password,
