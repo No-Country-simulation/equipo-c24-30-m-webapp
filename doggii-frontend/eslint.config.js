@@ -1,11 +1,8 @@
-// filepath: /home/gustavo/Documentos/development/doggii-c24-30-m-webapp/doggii-frontend/eslint.config.js
-import js from '@eslint/js';
-import globals from 'globals';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import prettier from 'eslint-plugin-prettier';
-//import prettierConfig from 'eslint-config-prettier';
+import js from '@eslint/js'
+import globals from 'globals'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
   { ignores: ['dist'] },
@@ -25,15 +22,7 @@ export default [
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      prettier,
     },
-    extends: [
-      'eslint:recommended',
-      'plugin:react/recommended',
-      'plugin:react-hooks/recommended',
-      'plugin:prettier/recommended',
-      'prettier',
-    ],
     rules: {
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
@@ -44,7 +33,6 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-      'prettier/prettier': 'error',
     },
   },
 ];
