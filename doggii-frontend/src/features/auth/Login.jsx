@@ -1,11 +1,11 @@
 export default function Login() {
   return (
     <div className='w-full max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
-      <h1 className='text-center text-2xl font-bold'>Login</h1>
+      <h1 className='text-center text-2xl font-bold'>Iniciar sesión</h1>
       <form noValidate='' action='' className='space-y-6'>
         <div className='space-y-1 text-sm'>
           <label htmlFor='username' className='block dark:text-gray-600'>
-            Username
+            Correo electrónico
           </label>
           <input
             type='text'
@@ -17,7 +17,7 @@ export default function Login() {
         </div>
         <div className='space-y-1 text-sm'>
           <label htmlFor='password' className='block dark:text-gray-600'>
-            Password
+            Contraseña
           </label>
           <input
             type='password'
@@ -28,18 +28,18 @@ export default function Login() {
           />
           <div className='flex justify-end text-xs dark:text-gray-600'>
             <a rel='noopener noreferrer' href='#'>
-              Forgot Password?
+              ¿Olvidaste la contraseña?
             </a>
           </div>
         </div>
         <button className='block w-full rounded-sm p-3 text-center dark:bg-violet-600 dark:text-gray-50'>
-          Sign in
+          Iniciar sesión
         </button>
       </form>
       <div className='flex items-center space-x-1 pt-4'>
         <div className='h-px flex-1 sm:w-16 dark:bg-gray-300'></div>
         <p className='px-3 text-sm dark:text-gray-600'>
-          Login with social accounts
+          Iniciar sesión con redes sociales
         </p>
         <div className='h-px flex-1 sm:w-16 dark:bg-gray-300'></div>
       </div>
@@ -73,13 +73,13 @@ export default function Login() {
         </button>
       </div>
       <p className='text-center text-xs sm:px-6 dark:text-gray-600'>
-        Don`&apos;`t have an account?
+        No tienes una cuenta?{' '}
         <a
           rel='noopener noreferrer'
           href='#'
           className='underline dark:text-gray-800'
         >
-          Sign up
+          Crear cuenta
         </a>
       </p>
     </div>
