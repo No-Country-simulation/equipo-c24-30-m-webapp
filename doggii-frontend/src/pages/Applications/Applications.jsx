@@ -1,9 +1,19 @@
-
+import AdopterApplications from "./ApplicationViews/AdopterApplications";
+import ShelterApplications from "./ApplicationViews/ShelterApplications";
 
 const Applications = () => {
+  const userRole = "adopter";
 
   return (
-    <h1>Solicitudes de adopción</h1>
+    <div>
+      <h1 className="m-9 mb-4">Solicitudes de adopción</h1>
+
+      {userRole === "adopter" ?
+        <AdopterApplications />
+        :
+        <ShelterApplications />
+      }
+    </div>
   )
 }
 
