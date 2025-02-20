@@ -2,7 +2,7 @@ import AdopterProfile from "./ProfileViews/AdopterProfile";
 import ShelterProfile from "./ProfileViews/ShelterProfile";
 
 const Profile = () => {
-  const userRole = "adopter";
+  const userRole = "shelter";
 
   return (
     <div>
