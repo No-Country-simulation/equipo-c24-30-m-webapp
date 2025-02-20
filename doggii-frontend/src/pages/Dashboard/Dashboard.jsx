@@ -2,7 +2,7 @@ import AdopterDashboard from "./DashboardViews/AdopterDashboard";
 import ShelterDashboard from "./DashboardViews/ShelterDashboard";
 
 const Dashboard = () => {
-  const userRole = "adopter";
+  const userRole = "shelter";
 
   return (
     <div>
