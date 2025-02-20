@@ -1,7 +1,10 @@
 export default function Login() {
   return (
-    <div className='w-full max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
-      <h1 className='text-center text-2xl font-bold'>Iniciar sesión</h1>
+    <div className='mx-auto w-1/2 max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
+      <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
+
+      <h1 className='py-4 text-center text-2xl font-bold'>Iniciar sesión</h1>
+
       <form noValidate='' action='' className='space-y-6'>
         <div className='space-y-1 text-sm'>
           <label htmlFor='username' className='block dark:text-gray-600'>
@@ -32,7 +35,7 @@ export default function Login() {
             </a>
           </div>
         </div>
-        <button className='block w-full rounded-sm p-3 text-center dark:bg-violet-600 dark:text-gray-50'>
+        <button className='block w-full rounded-sm p-3 text-center bg-gray-50 dark:bg-violet-600 dark:text-gray-50'>
           Iniciar sesión
         </button>
       </form>
