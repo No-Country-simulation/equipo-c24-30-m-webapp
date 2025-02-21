@@ -6,6 +6,7 @@ import Profile from './pages/Profile/Profile';
 import Pets from './pages/Pets/Pets';
 import Applications from './pages/Applications/Applications';
 import AdoptionForm from './pages/AdoptionForm';
+import OptionsForms from './pages/OptionsForms';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         {/* <Route path='/' element={<Home />} /> */}
         <Route path='/login' element={<Login />} />
+        <Route path='/options-forms' element={<OptionsForms />} />
         <Route element={<PlatformLayout/>}>
           <Route path='/' element={<Dashboard />} />
           <Route path='/perfil' element={<Profile />} />

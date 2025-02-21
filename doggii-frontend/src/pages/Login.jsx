@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
 
@@ -119,13 +119,13 @@ export default function Login() {
       </div> */}
       <p className='text-center text-xs sm:px-6 dark:text-gray-600'>
         No tienes una cuenta?{' '}
-        <a
+        <Link
           rel='noopener noreferrer'
-          href='#'
-          className='underline dark:text-gray-800'
+          to='/options-forms'
+          className='underline dark:text-gray-800 text-blue-500 mt-4'
         >
           Crear cuenta
-        </a>
+        </Link>
       </p>
     </div>
   );
