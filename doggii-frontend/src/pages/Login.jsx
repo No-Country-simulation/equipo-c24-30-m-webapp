@@ -30,13 +30,7 @@ export default function Login() {
 
       dispatch(loginSuccess(user));
 
-      if (!user.shelterName && !user.admin) {
-        navigate("/dashboard/adopter");
-      } else if (user.shelterName && !user.admin) {
-        navigate("/dashboard/shelter");
-      } else if (user.admin) {
-        navigate("/dashboard/admin");
-      }
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       alert("Hubo un error al iniciar sesión. Intenta nuevamente.");
