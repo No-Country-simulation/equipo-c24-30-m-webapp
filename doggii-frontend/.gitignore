@@ -1,0 +1,31 @@
+node_modules
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+@@ -28,7 +28,9 @@ coverage/
+bower_components/
+
+# Compiled source
+dist/
+
+
+build/
+
+# Misc
+@@ -67,14 +69,15 @@ build/
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+
+# next.js build output
+.next/
+out/
+
+# SvelteKit build output
+.svelte-kit/
+
+# Nuxt.js build output
+.nuxt/
