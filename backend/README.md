@@ -81,5 +81,4 @@ npm start      # Ejecuta la versión compilada
 
 ---
 
-📢 **¡Listo! Ahora puedes comenzar a trabajar en el backend de tu aplicación. 🚀**
 
