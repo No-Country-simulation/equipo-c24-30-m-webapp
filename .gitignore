@@ -5,6 +5,8 @@ npm-debug.log
 yarn-error.log
 yarn-debug.log
 
+backend/.env
+
 # Logs
 logs/
 *.log
