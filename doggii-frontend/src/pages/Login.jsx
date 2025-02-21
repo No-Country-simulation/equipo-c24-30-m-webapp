@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {useNavigate} from 'react-router-dom';
 import axios from "axios";
-import { loginSuccess } from "../../redux/slices/authSlice";
+import { loginSuccess } from "../redux/slices/authSlice";
 
 export default function Login() {
 
