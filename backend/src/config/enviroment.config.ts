@@ -24,6 +24,10 @@ const config: Config = {
     TEST_DATABASE: process.env.TEST_DATABASE,
     NODE_ENV: process.env.NODE_ENV || "dev",
     FRONTEND_URL: process.env.FRONTEND_URL || "http://localhost:3000",
+    GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID || "",
+    GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET || "",  
+    FACEBOOK_CLIENT_ID : process.env.FACEBOOK_CLIENT_ID || "",
+    FACEBOOK_CLIENT_SECRET : process.env.FACEBOOK_CLIENT_SECRET || "",
 };
 
 export default config;

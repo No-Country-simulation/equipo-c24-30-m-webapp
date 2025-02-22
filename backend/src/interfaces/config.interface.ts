@@ -23,4 +23,8 @@ export interface Config {
     TEST_DATABASE: string | undefined;
     NODE_ENV: string | undefined;
     FRONTEND_URL: string | undefined;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
+    FACEBOOK_CLIENT_ID: string;
+    FACEBOOK_CLIENT_SECRET: string;
 }
