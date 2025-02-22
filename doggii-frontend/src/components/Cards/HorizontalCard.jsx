@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Button from '../Button';
 
-const HorizontalCard = ({image, title, subtitle, text}) => {
+const HorizontalCard = ({image, title, subtitle, text, isShelter = false}) => {
   return (
     <div className="w-md rounded-md shadow-md bg-gray-100">
       <div className="flex flex-row">
@@ -14,9 +14,15 @@ const HorizontalCard = ({image, title, subtitle, text}) => {
             </p>
         </div>
       </div>
-      <Button className='w-40 mx-auto mb-6 bg-(--secondary)'>
-        Gestionar
-      </Button>
+      {isShelter ?
+        <Button className='w-40 m-auto mb-4 bg-(--secondary)'>
+          Gestionar
+        </Button>
+        :
+        <Button className='w-40 m-auto mb-4 bg-(--secondary)'>
+          Ver más
+        </Button>
+      }
     </div>
   )
 }
@@ -27,5 +33,6 @@ HorizontalCard.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  isShelter: PropTypes.bool
 }
