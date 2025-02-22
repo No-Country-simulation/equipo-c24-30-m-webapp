@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+import passport from "passport";
 import HTTP_STATUS from "../../constants/HttpStatus";
 import HttpError from "../../utils/HttpError.utils";
 import AdopterService from "../adopter/service";
@@ -39,12 +39,35 @@ export default class AuthController {
     }
   }
 
+  static async oauthLogin(req: Request, res: Response): Promise<void> {
+    try {
+      const { provider, accessToken } = req.body;
+
+      if (!["google", "facebook"].includes(provider)) {
+        throw new Error("Invalid provider");
+      }
+
+      const { token } = await UserService.oauthLogin(
+        provider as "google" | "facebook",
+        accessToken
+      );
+
+      res.status(HTTP_STATUS.OK).json(apiResponse(true, { token }));
+    } catch (err: any) {
+      res
+        .status(HTTP_STATUS.UNAUTHORIZED)
+        .json(apiResponse(false, err.message));
+    }
+  }
+
   static async login(req: Request, res: Response): Promise<void> {
     try {
+      console.log("Login request");
       const userData: UserLoginFields = req.body;
+      console.log(userData);
 
       const token = await UserService.loginUser(userData);
-
+      console.log(token);
       if (!token) {
         throw new HttpError(
           "Invalid credentials",

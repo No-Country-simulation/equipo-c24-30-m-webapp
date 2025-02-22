@@ -14,10 +14,12 @@ export default class UserService {
         userData: UserLoginFields
     ): Promise<{ token: string }> {
         try {
+            console.log("userData", userData);
             const userDao = new UserDAO(User);
             const userFound = await userDao.find({
                 email: userData.email,
             });
+            console.log("userFound", userFound);
             if (!userFound || userFound.length === 0) {
                 throw new HttpError(
                     "Invalid credentials",
@@ -26,11 +28,13 @@ export default class UserService {
                 );
             }
             const user = userFound[0];
-
+            console.log("user", user);
             const isPasswordValid = BcryptUtils.isValidPassword(
                 user,
                 userData.password
             );
+
+            console.log("isPasswordValid", isPasswordValid);
 
             if (!isPasswordValid) {
                 throw new HttpError(
@@ -49,7 +53,7 @@ export default class UserService {
                 process.env.JWT_SECRET!,
                 { expiresIn: "1h" }
             );
-
+            console.log("token", token);
             return { token };
         } catch (err: any) {
             const error: HttpError = new HttpError(
