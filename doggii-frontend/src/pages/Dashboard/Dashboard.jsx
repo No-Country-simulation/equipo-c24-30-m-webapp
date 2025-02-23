@@ -1,17 +1,22 @@
 import AdopterDashboard from "./DashboardViews/AdopterDashboard";
 import ShelterDashboard from "./DashboardViews/ShelterDashboard";
+import AdminDashboard from "./DashboardViews/AdminDashboard";
 
 const Dashboard = () => {
   const userRole = "adopter";
+  const admin = true;
 
   return (
     <div>
       <h1 className="m-9">¡Hola, NOMBRE!</h1>
 
-      {userRole === "adopter" ?
-        <AdopterDashboard />
+      {admin ?
+        <AdminDashboard />
         :
-        <ShelterDashboard />
+      (userRole === "adopter" ?
+          <AdopterDashboard />
+          :
+          <ShelterDashboard />)
       }
     </div>
   )
