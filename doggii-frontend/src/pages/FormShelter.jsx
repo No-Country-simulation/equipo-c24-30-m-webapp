@@ -5,7 +5,6 @@ import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
 
 const FormShelter = () => {
-  // Estado para manejar los datos del formulario
   const [formData, setFormData] = useState({
     shelterName: "",       // Nombre del refugio
     userName: "",          // Nombre del responsable
@@ -16,23 +15,25 @@ const FormShelter = () => {
     termsAccepted: false,  // Aceptación de términos y condiciones
   });
 
-  // Estado para manejar los errores de validación
   const [errors, setErrors] = useState({});
-
-  // Hooks de Redux y React Router
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Función para manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+
+    // Limpiar el error asociado al campo que se está modificando
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "", // Limpiar el mensaje de error para este campo
+    }));
   };
 
-  // Función para validar el formulario
   const validateForm = () => {
     let newErrors = {};
     if (!formData.shelterName.trim()) newErrors.shelterName = "El nombre del refugio es obligatorio.";
@@ -49,10 +50,10 @@ const FormShelter = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Función para manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validar el formulario antes de enviarlo
     if (!validateForm()) return;
 
     // Crear el objeto newUser con los datos del formulario
@@ -67,10 +68,9 @@ const FormShelter = () => {
     };
 
     try {
-      // Enviar los datos a la API
       const response = await axios.post("https://tu-api.com/register", newUser);
-      dispatch(loginSuccess(response.data.user)); // Actualizar el estado de autenticación
-      navigate("/dashboard"); // Redirigir al dashboard
+      dispatch(loginSuccess(response.data.user)); 
+      navigate("/dashboard"); 
     } catch (error) {
       console.error("Error al registrar:", error);
       alert("Hubo un error en el registro, intenta nuevamente.");
@@ -190,10 +190,7 @@ const FormShelter = () => {
           {/* Botón de envío */}
           <button
             type="submit"
-            className={`bg-blue-500 text-white p-2 rounded ${
-              Object.keys(errors).length > 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
-            }`}
-            disabled={Object.keys(errors).length > 0}
+            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
             Crear cuenta
           </button>
