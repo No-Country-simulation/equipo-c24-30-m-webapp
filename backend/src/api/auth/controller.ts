@@ -17,12 +17,20 @@ export default class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     // FIXME: Check if the requester is an admin, and admit only admins to create users with roles
     try {
-      let userResponse: Partial<AdopterResponse>;
+      let userResponse: Partial<AdopterResponse> = {};
 
-      // if (req.body.role === "adopter") {
+      if (req.body.role === "adopter") { 
       const adopterData: AdopterCreateFields = req.body;
       userResponse = await AdopterService.createAdopter(adopterData);
 
+      // }else if(req.body.role === "admin"){
+      //   const userData: UserCreateFields = req.body;
+      //   userResponse = await UserService.createUser
+      // }
+      // }else if(req.body.role === "Shelter") {
+
+      // 
+      }
       const response = apiResponse(true, userResponse);
       res.status(HTTP_STATUS.CREATED).json(response);
     } catch (err: any) {
