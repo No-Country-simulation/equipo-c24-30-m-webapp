@@ -5,6 +5,12 @@ const OptionsForms = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <button
+          onClick={() => navigate("/login")}
+          className="text-blue-500 mb-4"
+        >
+          ← Regresar
+        </button>
       <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
         ¿Cómo quieres registrarte?
       </h1>
