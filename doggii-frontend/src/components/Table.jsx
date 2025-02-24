@@ -4,7 +4,7 @@ import Button from "./Button";
 const Table = ({currentUserData}) => {
 
   return (
-    <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
+    <div className="container my-8 w-full dark:text-gray-800">
       <div className="overflow-x-auto">
         <table className="w-full p-6 text-xs text-left whitespace-nowrap">
           <colgroup>
