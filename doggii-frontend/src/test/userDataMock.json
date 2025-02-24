@@ -1,0 +1,76 @@
+[
+  {
+  "userName": "Juan Pérez",
+  "email": "juanperez@gmail.com",
+  "phone": "123-456-7890",
+  "shelterName": "Huellitas",
+  "address": {
+    "street": "Belgrano 1234",
+    "city": "Córdoba",
+    "province": "Córdoba",
+    "country": "Argentina"
+  },
+  "userRole": "shelter"
+  },
+  {
+  "userName": "Martín González",
+  "email": "martingonzalez@gmail.com",
+  "phone": "123-456-7890",
+  "address": {
+    "street": "San Martin 1234",
+    "city": "Mar del Plata",
+    "province": "Buenos Aires",
+    "country": "Argentina"
+  },
+  "userRole": "adopter"
+  },
+  {
+  "userName": "Florencia Rodriguez",
+  "email": "florrodriguez@gmail.com",
+  "phone": "123-456-7890",
+  "address": {
+    "street": "Mitre 1234",
+    "city": "Puerto Madryn",
+    "province": "Chubut",
+    "country": "Argentina"
+  },
+  "userRole": "admin"
+  },
+  {
+  "userName": "Ignacio Díaz",
+  "email": "nachodiaz@gmail.com",
+  "phone": "123-456-7890",
+  "shelterName": "Patitas",
+  "address": {
+    "street": "Roca 1234",
+    "city": "Mar del Plata",
+    "province": "Buenos Aires",
+    "country": "Argentina"
+  },
+  "userRole": "shelter"
+  },
+  {
+  "userName": "Valeria García",
+  "email": "valegarcia@gmail.com",
+  "phone": "123-456-7890",
+  "address": {
+    "street": "Colón 1234",
+    "city": "Córdoba",
+    "province": "Córdoba",
+    "country": "Argentina"
+  },
+  "userRole": "adopter"
+  },
+  {
+  "userName": "Victoria Gómez",
+  "email": "vickygomez@gmail.com",
+  "phone": "123-456-7890",
+  "address": {
+    "street": "Maíz 1234",
+    "city": "Puerto Madryn",
+    "province": "Chubut",
+    "country": "Argentina"
+  },
+  "userRole": "admin"
+  }
+]

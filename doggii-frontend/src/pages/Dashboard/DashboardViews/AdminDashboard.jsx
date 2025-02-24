@@ -28,7 +28,6 @@ const AdminDashboard = () => {
           <Button as={Link} to='/reportes' className='w-40 mt-8'>Ver todos</Button>
         </div>
       </div>
-      
     </div>
   )
 }

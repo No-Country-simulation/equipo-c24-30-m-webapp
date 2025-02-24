@@ -1,7 +1,7 @@
 import AdopterDashboard from "./DashboardViews/AdopterDashboard";
 import ShelterDashboard from "./DashboardViews/ShelterDashboard";
 import AdminDashboard from "./DashboardViews/AdminDashboard";
-import { getUserRole } from "../../services/userRoleSelectorMock";
+import { getUserRole } from "../../test/userRoleSelectorMock";
 
 const Dashboard = () => {
   const userRole = getUserRole();
