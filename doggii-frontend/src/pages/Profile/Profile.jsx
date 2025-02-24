@@ -1,3 +1,4 @@
+import AdminProfile from "./ProfileViews/AdminProfile";
 import AdopterProfile from "./ProfileViews/AdopterProfile";
 import ShelterProfile from "./ProfileViews/ShelterProfile";
 import { getUserRole } from "../../test/userRoleSelectorMock";
@@ -9,10 +10,13 @@ const Profile = () => {
     <div>
       <h1 className="m-9">Tu perfil</h1>
 
-      {userRole === "adopter" ?
-        <AdopterProfile />
+      {userRole === "admin" ?
+        <AdminProfile />
         :
-        <ShelterProfile />
+        (userRole === "adopter" ?
+          <AdopterProfile />
+          :
+          <ShelterProfile />)
       }
     </div>
   )

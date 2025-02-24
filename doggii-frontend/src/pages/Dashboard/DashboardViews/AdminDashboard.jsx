@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
 import userDataMock from "../../../test/userDataMock.json";
+import petsDataMock from "../../../test/petsDataMock.json";
 
 const AdminDashboard = () => {
   const userNumber = userDataMock.length;
+  const petNumber = petsDataMock.length;
 
   return (
     <div className="pl-8 pr-8">
@@ -16,7 +18,7 @@ const AdminDashboard = () => {
         </div>
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
           <h2 className='mb-4'>Mascotas</h2>
-          <p className=''>Hay 120 mascotas publicadas.</p>
+          <p className=''>Hay {petNumber} mascotas publicadas.</p>
           <Button as={Link} to='/mascotas' className='w-40 mt-8'>Ver todas</Button>
         </div>
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
