@@ -1,7 +1,7 @@
+import PropTypes from 'prop-types';
 import Button from "./Button";
-import userDataMock from "../test/userDataMock.json"
 
-const Table = () => {
+const Table = ({currentUserData}) => {
 
   return (
     <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
@@ -28,7 +28,7 @@ const Table = () => {
             </tr>
           </thead>
           <tbody className="dark:bg-gray-50">
-            {userDataMock.map((user, index) => (
+            {currentUserData.map((user, index) => (
               <tr key={index} className="border-b dark:border-gray-300">
                 <td className="px-3 py-2">
                   <p>{user.userName}</p>
@@ -77,3 +77,7 @@ const Table = () => {
 }
 
 export default Table;
+
+Table.propTypes = {
+  currentUserData: PropTypes.array
+}
