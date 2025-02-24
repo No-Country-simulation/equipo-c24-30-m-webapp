@@ -1,8 +1,9 @@
 import AdopterApplications from "./ApplicationViews/AdopterApplications";
 import ShelterApplications from "./ApplicationViews/ShelterApplications";
+import { getUserRole } from "../../services/userRoleSelectorMock";
 
 const Applications = () => {
-  const userRole = "adopter";
+  const userRole = getUserRole();
 
   return (
     <div>

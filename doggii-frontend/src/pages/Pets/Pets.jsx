@@ -1,16 +1,16 @@
 import AdopterPets from "./PetsViews/AdopterPets";
 import ShelterPets from "./PetsViews/ShelterPets";
 import AdminPets from "./PetsViews/AdminPets";
+import { getUserRole } from "../../services/userRoleSelectorMock";
 
 const Pets = () => {
-  const userRole = "adopter";
-  const admin = false;
+  const userRole = getUserRole();
 
   return (
     <div>
       <h1 className="m-9 mb-4">Mascotas</h1>
 
-      {admin ?
+      {userRole === "admin" ?
         <AdminPets />
         :
         (userRole === "adopter" ?
