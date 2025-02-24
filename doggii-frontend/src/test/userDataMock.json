@@ -1,5 +1,6 @@
 [
   {
+  "id": "001",
   "userName": "Juan Pérez",
   "email": "juanperez@gmail.com",
   "phone": "123-456-7890",
@@ -13,6 +14,7 @@
   "userRole": "shelter"
   },
   {
+  "id": "002",
   "userName": "Martín González",
   "email": "martingonzalez@gmail.com",
   "phone": "123-456-7890",
@@ -25,6 +27,7 @@
   "userRole": "adopter"
   },
   {
+  "id": "003",
   "userName": "Florencia Rodriguez",
   "email": "florrodriguez@gmail.com",
   "phone": "123-456-7890",
@@ -37,6 +40,7 @@
   "userRole": "admin"
   },
   {
+  "id": "004",
   "userName": "Ignacio Díaz",
   "email": "nachodiaz@gmail.com",
   "phone": "123-456-7890",
@@ -50,6 +54,7 @@
   "userRole": "shelter"
   },
   {
+  "id": "005",
   "userName": "Valeria García",
   "email": "valegarcia@gmail.com",
   "phone": "123-456-7890",
@@ -62,6 +67,7 @@
   "userRole": "adopter"
   },
   {
+  "id": "006",
   "userName": "Victoria Gómez",
   "email": "vickygomez@gmail.com",
   "phone": "123-456-7890",

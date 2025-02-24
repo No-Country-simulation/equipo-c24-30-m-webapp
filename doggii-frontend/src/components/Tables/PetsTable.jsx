@@ -8,16 +8,17 @@ const PetsTable = ({currentPetData}) => {
       <div className="overflow-x-auto rounded-md shadow-md">
         <table className="w-full p-6 text-left">
           <colgroup>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
-            <col className='w-2/11'/>
-            <col className='w-1/11'/>
-            <col className='w-1/11'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-2/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
           </colgroup>
           <thead>
             <tr className="bg-(--secondary)">
@@ -30,6 +31,7 @@ const PetsTable = ({currentPetData}) => {
               <th className="p-3 font-medium text-lg text-center">Castrado</th>
               <th className="p-3 font-medium text-lg text-center">Cuidados especiales</th>
               <th className="p-3 font-medium text-lg text-center">Refugio</th>
+              <th className="p-3 font-medium text-lg text-center">ID del refugio</th>
               <th className="p-3 font-medium text-lg text-center">Acciones</th>
             </tr>
           </thead>
@@ -64,6 +66,9 @@ const PetsTable = ({currentPetData}) => {
                 </td>
                 <td className="px-3 py-2">
                   <p>{pet.shelterName}</p>
+                </td>
+                <td className="px-3 py-2">
+                  <p>{pet.shelterId}</p>
                 </td>
                 <td className="px-3 py-2">
                   <Button className="w-20 h-7 m-2">Editar</Button>

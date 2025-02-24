@@ -8,7 +8,8 @@ const UsersTable = ({currentUserData}) => {
       <div className="overflow-x-auto rounded-md shadow-md">
         <table className="w-full p-6 text-left">
           <colgroup>
-            <col className='w-2/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
             <col className='w-1/12'/>
             <col className='w-1/12'/>
             <col className='w-2/12'/>
@@ -18,6 +19,7 @@ const UsersTable = ({currentUserData}) => {
           </colgroup>
           <thead>
             <tr className="bg-(--secondary)">
+              <th className="p-3 font-medium text-lg text-center">ID</th>
               <th className="p-3 font-medium text-lg text-center">Nombre</th>
               <th className="p-3 font-medium text-lg text-center">Tipo de usuario</th>
               <th className="p-3 font-medium text-lg text-center">Asociación</th>
@@ -27,9 +29,12 @@ const UsersTable = ({currentUserData}) => {
               <th className="p-3 font-medium text-lg text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody className="bg-gray-50">
-            {currentUserData.map((user, index) => (
-              <tr key={index} className="border-b border-gray-300">
+          <tbody className="bg-gray-50 text-center">
+            {currentUserData.map((user) => (
+              <tr key={user.id} className="border-b border-gray-300">
+                <td className="px-3 py-2">
+                  <p>{user.id}</p>
+                </td>
                 <td className="px-3 py-2">
                   <p>{user.userName}</p>
                 </td>
@@ -43,7 +48,7 @@ const UsersTable = ({currentUserData}) => {
                           : ""}
                   </p>
                 </td>
-                <td className="px-3 py-2 text-center">
+                <td className="px-3 py-2">
                   <p>{user.shelterName ? user.shelterName : '-'}</p>
                 </td>
                 <td className="px-3 py-2">
@@ -55,9 +60,7 @@ const UsersTable = ({currentUserData}) => {
                 <td className="px-3 py-2">
                   <p>
                     <span>{user.address.street}, </span>
-                    <span>{user.address.city}</span>
-                  </p>
-                  <p>
+                    <span>{user.address.city}, </span>
                     <span>{user.address.province}, </span>
                     <span>{user.address.country}</span>
                   </p>
