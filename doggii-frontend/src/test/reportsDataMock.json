@@ -1,0 +1,38 @@
+[
+  {
+  "id": "123456",
+  "category": "fraud",
+  "url": null,
+  "description": "El refugio que publicó a Mía no existe.",
+  "userId": "002",
+  "createdAt": "01/02/2025",
+  "status": "pending"
+  },
+  {
+  "id": "234561",
+  "category": "fraud",
+  "url": "http://localhost:5173/mascotas/0123456789",
+  "description": "Abrí la publicación de Rufus y me di cuenta de que la foto es la misma que la de un perro cuyo caso fue famoso y lamenteblemente ya no sigue con vida.",
+  "userId": "005",
+  "createdAt": "13/01/2025",
+  "status": "pending"
+  },
+  {
+  "id": "345612",
+  "category": "bug",
+  "url": "https://tinyurl.com/3j47ja9h",
+  "description": "Publiqué una mascota, pero cuando la busco no aparece en ningún lado.",
+  "userId": "001",
+  "createdAt": "20/01/2025",
+  "status": "solved"
+  },
+  {
+  "id": "456123",
+  "category": "misconduct",
+  "url": null,
+  "description": "Rechacé la solicitud de adopción que presentó Martín González para Toby y desde entonces me llama todos los días para insultarme.",
+  "userId": "004",
+  "createdAt": "19/02/2025",
+  "status": "pending"
+  }
+]

@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
 import userDataMock from "../../../test/userDataMock.json";
 import petsDataMock from "../../../test/petsDataMock.json";
+import reportsDataMock from "../../../test/reportsDataMock.json";
 
 const AdminDashboard = () => {
   const userNumber = userDataMock.length;
   const petNumber = petsDataMock.length;
+  const reportNumber = reportsDataMock.length;
 
   return (
     <div className="pl-8 pr-8">
@@ -23,7 +25,7 @@ const AdminDashboard = () => {
         </div>
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
           <h2 className='mb-4'>Reportes</h2>
-          <p className=''>Recibiste 5 reportes de problemas.</p>
+          <p className=''>Recibiste {reportNumber} reportes de problemas.</p>
           <Button as={Link} to='/reportes' className='w-40 mt-8'>Ver todos</Button>
         </div>
       </div>
