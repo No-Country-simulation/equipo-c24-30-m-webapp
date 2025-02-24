@@ -4,27 +4,27 @@ import Button from "../Button";
 const UsersTable = ({currentUserData}) => {
 
   return (
-    <div className="container my-8 w-full">
+    <div className="container my-8 w-full min-w-6xl">
       <div className="overflow-x-auto rounded-md shadow-md">
-        <table className="w-full p-6 text-left whitespace-nowrap">
+        <table className="w-full p-6 text-left">
           <colgroup>
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
+            <col className='w-2/12'/>
+            <col className='w-1/12'/>
+            <col className='w-1/12'/>
+            <col className='w-2/12'/>
+            <col className='w-2/12'/>
+            <col className='w-3/12'/>
+            <col className='w-1/12'/>
           </colgroup>
           <thead>
             <tr className="bg-(--secondary)">
-              <th className="p-3 font-medium text-lg">Nombre</th>
-              <th className="p-3 font-medium text-lg">Tipo de usuario</th>
-              <th className="p-3 font-medium text-lg">Asociación</th>
-              <th className="p-3 font-medium text-lg">Telefono</th>
-              <th className="p-3 font-medium text-lg">Correo electrónico</th>
-              <th className="p-3 font-medium text-lg">Dirección</th>
-              <th className="p-3 font-medium text-lg">Acciones</th>
+              <th className="p-3 font-medium text-lg text-center">Nombre</th>
+              <th className="p-3 font-medium text-lg text-center">Tipo de usuario</th>
+              <th className="p-3 font-medium text-lg text-center">Asociación</th>
+              <th className="p-3 font-medium text-lg text-center">Telefono</th>
+              <th className="p-3 font-medium text-lg text-center">Correo electrónico</th>
+              <th className="p-3 font-medium text-lg text-center">Dirección</th>
+              <th className="p-3 font-medium text-lg text-center">Acciones</th>
             </tr>
           </thead>
           <tbody className="bg-gray-50">
@@ -34,7 +34,7 @@ const UsersTable = ({currentUserData}) => {
                   <p>{user.userName}</p>
                 </td>
                 <td className="px-3 py-2">
-                  <p>{user.userRole === "admin" 
+                  <p className='text-center'>{user.userRole === "admin" 
                       ? "administrador" 
                       : user.userRole === "adopter" 
                         ? "adoptante" 
@@ -43,7 +43,7 @@ const UsersTable = ({currentUserData}) => {
                           : ""}
                   </p>
                 </td>
-                <td className="px-3 py-2">
+                <td className="px-3 py-2 text-center">
                   <p>{user.shelterName ? user.shelterName : '-'}</p>
                 </td>
                 <td className="px-3 py-2">
