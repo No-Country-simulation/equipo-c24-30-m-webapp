@@ -1,8 +1,9 @@
 import AdopterProfile from "./ProfileViews/AdopterProfile";
 import ShelterProfile from "./ProfileViews/ShelterProfile";
+import { getUserRole } from "../../services/userRoleSelectorMock";
 
 const Profile = () => {
-  const userRole = "shelter";
+  const userRole = getUserRole();
 
   return (
     <div>
