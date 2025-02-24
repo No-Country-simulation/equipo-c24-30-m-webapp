@@ -4,7 +4,7 @@ import AdminDashboard from "./DashboardViews/AdminDashboard";
 
 const Dashboard = () => {
   const userRole = "adopter";
-  const admin = true;
+  const admin = false;
 
   return (
     <div>
@@ -13,7 +13,7 @@ const Dashboard = () => {
       {admin ?
         <AdminDashboard />
         :
-      (userRole === "adopter" ?
+        (userRole === "adopter" ?
           <AdopterDashboard />
           :
           <ShelterDashboard />)

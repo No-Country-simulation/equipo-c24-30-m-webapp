@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
 
 const AdminDashboard = () => {
@@ -9,22 +10,22 @@ const AdminDashboard = () => {
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
           <h2 className='mb-4'>Adoptantes</h2>
           <p className=''>Hay 45 usuarios registrados.</p>
-          <Button className='w-40 mt-8'>Ver todos</Button>
+          <Button as={Link} to='/adoptantes' className='w-40 mt-8'>Ver todos</Button>
         </div>
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
           <h2 className='mb-4'>Refugios</h2>
           <p className=''>Hay 58 refugios registrados.</p>
-          <Button className='w-40 mt-8'>Ver todos</Button>
+          <Button as={Link} to='/refugios' className='w-40 mt-8'>Ver todos</Button>
         </div>
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
           <h2 className='mb-4'>Mascotas</h2>
           <p className=''>Hay 120 mascotas publicadas.</p>
-          <Button className='w-40 mt-8'>Ver todas</Button>
+          <Button as={Link} to='/mascotas' className='w-40 mt-8'>Ver todas</Button>
         </div>
         <div className='p-6 w-full rounded-md shadow-md dark:bg-gray-50 flex flex-col items-center'>
           <h2 className='mb-4'>Reportes</h2>
           <p className=''>Recibiste 5 reportes de problemas.</p>
-          <Button className='w-40 mt-8'>Ver todos</Button>
+          <Button as={Link} to='/reportes' className='w-40 mt-8'>Ver todos</Button>
         </div>
       </div>
       

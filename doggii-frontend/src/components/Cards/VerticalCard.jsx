@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Button from '../Button';
 
-const VerticalCard = ({image, title, description, isShelter = false}) => {
+const VerticalCard = ({image, title, description, isAdmin = false, isShelter = false}) => {
 
   return (
     <div className='max-w-xs min-w-3xs rounded-md shadow-md dark:bg-gray-50'>
@@ -21,19 +21,24 @@ const VerticalCard = ({image, title, description, isShelter = false}) => {
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        {isShelter ?
-          <div className='flex flex-row gap-4'>
-            <Button className='w-40 m-auto bg-(--secondary)'>
-              Pausar
-            </Button>
-            <Button className='w-40 m-auto bg-(--secondary)'>
-              Eliminar
-            </Button>
-          </div>
-          :
+        {isAdmin ?
           <Button className='w-40 m-auto bg-(--secondary)'>
-            Ver más
+            Gestionar
           </Button>
+          :
+          (isShelter ?
+            <div className='flex flex-row gap-4'>
+              <Button className='w-40 m-auto bg-(--secondary)'>
+                Pausar
+              </Button>
+              <Button className='w-40 m-auto bg-(--secondary)'>
+                Eliminar
+              </Button>
+            </div>
+            :
+            <Button className='w-40 m-auto bg-(--secondary)'>
+              Ver más
+            </Button>)
         }
       </div>
     </div>
@@ -46,5 +51,6 @@ VerticalCard.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  isAdmin: PropTypes.bool,
   isShelter: PropTypes.bool
 };
