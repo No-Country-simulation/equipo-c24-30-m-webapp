@@ -1,35 +1,35 @@
 import PropTypes from 'prop-types';
-import Button from "./Button";
+import Button from "../Button";
 
-const Table = ({currentUserData}) => {
+const UsersTable = ({currentUserData}) => {
 
   return (
-    <div className="container my-8 w-full dark:text-gray-800">
-      <div className="overflow-x-auto">
-        <table className="w-full p-6 text-xs text-left whitespace-nowrap">
+    <div className="container my-8 w-full">
+      <div className="overflow-x-auto rounded-md shadow-md">
+        <table className="w-full p-6 text-left whitespace-nowrap">
           <colgroup>
-            <col className="w-5" />
             <col />
             <col />
             <col />
             <col />
             <col />
-            <col className="w-5" />
+            <col />
+            <col />
           </colgroup>
           <thead>
-            <tr className="dark:bg-gray-300">
-              <th className="p-3">Nombre</th>
-              <th className="p-3">Tipo de usuario</th>
-              <th className="p-3">Asociación</th>
-              <th className="p-3">Telefono</th>
-              <th className="p-3">Correo electrónico</th>
-              <th className="p-3">Dirección</th>
-              <th className="p-3">Acciones</th>
+            <tr className="bg-(--secondary)">
+              <th className="p-3 font-medium text-lg">Nombre</th>
+              <th className="p-3 font-medium text-lg">Tipo de usuario</th>
+              <th className="p-3 font-medium text-lg">Asociación</th>
+              <th className="p-3 font-medium text-lg">Telefono</th>
+              <th className="p-3 font-medium text-lg">Correo electrónico</th>
+              <th className="p-3 font-medium text-lg">Dirección</th>
+              <th className="p-3 font-medium text-lg">Acciones</th>
             </tr>
           </thead>
-          <tbody className="dark:bg-gray-50">
+          <tbody className="bg-gray-50">
             {currentUserData.map((user, index) => (
-              <tr key={index} className="border-b dark:border-gray-300">
+              <tr key={index} className="border-b border-gray-300">
                 <td className="px-3 py-2">
                   <p>{user.userName}</p>
                 </td>
@@ -76,8 +76,8 @@ const Table = ({currentUserData}) => {
   )
 }
 
-export default Table;
+export default UsersTable;
 
-Table.propTypes = {
+UsersTable.propTypes = {
   currentUserData: PropTypes.array
 }

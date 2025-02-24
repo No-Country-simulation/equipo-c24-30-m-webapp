@@ -1,6 +1,6 @@
 import {useState} from "react";
 import userDataMock from "../../test/userDataMock.json";
-import Table from "../../components/Table";
+import UsersTable from "../../components/Tables/UsersTable";
 import Button from "../../components/Button";
 
 const Users = () => {
@@ -54,7 +54,7 @@ const Users = () => {
             X
         </Button>
       </div>
-      <Table currentUserData={currentUserData} />
+      <UsersTable currentUserData={currentUserData} />
       <Button className="w-40 mx-auto">
         Agregar usuario
       </Button>
