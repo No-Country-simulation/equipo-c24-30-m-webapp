@@ -1,3 +1,3 @@
 export const getUserRole = () => {
-  return "adopter";
+  return "admin";
 }
