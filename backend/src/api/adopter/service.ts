@@ -2,12 +2,14 @@
 import Adopter from "./model";
 // DAOS
 import UserDAO from "../user/dao";
+import AdopterDAO from "./dao"; // Add this line to import AdopterDAO
 // DTOS
 import AdopterDto from "./dto";
 // UTILS
 import HttpError from "../../utils/HttpError.utils";
 // CONSTANTS
 import HTTP_STATUS from "../../constants/HttpStatus";
+import { Roles } from "../../constants/Roles"; // Add this line to import Roles
 // INTERFACES
 import {
     IAdopter,
@@ -16,7 +18,6 @@ import {
     AdopterUpdateFields,
 } from "./interface";
 
-//import { ITokenPayload } from "../auth/interface";
 
 export default class AdopterService {
 
@@ -131,106 +132,57 @@ export default class AdopterService {
     //     }
     // }
 
-    // static async getAllAdopters(): Promise<Partial<AdopterResponse>[]> {
-    //     try {
-    //         const adopterDao = new UserDAO(Adopter);
-    //         const adopters = await adopterDao.find({ role: Roles.ADOPTER });
+    static async getAllAdopters(): Promise<Partial<AdopterResponse>[]> {
+        try {
+            const adopterDao = new UserDAO(Adopter);
+            const adopters = await adopterDao.find({ role: Roles.ADOPTER });
 
-    //         if (!adopters || adopters.length === 0) {
-    //             throw new HttpError(
-    //                 "No adopters found",
-    //                 "NO_PATIENTS_FOUND",
-    //                 HTTP_STATUS.NOT_FOUND
-    //             );
-    //         }
+            if (!adopters || adopters.length === 0) {
+                throw new HttpError(
+                    "No adopters found",
+                    "NO_ADOPTERS_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
 
-    //         const adoptersResponse = AdopterDto.adoptersArrayDTO(adopters);
+            const adoptersResponse = AdopterDto.adoptersArrayDTO(adopters);
 
-    //         return adoptersResponse;
-    //     } catch (err: any) {
-    //         const error: HttpError = new HttpError(
-    //             err.description || err.message,
-    //             err.details || err.message,
-    //             err.status || HTTP_STATUS.SERVER_ERROR
-    //         );
-    //         throw error;
-    //     }
-    // }
+            return adoptersResponse;
+        } catch (err: any) {
+            const error: HttpError = new HttpError(
+                err.description || err.message,
+                err.details || err.message,
+                err.status || HTTP_STATUS.SERVER_ERROR
+            );
+            throw error;
+        }
+    }
 
-    // static async getAdopterById(
-    //     id: string,
-    //     user?: ITokenPayload
-    // ): Promise<Partial<AdopterResponse>> {
-    //     try {
-    //         if (user && user.role === Roles.ADOPTER && user.id !== id) {
-    //             throw new HttpError(
-    //                 "You are not authorized to access this adopter",
-    //                 "NOT_AUTHORIZED",
-    //                 HTTP_STATUS.UNAUTHORIZED
-    //             );
-    //         }
-    //         let adopter;
-
-    //         if (user && user.role === Roles.SHELTER && user.id !== id) {
-    //             const adopterRepository = new AdopterRepository(Adopter);
-    //             const adopterByDoctor = await adopterRepository.getAdopter({
-    //                 $and: [
-    //                     { _id: new Types.ObjectId(id) },
-    //                     { authorizedDoctors: new Types.ObjectId(user.id) },
-    //                 ],
-    //             });
-    //             adopter = adopterByDoctor;
-    //         } else {
-    //             const adopterDao = new AdopterDAO();
-    //             adopter = await adopterDao.read(id);
-    //         }
-
-    //         if (!adopter) {
-    //             throw new HttpError(
-    //                 "Adopter not found",
-    //                 "PATIENT_NOT_FOUND",
-    //                 HTTP_STATUS.NOT_FOUND
-    //             );
-    //         }
-    //         const adopterCleaned: Partial<AdopterResponse> =
-    //             AdopterDto.adopterDTO(adopter);
-    //         return adopterCleaned;
-    //     } catch (err: any) {
-    //         const error: HttpError = new HttpError(
-    //             err.description || err.message,
-    //             err.details || err.message,
-    //             err.status || HTTP_STATUS.SERVER_ERROR
-    //         );
-    //         throw error;
-    //     }
-    // }
-
-    // static async getAdopterByEmail(
-    //     email: string
-    // ): Promise<Partial<AdopterResponse>> {
-    //     try {
-    //         const adopterRepository = new AdopterRepository(Adopter);
-    //         const adopter = await adopterRepository.getAdopter({
-    //             email: email,
-    //         });
-    //         if (!adopter) {
-    //             throw new HttpError(
-    //                 "Adopter not found",
-    //                 "PATIENT_NOT_FOUND",
-    //                 HTTP_STATUS.NOT_FOUND
-    //             );
-    //         }
-    //         const adopterCleaned: Partial<AdopterResponse> =
-    //             AdopterDto.adopterDTO(adopter);
-    //         return adopterCleaned;
-    //     } catch (err: any) {
-    //         const error: HttpError = new HttpError(
-    //             err.description || err.message,
-    //             err.details || err.message,
-    //             err.status || HTTP_STATUS.SERVER_ERROR
-    //         );
-    //         throw error;
-    //     }
-    // }
+    static async getAdopterById(
+        id: string,
+    ): Promise<Partial<AdopterResponse>> {
+        try {
+            const adopterDao = new AdopterDAO();
+            const adopter = await adopterDao.read(id);
+            
+            if (!adopter) {
+                throw new HttpError(
+                    "Adopter not found",
+                    "ADOPTER_NOT_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
+            const adopterCleaned: Partial<AdopterResponse> =
+                AdopterDto.adopterDTO(adopter);
+            return adopterCleaned;
+        } catch (err: any) {
+            const error: HttpError = new HttpError(
+                err.description || err.message,
+                err.details || err.message,
+                err.status || HTTP_STATUS.SERVER_ERROR
+            );
+            throw error;
+        }
+    }
 
 }

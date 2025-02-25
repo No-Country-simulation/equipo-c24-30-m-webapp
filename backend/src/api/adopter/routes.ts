@@ -13,11 +13,10 @@ import AdopterController from "./controller";
 
 const adopterRouter = Router();
 
-// adopterRouter.get(
-//     "/:id",
-//     authenticate,
-//     AdopterController.getAdopter
-// );
+adopterRouter.get(
+    "/:id",
+    AdopterController.getAdopter
+);
 
 // adopterRouter.put(
 //     "/",
