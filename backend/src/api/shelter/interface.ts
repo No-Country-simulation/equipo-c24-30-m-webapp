@@ -4,7 +4,7 @@ import { IUser } from "../user/interface";
 
 export interface IShelter extends IUser {
     shelterName: string;
-    animals: Types.ObjectId[];
+    pets: Types.ObjectId[];
     verified: boolean;
 }
 
@@ -26,5 +26,5 @@ export interface ShelterUpdateFields {
 export interface ShelterResponse
     extends Omit<IShelter, "password"> {
     id: string;
-    animals: Types.ObjectId[];
+    pets: Types.ObjectId[];
 }
