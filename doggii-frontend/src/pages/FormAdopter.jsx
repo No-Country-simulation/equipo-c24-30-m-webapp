@@ -56,11 +56,11 @@ const FormAdopter = () => {
       email: formData.email,
       password: formData.password,
       admin: false,
-      userRole: "adopter",
+      role: "Adopter",
     };
 
     try {
-      const response = await axios.post("URL_DEL_BACKEND/registro", newUser);
+      const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
       dispatch(loginSuccess(response.data.user));
       navigate("/dashboard");
     } catch (error) {

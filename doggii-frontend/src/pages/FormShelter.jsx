@@ -64,11 +64,11 @@ const FormShelter = () => {
       shelterName: formData.shelterName,
       address: formData.address,
       admin: false,
-      userRole: "shelter",
+      role: "Shelter",
     };
 
     try {
-      const response = await axios.post("https://tu-api.com/register", newUser);
+      const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
       dispatch(loginSuccess(response.data.user)); 
       navigate("/dashboard"); 
     } catch (error) {
