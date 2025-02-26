@@ -79,7 +79,7 @@ const FormAdopter = () => {
           province: "",
           country: "",
         },
-        userRole: response.data.payload.role,
+        userRole: "adopter",
       };
 
       dispatch(loginSuccess(userData)); // Guardamos en Redux

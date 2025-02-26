@@ -53,6 +53,11 @@ const FormShelter = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.password.length < 8) {
+      alert("La contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
     // Validar el formulario antes de enviarlo
     if (!validateForm()) return;
 
@@ -69,8 +74,26 @@ const FormShelter = () => {
 
     try {
       const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
-      dispatch(loginSuccess(response.data.user)); 
-      navigate("/dashboard"); 
+      console.log(response);
+      
+     if (response.data.success) {
+      const userData = {
+        id: response.data.payload.id,
+        userName: newUser.userName, // Lo tomamos del formulario original
+        email: newUser.email,
+        phone: "",
+        address: {
+          street: newUser.address,
+          city: "",
+          province: "",
+          country: "",
+        },
+        userRole: "shelter",
+      };
+
+      dispatch(loginSuccess(userData)); // Guardamos en Redux
+      navigate("/dashboard");
+    }
     } catch (error) {
       console.error("Error al registrar:", error);
       alert("Hubo un error en el registro, intenta nuevamente.");
