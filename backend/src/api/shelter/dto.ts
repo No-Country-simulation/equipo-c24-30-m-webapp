@@ -12,7 +12,6 @@ export default class ShelterDto {
             id: shelter._id.toString(),
             email: shelter.email,
             role: shelter.role,
-            pets: shelter.pets,
             shelterName: shelter.shelterName,
         };
     }

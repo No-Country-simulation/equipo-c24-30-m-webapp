@@ -22,7 +22,7 @@ export interface AdopterUpdateFields {
     email?: string;
     avatar?: string;
     phone?: string; 
-    address?: string;
+    address?: { street: string, city: string, province: string, country: string };
 }
 
 
@@ -32,7 +32,7 @@ export interface AdopterResponse
         | "password"
     > {
     id: string;
-    favoriteAnimals: Types.ObjectId[];
+    favoritePets: Types.ObjectId[];
 }
 
 export interface AdopterLoginFields {

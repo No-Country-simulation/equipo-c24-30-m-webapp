@@ -9,13 +9,7 @@ const Shelter = User.discriminator(
     "Shelter",
     new Schema<IShelter>({
         shelterName: { type: String, required: true, trim: true },
-        pets: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Pet",
-            },
-        ],
-        verified: { type: Boolean, default: false }, // Indica si el refugio fue verificado por un admin
+        verified: { type: Boolean, default: false }, 
     })
 );
 
