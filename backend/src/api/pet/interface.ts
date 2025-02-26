@@ -48,7 +48,11 @@ export interface PetCreateFields {
 
 export interface PetUpdateFields {
     name?: string;
-    age?: number;
+    age: {
+        days: number;
+        months: number;
+        years: number;
+    };
     type?: PetType;
     breed?: string;
     description?: string;
