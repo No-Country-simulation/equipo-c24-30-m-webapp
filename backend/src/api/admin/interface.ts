@@ -22,7 +22,6 @@ export interface AdminUpdateFields {
     email?: string;
     avatar?: string;
     phone?: string; 
-    address?: string;
 }
 
 
@@ -32,7 +31,6 @@ export interface AdminResponse
         | "password"
     > {
     id: string;
-    favoriteAnimals: Types.ObjectId[];
 }
 
 export interface AdminLoginFields {

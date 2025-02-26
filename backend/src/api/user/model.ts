@@ -10,7 +10,12 @@ import { IUser } from "./interface";
 const userSchema = new Schema<IUser>(
     {
         userName: { type: String, required: true, trim: true },
-        address: { type: String, trim: true },
+        address: {
+            street: { type: String, trim: true },
+            city: { type: String, trim: true },
+            province: { type: String, trim: true },
+            country: { type: String, trim: true },
+        },
         email: {
             type: String,
             required: true,
