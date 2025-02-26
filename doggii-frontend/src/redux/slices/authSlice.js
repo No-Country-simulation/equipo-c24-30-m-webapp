@@ -14,7 +14,12 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
     },
     logout: (state) => {
-      state.user = null;
+      state.id = null;
+      state.userName = "";
+      state.email = "";
+      state.phone = "";
+      state.address = {};
+      state.userRole = "";
       state.isAuthenticated = false;
     },
   },
