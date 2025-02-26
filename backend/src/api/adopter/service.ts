@@ -69,69 +69,6 @@ export default class AdopterService {
         }
     }
 
-    // static async updateAdopter(
-    //     user: ITokenPayload,
-    //     updateFields: Partial<AdopterUpdateFields>
-    // ): Promise<Partial<AdopterResponse>> {
-    //     try {
-    //         const adopterDao = new AdopterDAO();
-    //         const adopterFound = await adopterDao.read(user.id);
-    //         if (!adopterFound) {
-    //             throw new HttpError(
-    //                 "User not found",
-    //                 "USER_NOT_FOUND",
-    //                 HTTP_STATUS.NOT_FOUND
-    //             );
-    //         }
-
-    //         const adopterPayload: Partial<IAdopter> = {
-    //             ...adopterFound,
-    //             ...updateFields,
-    //         };
-
-    //         if (
-    //             Object.keys(updateFields).some((field) =>
-    //                 this.ClinicalFields.includes(field)
-    //             )
-    //         ) {
-    //             const adopterClinicalDataCreated =
-    //                 await AdopterClinicalDataService.createClinicalData(
-    //                     updateFields,
-    //                     new Types.ObjectId(user.id)
-    //                 );
-
-    //             adopterPayload.clinicalData =
-    //                 adopterClinicalDataCreated._id as Types.ObjectId;
-    //         }
-
-    //         const updatedAdopter = await adopterDao.update(
-    //             adopterFound._id.toString(),
-    //             adopterPayload
-    //         );
-
-    //         if (!updatedAdopter) {
-    //             throw new HttpError(
-    //                 "User not updated",
-    //                 "USER_NOT_UPDATED",
-    //                 HTTP_STATUS.SERVER_ERROR
-    //             );
-    //         }
-
-    //         const userCleaned: Partial<AdopterResponse> =
-    //             AdopterDto.adopterDTO(updatedAdopter);
-
-    //         return userCleaned;
-    //     } catch (err: any) {
-    //         const error: HttpError = new HttpError(
-    //             err.description || err.message,
-    //             err.details || err.message,
-    //             err.status || HTTP_STATUS.SERVER_ERROR
-    //         );
-
-    //         throw error;
-    //     }
-    // }
-
     static async getAllAdopters(): Promise<Partial<AdopterResponse>[]> {
         try {
             const adopterDao = new UserDAO(Adopter);
