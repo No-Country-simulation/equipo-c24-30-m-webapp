@@ -49,6 +49,11 @@ const FormAdopter = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.password.length < 8) {
+      alert("La contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
     if (!validateForm()) return;
 
     const newUser = {
@@ -59,14 +64,31 @@ const FormAdopter = () => {
       role: "Adopter",
     };
 
-    try {
-      const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
-      dispatch(loginSuccess(response.data.user));
+     try {
+    const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
+
+    if (response.data.success) {
+      const userData = {
+        id: response.data.payload.id,
+        userName: newUser.userName, // Lo tomamos del formulario original
+        email: newUser.email,
+        phone: "",
+        address: {
+          street: "",
+          city: "",
+          province: "",
+          country: "",
+        },
+        userRole: "adopter",
+      };
+
+      dispatch(loginSuccess(userData)); // Guardamos en Redux
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Error en el registro:", error);
-      alert("Hubo un error en el registro, intenta nuevamente.");
     }
+  } catch (error) {
+    console.error("Error en el registro:", error);
+    alert("Hubo un error en el registro, intenta nuevamente.");
+  }
   };
 
   return (
