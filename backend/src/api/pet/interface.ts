@@ -22,7 +22,11 @@ export enum PetType {
 export interface IPet extends Document {
     _id: Types.ObjectId;
     name: string;
-    age: number; // age should be stored in months.
+    age: {
+        days: number;
+        months: number;
+        years: number;
+    };
     type: PetType;
     breed?: string;
     vaccinated?: boolean;
@@ -37,7 +41,11 @@ export interface IPet extends Document {
 
 export interface PetCreateFields {
     name: string;
-    age: number;
+    age: {
+        days: number;
+        months: number;
+        years: number;
+    };
     type: PetType;
     breed?: string;
     description?: string;
@@ -47,7 +55,11 @@ export interface PetCreateFields {
 
 export interface PetUpdateFields {
     name?: string;
-    age?: number;
+    age: {
+        days: number;
+        months: number;
+        years: number;
+    };
     type?: PetType;
     breed?: string;
     description?: string;

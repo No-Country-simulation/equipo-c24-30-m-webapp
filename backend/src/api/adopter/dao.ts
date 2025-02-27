@@ -13,9 +13,7 @@ class AdopterDAO extends UserDAO<IAdopter> {
 
     async read(id: string): Promise<IAdopter | null> {
         return await Adopter.findById(id)
-            .populate([
-                "favoritePets",
-            ])
+            .populate([{ path: "favoritePets", options: { strictPopulate: false } }])
             .lean();
     }
 
@@ -24,7 +22,7 @@ class AdopterDAO extends UserDAO<IAdopter> {
         if (!adopter) return null; 
     
         return await Adopter.findByIdAndUpdate(id, data, { new: true })
-            .populate("favoritePets")
+            .populate([{ path: "favoritePets", options: { strictPopulate: false } }])
             .lean();
     }
     

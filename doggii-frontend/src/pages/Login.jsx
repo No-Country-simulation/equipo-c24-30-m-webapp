@@ -16,12 +16,12 @@ export default function Login() {
 
     try {
       //reeemplazar por la url de la api
-      const response = await axios.post("https://tu-api.com/auth/login", {
+      const response = await axios.post("http://localhost:8082/api/auth/login", {
         email,
         password,
       });
-
-      const user = response.data.user;
+      console.log(response);
+      const user = response.data.payload.token;
 
       if (!user) {
         alert("Usuario no encontrado. Verifica tus credenciales.");

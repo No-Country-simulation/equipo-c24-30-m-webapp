@@ -13,7 +13,7 @@ const Adopter = User.discriminator(
         favoritePets: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "Pets",
+                ref: "Pet",
             },
         ],
         gender: {
