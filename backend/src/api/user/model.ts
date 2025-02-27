@@ -55,7 +55,7 @@ const userSchema = new Schema<IUser>(
         facebookId: { type: String },
         updatedBy: { type: String, trim: true },
     },
-    { timestamps: true }
+    { timestamps: true , discriminatorKey: "role"}
 );
 
 userSchema.pre("save", async function (next) {

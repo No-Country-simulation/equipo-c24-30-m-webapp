@@ -1,7 +1,7 @@
 import AdopterReports from './ReportsViews/AdopterReports';
 import ShelterReports from './ReportsViews/ShelterReports';
 import AdminReports from './ReportsViews/AdminReports';
-import { getUserRole } from "../../services/userRoleSelectorMock";
+import { getUserRole } from "../../test/userRoleSelectorMock";
 
 const Reports = () => {
   const userRole = getUserRole();

@@ -16,8 +16,9 @@ export const navItems = {
   ],
   admin: [
     {path: "/", name: "🏠 Inicio"},
-    {path: "/adoptantes", name: "🙎‍♂️ Adoptantes"},
-    {path: "/refugios", name: "🐾 Refugios"},
+    {path: "/perfil", name: "🙎‍♂️ Tu perfil"},
+    {path: "/usuarios", name: "👥 Usuarios"},
+    {path: "/mascotas", name: "🐶 Mascotas"},
     {path: "/reportes", name: "⚠️ Reportes"}
   ]
 }

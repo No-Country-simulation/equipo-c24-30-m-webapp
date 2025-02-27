@@ -10,10 +10,10 @@ import { Genders } from "../../constants/Genders";
 const Adopter = User.discriminator(
     "Adopter",
     new Schema<IAdopter>({
-        favoriteAnimals: [
+        favoritePets: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "Animal",
+                ref: "Pets",
             },
         ],
         gender: {

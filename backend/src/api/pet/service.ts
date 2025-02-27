@@ -1,7 +1,8 @@
+import { Query } from "mongoose";
 import HTTP_STATUS from "../../constants/HttpStatus";
 import HttpError from "../../utils/HttpError.utils";
 import PetDAO from "./dao";
-import { IPet, PetCreateFields, PetUpdateFields } from "./interface";
+import { IPet, PetCreateFields, PetFilters, PetStatus, PetUpdateFields } from "./interface";
 import Pet from "./model";
 
 export default class PetService {
@@ -48,7 +49,20 @@ export default class PetService {
         );
     }
 
-    static async getAllPets(): Promise<IPet[]> {
-        return await this.petDao.find({});
+    static async getAllPets(filters: PetFilters = {}): Promise<IPet[]> {
+        const query: any = {};
+        
+        if (filters.species) query.type = filters.species;
+        if (filters.gender) query.gender = filters.gender;
+        if (filters.healthStatus) query.healthStatus = filters.healthStatus;
+    
+        if (filters.age) {
+            query.age = {
+                $gte: Number(filters.age.min),
+                $lte: Number(filters.age.max)
+            };
+        }
+
+        return await this.petDao.find(query);
     }
 }
