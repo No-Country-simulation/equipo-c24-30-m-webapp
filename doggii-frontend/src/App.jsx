@@ -11,6 +11,7 @@ import FormAdopter from './pages/FormAdopter';
 import FormShelter from './pages/FormShelter';
 import Users from './pages/Users/Users';
 import Reports from './pages/Reports/Reports';
+import LandingLayout from './layouts/LandingLayout';
 
 function App() {
   return (
@@ -22,14 +23,15 @@ function App() {
         <Route path='/form-adopter' element={<FormAdopter />} />
         <Route path='/form-shelter' element={<FormShelter />} />
         <Route element={<PlatformLayout/>}>
-          <Route path='/' element={<Dashboard />} />
-          <Route path='/perfil' element={<Profile />} />
-          <Route path='/mascotas' element={<Pets />} />
-          <Route path='/solicitudes' element={<Applications />} />
-          <Route path='/formulario' element={<AdoptionForm />} />
-          <Route path='/usuarios' element={<Users />} />
-          <Route path='/reportes' element={<Reports />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/pets' element={<Pets />} />
+          <Route path='/applications' element={<Applications />} />
+          <Route path='/adoption-form' element={<AdoptionForm />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/reports' element={<Reports />} />
         </Route>
+        <Route path='/' element={<LandingLayout />} />
       </Routes>
     </BrowserRouter>
   );

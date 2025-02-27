@@ -1,24 +1,24 @@
 export const navItems = {
   adopter: [
-    { path: "/", name: "🏠 Inicio"},
-    { path: "/perfil", name: "🙎‍♂️ Tu perfil"},
-    { path: "/mascotas", name: "🐶 Mascotas"},
-    { path: "/solicitudes", name: "📄 Solicitudes"},
-    { path: "/reportes", name: "⚠️ Reportes"}
+    { path: "/dashboard", name: "🏠 Inicio"},
+    { path: "/profile", name: "🙎‍♂️ Tu perfil"},
+    { path: "/pets", name: "🐶 Mascotas"},
+    { path: "/applications", name: "📄 Solicitudes"},
+    { path: "/reports", name: "⚠️ Reportes"}
   ],
   shelter: [
-    {path: "/", name: "🏠 Inicio"},
-    {path: "/perfil", name: "🙎‍♂️ Tu perfil"},
-    {path: "/mascotas", name: "🐶 Mascotas"},
-    {path: "/formulario", name: "📋 Formulario"},
-    {path: "/solicitudes", name: "📄 Solicitudes"},
-    {path: "/reportes", name: "⚠️ Reportes"}
+    {path: "/dashboard", name: "🏠 Inicio"},
+    {path: "/profile", name: "🙎‍♂️ Tu perfil"},
+    {path: "/pets", name: "🐶 Mascotas"},
+    {path: "/adoption-form", name: "📋 Formulario"},
+    {path: "/applications", name: "📄 Solicitudes"},
+    {path: "/reports", name: "⚠️ Reportes"}
   ],
   admin: [
-    {path: "/", name: "🏠 Inicio"},
-    {path: "/perfil", name: "🙎‍♂️ Tu perfil"},
-    {path: "/usuarios", name: "👥 Usuarios"},
-    {path: "/mascotas", name: "🐶 Mascotas"},
-    {path: "/reportes", name: "⚠️ Reportes"}
+    {path: "/dashboard", name: "🏠 Inicio"},
+    {path: "/profile", name: "🙎‍♂️ Tu perfil"},
+    {path: "/users", name: "👥 Usuarios"},
+    {path: "/pets", name: "🐶 Mascotas"},
+    {path: "/reports", name: "⚠️ Reportes"}
   ]
 }

@@ -9,7 +9,7 @@ const Button = ({
 }) => {
   return (
     <Component 
-      className={`flex items-center justify-center w-2xs p-3 font-normal tracking-wide rounded-md bg-(--primary) ${className}`}
+      className={`flex items-center justify-center w-2xs p-3 font-medium tracking-wide rounded-md bg-(--primary) ${className}`}
       onClick={onClick}
       {...props}
     >
