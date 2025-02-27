@@ -1,9 +1,9 @@
-import { Query } from "mongoose";
 import HTTP_STATUS from "../../constants/HttpStatus";
 import HttpError from "../../utils/HttpError.utils";
 import PetDAO from "./dao";
-import { IPet, PetCreateFields, PetFilters, PetStatus, PetUpdateFields } from "./interface";
+import { IPet, PetCreateFields, PetFilters, PetUpdateFields } from "./interface";
 import Pet from "./model";
+import { Age } from "../../constants/Age";
 
 export default class PetService {
     private static petDao = new PetDAO(Pet);
@@ -57,11 +57,39 @@ export default class PetService {
         if (filters.healthStatus) query.healthStatus = filters.healthStatus;
     
         if (filters.age) {
-            query.age = {
-                $gte: Number(filters.age.min),
-                $lte: Number(filters.age.max)
+            query.$and = query.$and || [];
+            
+            const createAgeCondition = (filterValue: Age, isMin: boolean) => {
+                const yearOperator = isMin ? "$gt" : "$lt";
+                const monthOperator = isMin ? "$gt" : "$lt";
+                const dayOperator = isMin ? "$gte" : "$lte";
+        
+                return {
+                    $or: [
+                        { "age.years": { [yearOperator]: filterValue.years } },
+                        {
+                            "age.years": filterValue.years,
+                            $or: [
+                                { "age.months": { [monthOperator]: filterValue.months } },
+                                {
+                                    "age.months": filterValue.months,
+                                    "age.days": { [dayOperator]: filterValue.days }
+                                }
+                            ]
+                        }
+                    ]
+                };
             };
+        
+            if (filters.age.min) {
+                query.$and.push(createAgeCondition(filters.age.min, true));
+            }
+        
+            if (filters.age.max) {
+                query.$and.push(createAgeCondition(filters.age.max, false));
+            }
         }
+    
 
         return await this.petDao.find(query);
     }
