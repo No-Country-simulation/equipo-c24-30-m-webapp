@@ -11,7 +11,7 @@ const Benefits = () => {
       <p className="mb-5 text-xl px-10 md:px-20">Adoptar salva vidas y le da a una mascota la oportunidad de tener un hogar lleno de amor. más adelante, más información</p>
       <Button 
         as={Link}
-        to="/register"
+        to="/options-forms"
         className="mx-auto mt-6 text-lg shadow-xl h-12">
         Unite a nuestra comunidad
       </Button>

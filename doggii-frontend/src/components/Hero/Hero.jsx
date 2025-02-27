@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../Button";
 
 const Hero = () => {
@@ -13,7 +14,11 @@ const Hero = () => {
             merece una
             <span className="text-(--secondary-dark)"> oportunidad</span>
           </h1>
-          <Button className="w-35 h-12 mx-auto text-2xl">
+          <Button 
+            as={Link}
+            to="/options-forms"
+            className="w-35 h-12 mx-auto text-2xl"
+          >
             Unite
           </Button>
         </div>
