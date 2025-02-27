@@ -46,7 +46,8 @@ export default class PetController {
 
     static async getAllPets(req: Request, res: Response) {
         try {
-            const pets = await PetService.getAllPets();
+            const filters = req.query;
+            const pets = await PetService.getAllPets(filters);
             res.status(HTTP_STATUS.OK).json(apiResponse(true, pets));
         } catch (err: any) {
             res.status(err.status || HTTP_STATUS.SERVER_ERROR)
