@@ -1,6 +1,7 @@
 // INTERFACES
 import { Types, Document } from "mongoose";
 import { Genders } from "../../constants/Genders";
+import { Age } from "../../constants/Age";
 
 export enum PetStatus {
     AVAILABLE = "available",
@@ -22,11 +23,7 @@ export enum PetType {
 export interface IPet extends Document {
     _id: Types.ObjectId;
     name: string;
-    age: {
-        days: number;
-        months: number;
-        years: number;
-    };
+    age: Age;
     type: PetType;
     breed?: string;
     vaccinated?: boolean;
@@ -55,11 +52,7 @@ export interface PetCreateFields {
 
 export interface PetUpdateFields {
     name?: string;
-    age: {
-        days: number;
-        months: number;
-        years: number;
-    };
+    age: Age;
     type?: PetType;
     breed?: string;
     description?: string;
@@ -82,5 +75,5 @@ export interface PetFilters{
     species?: PetType;
     gender?: Genders;
     healthStatus?: string;
-    age?: Range<number>;
+    age?: Range<Age>;
 }
