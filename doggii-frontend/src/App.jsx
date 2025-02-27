@@ -9,7 +9,8 @@ import AdoptionForm from './pages/AdoptionForm';
 import OptionsForms from './pages/OptionsForms';
 import FormAdopter from './pages/FormAdopter';
 import FormShelter from './pages/FormShelter';
-import Users from './pages/Users/Users';
+import Adopters from './pages/Users/Adopters';
+import Shelters from './pages/Users/Shelters';
 import Reports from './pages/Reports/Reports';
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
           <Route path='/mascotas' element={<Pets />} />
           <Route path='/solicitudes' element={<Applications />} />
           <Route path='/formulario' element={<AdoptionForm />} />
-          <Route path='/usuarios' element={<Users />} />
+          <Route path='/adoptantes' element={<Adopters />} />
+          <Route path='/refugios' element={<Shelters />} />
           <Route path='/reportes' element={<Reports />} />
         </Route>
       </Routes>

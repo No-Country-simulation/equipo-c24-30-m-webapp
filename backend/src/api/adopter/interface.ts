@@ -5,7 +5,7 @@ import { Genders } from "../../constants/Genders";
 
 
 export interface IAdopter extends IUser {
-    favoritePets: Types.ObjectId[];
+    favoriteAnimals: Types.ObjectId[];
     gender: Genders;
     dateOfBirth: Date;
 }
