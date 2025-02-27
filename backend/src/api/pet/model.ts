@@ -3,7 +3,6 @@ import { Document, Schema, model } from "mongoose";
 
 // MODELS
 import { IPet, PetStatus, PetType } from "./interface";
-import { Genders } from "../../constants/Genders";
 
 // PET MODEL
 const petSchema = new Schema({
@@ -13,9 +12,8 @@ const petSchema = new Schema({
     description: { type: String },
     age: { type: Number, required: true },
     images: [{ type: String }],
-    gender: { type: String, enum: Genders, required: true },
+    gender: { type: String, enum: ["Male", "Female"], required: true },
     healthStatus: { type: String, default: "Healthy" },
-    vaccinated: { type: Boolean, default: "false"},
     shelter: { type: Schema.Types.ObjectId, ref: "Shelter" },
     adopter: { type: Schema.Types.ObjectId, ref: "Adopter", default: null },
     status: { type: String, enum: Object.values(PetStatus), default: PetStatus.AVAILABLE},

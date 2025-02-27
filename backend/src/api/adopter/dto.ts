@@ -12,7 +12,7 @@ export default class AdopterDto {
             id: adopter._id.toString(),
             email: adopter.email,
             role: adopter.role,
-            favoritePets: adopter.favoritePets,
+            favoriteAnimals: adopter.favoriteAnimals,
             ...(adopter.dateOfBirth && { dateOfBirth: adopter.dateOfBirth }),
             ...(adopter.gender && { gender: adopter.gender }),
             ...(adopter.phone && { phone: adopter.phone }),

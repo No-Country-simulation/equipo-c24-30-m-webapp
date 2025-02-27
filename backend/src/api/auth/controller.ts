@@ -19,11 +19,9 @@ export default class AuthController {
     try {
       let userResponse: Partial<AdopterResponse> = {};
 
-      if (req.body.role === "Adopter") { 
+      if (req.body.role === "adopter") { 
       const adopterData: AdopterCreateFields = req.body;
-      console.log(adopterData);
       userResponse = await AdopterService.createAdopter(adopterData);
-      }
 
       // }else if(req.body.role === "admin"){
       //   const userData: UserCreateFields = req.body;
@@ -32,7 +30,7 @@ export default class AuthController {
       // }else if(req.body.role === "Shelter") {
 
       // 
-
+      }
       const response = apiResponse(true, userResponse);
       res.status(HTTP_STATUS.CREATED).json(response);
     } catch (err: any) {

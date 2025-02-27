@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { getUserRole } from "../../test/userRoleSelectorMock.js";
+import { getUserRole } from "../../services/userRoleSelectorMock";
 import { navItems } from "./sidebarConfig.js";
 
 const Sidebar = () => {
