@@ -33,6 +33,7 @@ export interface IPet extends Document {
     adopter?: Types.ObjectId; // Referencia al adoptante en caso de adopción
     status: PetStatus;
     createdAt: Date;
+    available: boolean;
     updatedAt?: Date;
 }
 
