@@ -102,4 +102,13 @@ export default class PetService {
         return pets.filter(pet => pet.shelter);
     }
     
+    static async setAvailability(id: string, available: boolean): Promise<IPet | null> {
+        const updatedPet = await this.petDao.update(id, { available });
+        if (!updatedPet) throw new HttpError(
+            "Pet not found",
+            "PET_NOT_FOUND", 
+            HTTP_STATUS.NOT_FOUND
+        );
+        return updatedPet;
+    }
 }
