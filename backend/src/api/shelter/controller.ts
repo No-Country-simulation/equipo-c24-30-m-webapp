@@ -4,6 +4,7 @@ import HTTP_STATUS from "../../constants/HttpStatus";
 import HttpError from "../../utils/HttpError.utils";
 import ShelterService from "./service";
 import PetService from "../pet/service";
+import { PetUpdateFields } from "../pet/interface";
 
 export default class ShelterController {
     static async getShelter(req: Request, res: Response) {
@@ -55,8 +56,18 @@ export default class ShelterController {
 
     static async UpdateAdoptionPost(req: Request, res: Response) {
         try {
-            const petData = req.body;
-            const pet = await PetService.updatePet(petData.id, petData);
+            const petID = req.params.id;
+            const petData: PetUpdateFields | null = await PetService.getPetById(petID);
+
+            if (!petData) {
+                throw new HttpError(
+                    "Pet not found",
+                    "PET_NOT_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
+
+            const pet = await PetService.updatePet(petID, petData );
 
             const response = apiResponse(true, pet);
             res.status(HTTP_STATUS.OK).json(response);
@@ -75,10 +86,10 @@ export default class ShelterController {
 
     static async DeleteAdoptionPost(req: Request, res: Response) {
         try {
-            const petId = req.body.id;
+            const petId = req.params.id;
             await PetService.setAvailability(petId, false);
 
-            const response = apiResponse(true, { message: "Pet deleted successfully" });
+            const response = apiResponse(true, { message: "Adoption Post deleted successfully" });
             res.status(HTTP_STATUS.OK).json(response);
         } catch (err: any) {
             const response = apiResponse(

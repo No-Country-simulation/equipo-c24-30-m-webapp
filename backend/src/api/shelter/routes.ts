@@ -20,13 +20,13 @@ shelterRouter.post("/createAdoptionPost",
     ShelterController.CreateAdoptionPost
 );
 
-shelterRouter.put("/updateAdoptionPost",
+shelterRouter.put("/updateAdoptionPost/:id",
     authenticate,
     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
     ShelterController.UpdateAdoptionPost
 );
 
-shelterRouter.delete("/deleteAdoptionPost",
+shelterRouter.delete("/deleteAdoptionPost/:id",
     authenticate, 
     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),  
     ShelterController.DeleteAdoptionPost
