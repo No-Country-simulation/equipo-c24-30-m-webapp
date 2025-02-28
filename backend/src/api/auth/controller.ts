@@ -78,8 +78,8 @@ export default class AuthController {
       console.log("Login request");
       const userData: UserLoginFields = req.body;
       console.log(userData);
-
-      const token = await UserService.loginUser(userData);
+      
+      let {token, userWithoutPassword} = await UserService.loginUser(userData);
       console.log(token);
       if (!token) {
         throw new HttpError(
@@ -89,7 +89,7 @@ export default class AuthController {
         );
       }
 
-      const response = apiResponse(true, token);
+      const response = apiResponse(true, { token, user: userWithoutPassword });
       res.status(HTTP_STATUS.OK).json(response);
     } catch (err: any) {
       const response = apiResponse(
