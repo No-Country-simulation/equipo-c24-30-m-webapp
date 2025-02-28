@@ -32,6 +32,17 @@ class PetDAO {
     async find(query: FilterQuery<IPet>): Promise<IPet[]> {
         return await this.model.find(query).populate("shelter adopter").lean();
     }
+
+    // i could not find a way to do the address filter without this method. If you find a way feel free to rewrite it.
+    async findWithShelterMatch(query: FilterQuery<IPet>, shelterMatch: any): Promise<IPet[]> {
+        return await this.model.find(query)
+           .populate({
+              path: 'shelter',
+              match: shelterMatch
+           })
+           .populate("adopter")
+           .lean();
+    }
 }
 
 export default PetDAO;
