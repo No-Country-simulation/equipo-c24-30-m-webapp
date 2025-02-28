@@ -76,4 +76,10 @@ export interface PetFilters{
     gender?: Genders;
     healthStatus?: string;
     age?: Range<Age>;
+    address?: {
+        country?: string;
+        province?: string;
+        city?: string;
+
+    }
 }

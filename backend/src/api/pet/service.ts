@@ -49,48 +49,57 @@ export default class PetService {
         );
     }
 
+    // maybe someone should rewrite this or modularize it by a class querybuilder, dunno, but i don't like it.
     static async getAllPets(filters: PetFilters = {}): Promise<IPet[]> {
-        const query: any = {};
-        
+        const query: Record<string, any> = {};
+        const shelterMatch: Record<string, any> = {};
+    
         if (filters.species) query.type = filters.species;
         if (filters.gender) query.gender = filters.gender;
         if (filters.healthStatus) query.healthStatus = filters.healthStatus;
     
+        if (filters.address) {
+            const { city, province, country } = filters.address;
+            if (city) shelterMatch["address.city"] = city;
+            if (province) shelterMatch["address.province"] = province;
+            if (country) shelterMatch["address.country"] = country;
+        }
+    
         if (filters.age) {
-            query.$and = query.$and || [];
+            const { min, max } = filters.age;
             
-            const createAgeCondition = (filterValue: Age, isMin: boolean) => {
-                const yearOperator = isMin ? "$gt" : "$lt";
-                const monthOperator = isMin ? "$gt" : "$lt";
-                const dayOperator = isMin ? "$gte" : "$lte";
-        
-                return {
-                    $or: [
-                        { "age.years": { [yearOperator]: filterValue.years } },
-                        {
-                            "age.years": filterValue.years,
-                            $or: [
-                                { "age.months": { [monthOperator]: filterValue.months } },
-                                {
-                                    "age.months": filterValue.months,
-                                    "age.days": { [dayOperator]: filterValue.days }
-                                }
-                            ]
-                        }
-                    ]
+            if (min || max) {
+                query.$and = [];
+                
+                const createAgeCondition = (ageValue: Age, isMinCondition: boolean): Record<string, any> => {
+                    const operator = isMinCondition ? { years: "$gt", months: "$gt", days: "$gte" } 
+                                                   : { years: "$lt", months: "$lt", days: "$lte" };
+                    
+                    return {
+                        $or: [
+                            { "age.years": { [operator.years]: ageValue.years } },
+                            {
+                                "age.years": ageValue.years,
+                                $or: [
+                                    { "age.months": { [operator.months]: ageValue.months } },
+                                    {
+                                        "age.months": ageValue.months,
+                                        "age.days": { [operator.days]: ageValue.days }
+                                    }
+                                ]
+                            }
+                        ]
+                    };
                 };
-            };
-        
-            if (filters.age.min) {
-                query.$and.push(createAgeCondition(filters.age.min, true));
-            }
-        
-            if (filters.age.max) {
-                query.$and.push(createAgeCondition(filters.age.max, false));
+                
+                if (min) query.$and.push(createAgeCondition(min, true));
+                if (max) query.$and.push(createAgeCondition(max, false));
             }
         }
     
-
-        return await this.petDao.find(query);
+        const pets = await this.petDao.findWithShelterMatch(query, shelterMatch);
+        
+        return pets.filter(pet => pet.shelter);
     }
+    
 }
