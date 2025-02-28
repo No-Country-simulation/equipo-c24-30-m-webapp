@@ -12,7 +12,7 @@ import "../../config/passport.config";
 export default class UserService {
     static async loginUser(
         userData: UserLoginFields
-    ): Promise<{ token: string }> {
+    ): Promise<{ token: string, userWithoutPassword: Partial<IUser> }> {
         try {
             console.log("userData", userData);
             const userDao = new UserDAO(User);
@@ -27,13 +27,15 @@ export default class UserService {
                     HTTP_STATUS.UNAUTHORIZED
                 );
             }
-            const user = userFound[0];
+            let user = userFound[0];
             console.log("user", user);
             const isPasswordValid = BcryptUtils.isValidPassword(
                 user,
                 userData.password
             );
 
+            user = user.toObject();
+            const {password, ...userWithoutPassword} = user; 
             console.log("isPasswordValid", isPasswordValid);
 
             if (!isPasswordValid) {
@@ -53,8 +55,8 @@ export default class UserService {
                 process.env.JWT_SECRET!,
                 { expiresIn: "1h" }
             );
-            console.log("token", token);
-            return { token };
+
+            return { token, userWithoutPassword };
         } catch (err: any) {
             const error: HttpError = new HttpError(
                 err.description || err.message,
