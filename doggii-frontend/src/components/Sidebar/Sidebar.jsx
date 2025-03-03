@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { getUserRole } from "../../test/userRoleSelectorMock.js";
+import { useSelector } from "react-redux";
 import { navItems } from "./sidebarConfig.js";
 
 const Sidebar = () => {
-  const userRole = getUserRole();
+  const userRole = useSelector((state) => state.user.role);
   const currentNavItems = navItems[userRole];
   const location = useLocation();
 

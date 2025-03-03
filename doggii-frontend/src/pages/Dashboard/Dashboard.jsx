@@ -1,24 +1,23 @@
-import AdopterDashboard from "./DashboardViews/AdopterDashboard";
-import ShelterDashboard from "./DashboardViews/ShelterDashboard";
-import AdminDashboard from "./DashboardViews/AdminDashboard";
-import { useSelector } from "react-redux";
+import AdopterDashboard from './DashboardViews/AdopterDashboard';
+import ShelterDashboard from './DashboardViews/ShelterDashboard';
+import AdminDashboard from './DashboardViews/AdminDashboard';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
   const user = useSelector((state) => state.user);
 
-  console.log(user)
-
   return (
     <div>
-      <h1 className="m-9">¡Hola, {user.userName}!</h1>
+      <h1 className='m-9'>¡Hola, {user.userName}!</h1>
 
-      {user.role.toLowerCase() === "admin" ?
+      {user.role === 'admin' ?
         <AdminDashboard />
-        :
-        (user.role.toLowerCase() === "adopter" ?
+        : (user.role === 'adopter' ?
           <AdopterDashboard />
-          :
-          <ShelterDashboard />)
+          : (user.role === 'shelter' ?
+            <ShelterDashboard />
+            : null)
+          )
       }
     </div>
   )

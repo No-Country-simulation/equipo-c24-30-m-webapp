@@ -1,22 +1,23 @@
 import AdopterPets from "./PetsViews/AdopterPets";
 import ShelterPets from "./PetsViews/ShelterPets";
 import AdminPets from "./PetsViews/AdminPets";
-import { getUserRole } from "../../test/userRoleSelectorMock";
+import { useSelector } from "react-redux";
 
 const Pets = () => {
-  const userRole = getUserRole();
+  const user = useSelector((state) => state.user);
 
   return (
     <div>
       <h1 className="m-9 mb-4">Mascotas</h1>
 
-      {userRole === "admin" ?
+      {user.role === "admin" ?
         <AdminPets />
-        :
-        (userRole === "adopter" ?
+        : (user.role === "adopter" ?
           <AdopterPets />
-          :
-          <ShelterPets />)
+          : (user.role === "shelter" ?
+            <ShelterPets />
+            : null)
+          )
       }
     </div>
   )
