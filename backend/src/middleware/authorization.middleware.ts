@@ -6,7 +6,7 @@ import HTTP_STATUS from "../constants/HttpStatus";
 const authorizeRoles = (roles: Roles[]) => {
     return (_req: Request, res: Response, next: NextFunction) => {
         const userRole = res.locals.user.role;
-        if (roles.includes(userRole)) {
+        if (roles.includes(userRole) || userRole == Roles.ADMIN) { // admins always should be authorized, right?
             res.locals.user.role = userRole;
             next();
         } else {
