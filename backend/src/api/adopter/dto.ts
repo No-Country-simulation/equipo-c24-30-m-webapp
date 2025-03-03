@@ -11,6 +11,12 @@ export default class AdopterDto {
         return {
             id: adopter._id.toString(),
             email: adopter.email,
+            userName: adopter.userName,
+            phone: adopter.phone,
+            updatedAt: adopter.updatedAt,
+            createdAt: adopter.createdAt,
+            address: adopter.address,
+            status: adopter.status,
             role: adopter.role,
             favoritePets: adopter.favoritePets,
             ...(adopter.dateOfBirth && { dateOfBirth: adopter.dateOfBirth }),

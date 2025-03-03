@@ -11,8 +11,15 @@ export default class ShelterDto {
         return {
             id: shelter._id.toString(),
             email: shelter.email,
+            userName: shelter.userName,
             role: shelter.role,
             shelterName: shelter.shelterName,
+            createdAt: shelter.createdAt,
+            verified: shelter.verified,
+            address: shelter.address,  
+            status: shelter.status,
+            phone: shelter.phone,
+            updatedAt: shelter.updatedAt
         };
     }
 }
