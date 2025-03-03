@@ -1,19 +1,21 @@
 import AdopterDashboard from "./DashboardViews/AdopterDashboard";
 import ShelterDashboard from "./DashboardViews/ShelterDashboard";
 import AdminDashboard from "./DashboardViews/AdminDashboard";
-import { getUserRole } from "../../test/userRoleSelectorMock";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const userRole = getUserRole();
+  const user = useSelector((state) => state.user);
+
+  console.log(user)
 
   return (
     <div>
-      <h1 className="m-9">¡Hola, NOMBRE!</h1>
+      <h1 className="m-9">¡Hola, {user.userName}!</h1>
 
-      {userRole === "admin" ?
+      {user.role.toLowerCase() === "admin" ?
         <AdminDashboard />
         :
-        (userRole === "adopter" ?
+        (user.role.toLowerCase() === "adopter" ?
           <AdopterDashboard />
           :
           <ShelterDashboard />)
