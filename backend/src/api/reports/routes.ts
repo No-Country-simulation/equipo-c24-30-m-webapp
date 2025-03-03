@@ -1,15 +1,28 @@
 import { Router } from "express";
 import ReportController from "./controller";
+import authenticate from "../../middleware/authenticate.middleware";
+import authorizeRoles from "../../middleware/authorization.middleware";
+import { Roles } from "../../constants/Roles";
 
 const reportRouter = Router();
 
-// TODO: Implement authentication middleware for POST, PUT & DELETE endpoints.
-// TODO: In the update endpoint, add middleware to check that only an admin can perform the update.
+// maybe unaunthenticateds should be able to make a report?
+reportRouter.post("/", authenticate, ReportController.createReport);
+reportRouter.delete(
+    "/:id", 
+    authenticate, 
+    authorizeRoles([Roles.ADMIN]), 
+    ReportController.deleteReport
+);
 
-reportRouter.post("/", ReportController.createReport);
-reportRouter.get("/:id", ReportController.getReport);
-reportRouter.get("/", ReportController.getAllReports);
-reportRouter.put("/:id", ReportController.updateReport);
-reportRouter.delete("/:id", ReportController.deleteReport);
+reportRouter.put(
+    "/:id",
+    authenticate,
+    authorizeRoles([Roles.ADMIN]),
+    ReportController.updateReport
+);
+
+reportRouter.get("/:id", authenticate, ReportController.getReport);
+reportRouter.get("/", authenticate, ReportController.getAllReports);
 
 export default reportRouter;
