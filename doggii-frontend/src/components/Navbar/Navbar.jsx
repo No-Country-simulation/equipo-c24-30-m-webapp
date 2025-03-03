@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import NavItems from "./NavItems";
 import Button from "../Button";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
+  const isLoggedIn = localStorage.getItem("accessToken") ? true : false;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

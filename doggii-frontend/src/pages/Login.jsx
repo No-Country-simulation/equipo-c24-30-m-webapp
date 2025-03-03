@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
+import { setUserInfo } from "../redux/slices/userSlice";
 
 export default function Login() {
 
@@ -16,19 +17,22 @@ export default function Login() {
 
     try {
       //reeemplazar por la url de la api
-      const response = await axios.post("http://localhost:8082/api/auth/login", {
+      const response = await axios.post(import.meta.env.VITE_BACKEND_URI + "/api/auth/login", {
         email,
         password,
       });
-      console.log(response);
-      const user = response.data.payload.token;
-
-      if (!user) {
+      const { token, user } = response.data.payload;
+      
+      if (!token) {
         alert("Usuario no encontrado. Verifica tus credenciales.");
         return;
       }
 
-      dispatch(loginSuccess(user));
+      localStorage.setItem("accessToken", token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      dispatch(setUserInfo(user));
+      dispatch(loginSuccess(token));
 
       navigate("/dashboard");
     } catch (error) {
