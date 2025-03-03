@@ -12,15 +12,15 @@ import FormShelter from './pages/FormShelter';
 import Users from './pages/Users/Users';
 import Reports from './pages/Reports/Reports';
 import LandingLayout from './layouts/LandingLayout';
-/*import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import { setUserInfo } from './redux/slices/userSlice';
-import { loginSuccess } from './redux/slices/authSlice';*/
+import { loginSuccess } from './redux/slices/authSlice';
 
 function App() {
-  /*const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -75,7 +75,7 @@ function App() {
     };
 
     initializeAuth();
-  }, [dispatch]);*/
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
