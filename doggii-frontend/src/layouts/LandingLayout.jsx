@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar/Navbar";
-import Hero from "../components/Hero/Hero";
+import Hero from "../components/LandingSections/Hero";
 import Stats from "../components/LandingSections/Stats";
 import Working from "../components/LandingSections/Working";
 import Pets from "../components/LandingSections/Pets";
@@ -10,7 +10,7 @@ import Footer from "../components/Footer/Footer";
 const LandingLayout = () => {
 
   return (
-    <div className="min-h-screen flex flex-col pt-40 lg:pt-25">
+    <div className="min-h-screen flex flex-col pt-25">
       <Navbar/>
       <main className="flex-1 relative">
         <div className="absolute inset-0 bg-[url(/src/assets/images/landing-bg.jpeg)] bg-cover opacity-20 z-0"></div>

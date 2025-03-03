@@ -30,6 +30,13 @@
 
 @font-face {
   font-family: 'Rubik';
+  src: url('./assets/fonts/rubik/Rubik-LightItalic.ttf');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Rubik';
   src: url('./assets/fonts/rubik/Rubik-Italic.ttf');
   font-weight: normal;
   font-style: italic;

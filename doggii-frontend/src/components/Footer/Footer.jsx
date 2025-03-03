@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 const Footer = () => {
 
   return (
-    <footer className="border-t-2 border-(--secondary)">
+    <footer className="border-t-4 border-(--secondary)">
       <div className="w-full flex flex-col items-center gap-6 px-8 py-4 md:flex-row md:justify-between">
         <ul className="flex flex-col space-y-5 md:flex-row md:space-y-0 md:gap-20 text-center font-light text-xl">
         <li>
-          <Link to="/contact" className="hover:font-medium">Contacto</Link>
+          <Link to="/us" className="font-medium hover:text-(--secondary-dark)">¿Quiénes somos?</Link>
         </li>
         <li>
-          <Link to="/terms" className="hover:font-medium">Términos y condiciones</Link>
+          <Link to="/contact" className="font-medium hover:text-(--secondary-dark)">Contacto</Link>
+        </li>
+        <li>
+          <Link to="/terms" className="font-medium hover:text-(--secondary-dark)">Términos y condiciones</Link>
         </li>
         </ul>
         <div className="flex gap-5">

@@ -8,7 +8,7 @@ const Benefits = () => {
       <h2 className="text-4xl text-center font-medium mb-5 lg:text-5xl">
         Beneficios de adoptar
       </h2>
-      <p className="mb-5 text-xl px-10 md:px-20">Adoptar salva vidas y le da a una mascota la oportunidad de tener un hogar lleno de amor. más adelante, más información</p>
+      <p className="mb-5 text-xl px-10 md:px-20">Adoptar salva vidas y le da a una mascota la oportunidad de tener un hogar lleno de amor. Además, ayuda a reducir la cantidad de animales en situación de calle y apoya el trabajo de los refugios. ¡Tu nuevo mejor amigo te está esperando!</p>
       <Button 
         as={Link}
         to="/options-forms"
