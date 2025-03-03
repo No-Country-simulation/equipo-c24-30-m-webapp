@@ -4,8 +4,8 @@ const HorizontalCardLanding = ({image, title, text}) => {
   return (
     <div className="w-120 rounded-xl shadow-xl bg-(--secondary-light)">
       <div className='w-full relative'>
-        <img src={image} alt={title} className="w-full h-70 object-cover object-center rounded-t-xl"/>
-        <h3 className="absolute top-15 right-5 p-4 text-3xl text-right text-(--accent)">
+        <img src={image} alt={title} className="w-full h-70 object-cover object-center rounded-t-xl grayscale-30"/>
+        <h3 className="absolute top-15 right-0 p-4 text-4xl text-center text-(--accent) font-normal">
           {title.split(' ').map((word, index, array) => (
             <span key={index}>
               {word}
@@ -14,7 +14,7 @@ const HorizontalCardLanding = ({image, title, text}) => {
           ))}
         </h3>
       </div>
-      <p className="p-6 text-md text-justify">{text}</p>
+      <p className="p-8 text-md text-justify">{text}</p>
     </div>
   )
 }
