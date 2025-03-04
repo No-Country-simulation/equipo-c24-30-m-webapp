@@ -1,9 +1,17 @@
+import { useState } from 'react';
 import VerticalCard from '../../../components/Cards/VerticalCard';
 import Button from '../../../components/Button';
 import petDataMock from '../../../test/petsDataMock.json';
 
 const AdopterPets = () => {
-  const pets = petDataMock;
+  const [visibleItems, setVisibleItems] = useState(6);
+  const [pets, setPets] = useState(petDataMock.slice(0, visibleItems));
+
+  const handleSeeMore = () => {
+    const newVisibleItems = visibleItems + 6;
+    setVisibleItems(newVisibleItems);
+    setPets(petDataMock.slice(0, newVisibleItems));
+  }
 
   return (
     <div className='pl-8 pr-8'>
@@ -14,11 +22,14 @@ const AdopterPets = () => {
           <VerticalCard key={index} id={pet.id} image={pet.photo} title={pet.name} description={`Refugio: ${pet.shelterName}`}/>
         ))}
       </div>
-      <Button
-        className='m-auto my-8 text-xl'
-      >
-        Ver todos
-      </Button>
+      {visibleItems < petDataMock.length && (
+        <Button
+          className='m-auto my-8 text-xl'
+          onClick={handleSeeMore}
+        >
+          Ver más
+        </Button>
+      )}
     </div>
   )
 }
