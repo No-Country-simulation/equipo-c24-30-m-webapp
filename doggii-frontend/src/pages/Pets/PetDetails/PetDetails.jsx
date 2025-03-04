@@ -1,7 +1,8 @@
 import petDataMock from '../../../test/petsDataMock.json';
+import PropTypes from 'prop-types';
 import Button from '../../../components/Button';
 
-const PetDetails = () => {
+const PetDetails = ({buttonText}) => {
   const pet = petDataMock[1];
   const age = pet.age.years > 0 ? `${pet.age.years} años` : 
               (pet.age.months > 0 ? `${pet.age.months} meses` :
@@ -52,10 +53,14 @@ const PetDetails = () => {
         </div>
       </div>
       <Button className='text-2xl mx-auto w-60'>
-        Adoptar
+        {buttonText}
       </Button>
     </div>
   )
 }
 
 export default PetDetails;
+
+PetDetails.propTypes = {
+  buttonText: PropTypes.string
+};
