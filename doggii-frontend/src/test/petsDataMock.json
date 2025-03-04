@@ -5,13 +5,16 @@
     "photo": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "sex": "macho",
     "age": {
-      "days": 0,
-      "months": 0,
+      "days": 1,
+      "months": 2,
       "years": 5
     },
     "size": "grande",
+    "vaccinated": true,
     "neutered": true,
     "specialCare": null,
+    "available": true,
+    "description": "Cariñoso y juguetón. Siempre está buscando mimos y compañía. Se lleva bien con niños y otros perros. Ideal para una familia activa.",
     "shelterId": "0001",
     "shelterName": "Huellitas"
   },
@@ -27,8 +30,11 @@
       "years": 2
     },
     "size": "mediano",
+    "vaccinated": true,
     "neutered": true,
     "specialCare": "Alimentación BARF",
+    "available": false,
+    "description": "Dulce y tranquilo. Disfruta de las siestas al sol y los paseos relajados. Perfecto para alguien que busca un compañero sereno.",
     "shelterId": "0002",
     "shelterName": "Patitas"
   },
@@ -44,8 +50,11 @@
       "years": 1
     },
     "size": "grande",
+    "vaccinated": false,
     "neutered": true,
     "specialCare": null,
+    "available": true,
+    "description": "Energética y aventurera. Ama correr y explorar. Necesita un hogar con espacio para jugar y personas que disfruten de la actividad al aire libre.",
     "shelterId": "0001",
     "shelterName": "Huellitas"
   },
@@ -61,8 +70,11 @@
       "years": 0
     },
     "size": "grande",
+    "vaccinated": false,
     "neutered": true,
     "specialCare": null,
+    "available": false,
+    "description": "Inteligente y obediente. Ya conoce comandos básicos y aprende rápido. Se adapta bien a la rutina de casa y le encanta hacer trucos por premios.",
     "shelterId": "0002",
     "shelterName": "Patitas"
   },
@@ -78,8 +90,11 @@
       "years": 0
     },
     "size": "grande",
+    "vaccinated": false,
     "neutered": false,
     "specialCare": null,
+    "available": true,
+    "description": "Sociable y simpática. Siempre mueve la cola al ver a alguien nuevo. Es ideal para un hogar donde reciba mucho amor y atención.",
     "shelterId": "0001",
     "shelterName": "Huellitas"
   },
@@ -95,8 +110,11 @@
       "years": 7
     },
     "size": "mediano",
+    "vaccinated": true,
     "neutered": true,
     "specialCare": "Usa silla de ruedas",
+    "available": true,
+    "description": "Tierna y un poco tímida al principio, pero en cuanto agarra confianza, no deja de pedir caricias. Se lleva mejor con familias pacientes y amorosas.",
     "shelterId": "0002",
     "shelterName": "Patitas"
   },
@@ -112,8 +130,11 @@
       "years": 0
     },
     "size": "pequeño",
+    "vaccinated": true,
     "neutered": false,
     "specialCare": null,
+    "available": true,
+    "description": "Leal y protectora. Siempre atenta a su entorno. Es una gran compañera para alguien que busca un perro con carácter equilibrado y afectuoso.",
     "shelterId": "0001",
     "shelterName": "Huellitas"
   },
@@ -129,8 +150,11 @@
       "years": 2
     },
     "size": "pequeño",
+    "vaccinated": true,
     "neutered": true,
     "specialCare": null,
+    "available": true,
+    "description": "Curiosa y traviesa. Le encanta jugar con juguetes y descubrir nuevos lugares. Ideal para un hogar con tiempo para compartir actividades con ella.",
     "shelterId": "0002",
     "shelterName": "Patitas"
   },
@@ -145,8 +169,11 @@
       "years": 1
     },
     "size": "pequeño",
+    "vaccinated": true,
     "neutered": true,
     "specialCare": null,
+    "available": true,
+    "description": "Amoroso y muy expresivo. Demuestra su cariño con lamidas y saltitos de felicidad. Se lleva bien con niños y disfruta de la compañía humana.",
     "shelterId": "0001",
     "shelterName": "Huellitas"
   },
@@ -162,8 +189,11 @@
       "years": 6
     },
     "size": "grande",
+    "vaccinated": true,
     "neutered": true,
     "specialCare": "En tratamiento por desnutrición",
+    "available": true,
+    "description": "Sereno y adaptable. No necesita demasiada actividad, pero disfruta los paseos tranquilos. Se lleva bien con otros perros y es fácil de cuidar.",
     "shelterId": "0002",
     "shelterName": "Patitas"
   }
