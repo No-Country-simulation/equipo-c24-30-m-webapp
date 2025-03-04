@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+    title: doggii API
+    description: API documentation for doggii application
+    version: 1.0.0
+paths:
+    /adopter/{id}:
+        get:
+            summary: Get Adopter information by ID
+            tags:
+                - Adopter
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: "60d0fe4f5311236168a109ca"
+            responses:
+                200:
+                    description: Adopter information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    payload:
+                                        $ref: "#/components/schemas/AdopterData"
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                404:
+                    description: Adopter not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                500:
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        AdopterData:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                email:
+                    type: string
+                    example: "Arjun.Russel@gmail.com"
+                role:
+                    type: string
+                    example: "Adopter"
+                userName:
+                    type: string
+                    example: "Ramiro vallejos"
+                dateOfBirth:
+                    type: string
+                    format: date-time
+                    example: "2024-03-06T21:47:57.000Z"
+                status:
+                    type: boolean
+                    example: true
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-07T14:59:22.105Z"
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-12T01:52:26.332Z"
+
+        ErrorResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: false
+                error:
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            example: "An error occurred"
+                        details:
+                            type: string
+                            example: "Detailed error message"

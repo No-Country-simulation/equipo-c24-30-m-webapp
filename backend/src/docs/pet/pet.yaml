@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+    title: doggii API
+    description: API documentation for doggii application
+    version: 1.0.0
+paths:
+    /pet:
+        get:
+            summary: Get all pets
+            tags:
+                - Pet
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: List of all pets retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    payload:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/PetData"
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                500:
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+        post:
+            summary: Create a new pet
+            tags:
+                - Pet
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PetData"
+            responses:
+                200:
+                    description: Pet created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    payload:
+                                        $ref: "#/components/schemas/PetData"
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                404:
+                    description: Pet not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                500:
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+    /pet/{id}:
+        get:
+            summary: Get Pet information by ID
+            tags:
+                - Pet
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: "60d0fe4f5311236168a109ca"
+            responses:
+                200:
+                    description: Pet information retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    payload:
+                                        $ref: "#/components/schemas/PetData"
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                404:
+                    description: Pet not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                500:
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+        put:
+            summary: Update a pet by ID
+            tags:
+                - Pet
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: "60d0fe4f5311236168a109ca"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PetData"
+            responses:
+                200:
+                    description: Pet updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    payload:
+                                        $ref: "#/components/schemas/PetData"
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                404:
+                    description: Pet not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                500:
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+        delete:
+            summary: Delete a pet by ID
+            tags:
+                - Pet
+            security:
+                - bearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: "60d0fe4f5311236168a109ca"
+            responses:
+                200:
+                    description: Pet deleted successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                404:
+                    description: Pet not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+                500:
+                    description: Internal server error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ErrorResponse"
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        PetData:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                name:
+                    type: string
+                    example: "TOM"
+                age:
+                    type: object
+                    properties:
+                        years:
+                            type: number
+                            example: 2
+                        months:
+                            type: number
+                            example: 3
+                        days:
+                            type: number
+                            example: 5
+                type:
+                    type: string
+                    example: "DOG"
+                vaccinated:
+                    type: boolean
+                    example: true
+                status:
+                    type: string
+                    example: "Available"
+                description:
+                    type: string
+                    example: "A very cute dog"
+                images:
+                    type: array
+                    items:
+                        type: string
+                        example: "https://www.google.com"
+                shelter: 
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                adopter: 
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                available:
+                    type: boolean
+                    example: true
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-07T14:59:22.105Z"
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-12T01:52:26.332Z"
+
+        ErrorResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: false
+                error:
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            example: "An error occurred"
+                        details:
+                            type: string
+                            example: "Detailed error message"

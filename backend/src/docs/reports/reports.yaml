@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+    title: Doggii API
+    description: API documentation for Doggii application
+    version: 1.0.0
+
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        ReportData:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                category:
+                    type: string
+                    example: "spam"
+                url: 
+                    type: string
+                    example: "https://www.google.com"
+                description:  
+                    type: string
+                    example: "This is a spam report"
+                userID:
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-07T14:59:22.105Z"
+                status:
+                    type: string
+                    example: "pending"
