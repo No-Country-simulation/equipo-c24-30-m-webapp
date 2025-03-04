@@ -20,7 +20,7 @@ const AdopterPets = () => {
   }
 
   return (
-    <div className='pl-8 pr-8'>
+    <div className='pl-8 pr-8 pb-8'>
       <p>En esta sección, podés ver las mascotas que están en adopción.</p>
       <input id='search-location' type='text' placeholder='🔍  Ciudad' className='w-60 h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 mt-6 text-lg focus:dark:ring-violet-600 dark:border-gray-300'/>
       <div className='flex flex-wrap justify-center gap-6 pt-8'>

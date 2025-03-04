@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
 import petDataMock from '../../../test/petsDataMock.json';
 
 const PetDetails = () => {
   const userRole = useSelector((state) => state.user.role);
+  const navigate = useNavigate();
 
   const petId = useParams().id;
   const pet = petDataMock.find((pet) => pet.id === petId);
@@ -12,9 +13,16 @@ const PetDetails = () => {
               (pet.age.months > 0 ? `${pet.age.months} meses` :
               (pet.age.days > 0 ? `${pet.age.days} días` : ''));
 
+  const handleGoBack = () => {
+    navigate(-1);
+  }
+
   return (
     <div className='p-8'>
-      <h1 className='text-5xl'>{pet.name}</h1>
+      <div className='flex items-center gap-6'>
+        <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
+        <h1 className='text-5xl'>{pet.name}</h1>
+      </div>
       <div className='py-10 grid lg:grid-cols-5 sm:grid-cols-1 gap-10'>
         <div className='lg:col-span-2'>
           <img src={pet.photo} alt={pet.name} className='min-h-110 object-cover rounded-xl'/>
