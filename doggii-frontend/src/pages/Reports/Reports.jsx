@@ -1,22 +1,23 @@
 import AdopterReports from './ReportsViews/AdopterReports';
 import ShelterReports from './ReportsViews/ShelterReports';
 import AdminReports from './ReportsViews/AdminReports';
-import { getUserRole } from "../../test/userRoleSelectorMock";
+import { useSelector } from "react-redux";
 
 const Reports = () => {
-  const userRole = getUserRole();
+  const user = useSelector((state) => state.user);
 
   return (
     <div>
       <h1 className='m-9 mb-4'>Reportes</h1>
 
-      {userRole === "admin" ?
+      {user.role === "admin" ?
         <AdminReports />
-        :
-        (userRole === 'adopter' ?
+        : (user.role === 'adopter' ?
           <AdopterReports />
-          :
-          <ShelterReports />)
+          : (user.role === 'shelter' ?
+            <ShelterReports />
+            : null)
+          )
       }
     </div>
   )

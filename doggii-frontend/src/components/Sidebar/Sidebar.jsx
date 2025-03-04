@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { getUserRole } from "../../test/userRoleSelectorMock.js";
+import { useSelector } from "react-redux";
 import { navItems } from "./sidebarConfig.js";
 
 const Sidebar = () => {
-  const userRole = getUserRole();
+  const userRole = useSelector((state) => state.user.role);
   const currentNavItems = navItems[userRole];
   const location = useLocation();
 
@@ -15,15 +15,15 @@ const Sidebar = () => {
         </Link>
       </div>
       <div className="flex-1 flex flex-col justify-between">
-        <ul className="pt-2 pb-2 space-y-1 text-lg font-light">
-          {currentNavItems.map((item) => (
-            <li key={item.path}>
-              <Link to={item.path} className={`flex items-center p-2 space-x-3 rounded-md ${location.pathname === item.path ? 'bg-gray-200 font-medium' : null}`}>
-                <span>{item.name}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <ul className="pt-2 pb-2 space-y-1 text-lg font-light">
+        {currentNavItems.map((item) => (
+          <li key={item.path}>
+            <Link to={item.path} className={`flex items-center p-2 space-x-3 rounded-md ${location.pathname === item.path ? 'bg-gray-200 font-medium' : null}`}>
+              <span>{item.name}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
         <ul className="pt-4 pb-2 space-y-1 text-lg font-light">
           <li>
             <Link to="/" className="flex items-center p-2 space-x-3 rounded-md">

@@ -1,22 +1,23 @@
 import AdminProfile from "./ProfileViews/AdminProfile";
 import AdopterProfile from "./ProfileViews/AdopterProfile";
 import ShelterProfile from "./ProfileViews/ShelterProfile";
-import { getUserRole } from "../../test/userRoleSelectorMock";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const userRole = getUserRole();
+  const user = useSelector((state) => state.user);
 
   return (
     <div>
       <h1 className="m-9">Tu perfil</h1>
 
-      {userRole === "admin" ?
+      {user.role === "admin" ?
         <AdminProfile />
-        :
-        (userRole === "adopter" ?
+        : (user.role === "adopter" ?
           <AdopterProfile />
-          :
-          <ShelterProfile />)
+          : (user.role === "shelter" ?
+            <ShelterProfile />
+            : null)
+          )
       }
     </div>
   )
