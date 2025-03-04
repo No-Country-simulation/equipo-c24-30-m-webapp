@@ -1,9 +1,13 @@
-import petDataMock from '../../../test/petsDataMock.json';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Button from '../../../components/Button';
+import petDataMock from '../../../test/petsDataMock.json';
 
-const PetDetails = ({buttonText}) => {
-  const pet = petDataMock[1];
+const PetDetails = () => {
+  const userRole = useSelector((state) => state.user.role);
+
+  const petId = useParams().id;
+  const pet = petDataMock.find((pet) => pet.id === petId);
   const age = pet.age.years > 0 ? `${pet.age.years} años` : 
               (pet.age.months > 0 ? `${pet.age.months} meses` :
               (pet.age.days > 0 ? `${pet.age.days} días` : ''));
@@ -52,15 +56,25 @@ const PetDetails = ({buttonText}) => {
           </p>
         </div>
       </div>
-      <Button className='text-2xl mx-auto w-60'>
-        {buttonText}
-      </Button>
+      {userRole === "shelter" ?
+        <div>
+          <Button className='text-2xl mx-auto w-60'>
+            Editar
+          </Button>
+          <Button className='text-2xl mx-auto w-60'>
+            Pausar
+          </Button>
+          <Button className='text-2xl mx-auto w-60'>
+            Eliminar
+          </Button>
+        </div>
+        :
+        <Button className='text-2xl mx-auto w-60'>
+          Adoptar
+        </Button>
+      }
     </div>
   )
 }
 
 export default PetDetails;
-
-PetDetails.propTypes = {
-  buttonText: PropTypes.string
-};

@@ -1,13 +1,15 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '../Button';
 
-const VerticalCard = ({image, title, description, isAdmin = false, isShelter = false}) => {
+const VerticalCard = ({image, title, description, onClick}) => {
+  const userRole = useSelector((state) => state.user.role);
 
   return (
     <div className='max-w-xs min-w-3xs rounded-md shadow-md dark:bg-gray-50'>
       <div className='relative'>
         <img src={image} alt='' className='object-cover object-center w-full rounded-t-md h-62 dark:bg-gray-500' />
-        {isShelter && (
+        {userRole === "shelter" && (
           <div className='absolute top-2 right-2'>
             <svg width='35' height='35' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path d='M14.6066 3.5C14.7392 3.5 14.8664 3.55268 14.9602 3.64645L17.7886 6.47487C17.9838 6.67014 17.9838 6.98672 17.7886 7.18198L8.59619 16.3744C8.53337 16.4372 8.45495 16.4821 8.369 16.5046L4.54057 17.5046C4.36883 17.5494 4.18617 17.4999 4.06066 17.3744C3.93514 17.2489 3.88558 17.0662 3.93044 16.8945L4.93044 13.066C4.95289 12.9801 4.99784 12.9017 5.06066 12.8388L14.253 3.64645C14.3468 3.55268 14.474 3.5 14.6066 3.5Z' fill='black'/>
@@ -21,25 +23,22 @@ const VerticalCard = ({image, title, description, isAdmin = false, isShelter = f
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        {isAdmin ?
-          <Button className='w-40 m-auto bg-(--secondary)'>
-            Gestionar
+        <div className='flex'>
+          {userRole === "shelter" && (
+            <Button
+              className='w-30 m-auto text-lg bg-(--secondary)'
+              onClick={onClick}
+            >
+              Pausar
+            </Button>
+          )}
+          <Button
+            className='w-30 m-auto text-xl bg-(--secondary)'
+            onClick={onClick}
+          >
+            Ver
           </Button>
-          :
-          (isShelter ?
-            <div className='flex flex-row gap-4'>
-              <Button className='w-40 m-auto bg-(--secondary)'>
-                Pausar
-              </Button>
-              <Button className='w-40 m-auto bg-(--secondary)'>
-                Eliminar
-              </Button>
-            </div>
-            :
-            <Button className='w-40 m-auto bg-(--secondary)'>
-              Ver más
-            </Button>)
-        }
+        </div>
       </div>
     </div>
   )
@@ -51,6 +50,5 @@ VerticalCard.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  isAdmin: PropTypes.bool,
-  isShelter: PropTypes.bool
+  onClick: PropTypes.func.isRequired
 };
