@@ -29,6 +29,10 @@ class UserDAO<T> {
     async find(query: FilterQuery<T>): Promise<T[]> {
         return await this.model.find(query).exec();
     }
+
+    async findAll(): Promise<T[]> {
+        return await this.model.find().select('-password').exec();
+    }
 }
 
 export default UserDAO;

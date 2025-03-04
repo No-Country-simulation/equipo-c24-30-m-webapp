@@ -254,6 +254,31 @@ export default class UserService {
         }
     }
 
+    static async getUsers(): Promise<IUser[]> { 
+        try {
+            const userDao = new UserDAO(User);
+            const users = await userDao.findAll();
+
+            if (!users) {
+                throw new HttpError(
+                    "Users not found",
+                    "USERS_NOT_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
+
+            return users;
+        } catch (err: any) {
+            const error: HttpError = new HttpError(
+                err.description || err.message,
+                err.details || err.message,
+                err.status || HTTP_STATUS.SERVER_ERROR
+            );
+            throw error;
+        }
+    }
+       
+
     // static async updatePassword(
     //     user: ITokenPayload,
     //     newPassword: string

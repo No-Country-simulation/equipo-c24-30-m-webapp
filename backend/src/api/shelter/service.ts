@@ -18,6 +18,8 @@ import {
     ShelterUpdateFields,
 } from "./interface";
 
+import { ITokenPayload } from "../auth/interface";
+
 
 export default class ShelterService {
 
@@ -40,8 +42,15 @@ export default class ShelterService {
 
             const shelterPayload: IShelter = new Shelter({
                 ...shelter,
-                createdAt: new Date(),
             });
+            
+            if (JSON.stringify(shelterFound) === JSON.stringify(shelterPayload)) {
+                throw new HttpError(
+                    "No changes detected",
+                    "NO_CHANGES",
+                    HTTP_STATUS.BAD_REQUEST
+                );
+            }
 
             const shelterCreated: IShelter = await shelterDao.create(
                 shelterPayload
@@ -69,6 +78,51 @@ export default class ShelterService {
         }
     }
 
+    static async updateShelter(
+        user: ITokenPayload,
+        updateFields: Partial<ShelterUpdateFields>
+    ): Promise<Partial<ShelterResponse>> {
+        try {
+            const shelterDao = new ShelterDAO();
+            const shelterFound = await shelterDao.read(user.id);
+            if (!shelterFound) {
+                throw new HttpError(
+                    "shelter not found",
+                    "SHELTER_NOT_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
+
+
+            const shelterPayload: Partial<IShelter> = {
+                ...shelterFound,
+                ...updateFields,
+                updatedAt: new Date(),
+            };
+            const updatedShelter = await shelterDao.update(
+                user.id,
+                shelterPayload
+            );
+            if (!updatedShelter) {
+                throw new HttpError(
+                    "shelter not updated",
+                    "SHELTER_NOT_UPDATED",
+                    HTTP_STATUS.SERVER_ERROR
+                );
+            }
+
+            const shelterResponse = ShelterDto.shelterDTO(updatedShelter);
+
+            return shelterResponse;
+        } catch (error: any) {
+            const err: HttpError = new HttpError(
+                error.description || error.message,
+                error.details || error.message,
+                error.status || HTTP_STATUS.SERVER_ERROR
+            );
+            throw err;
+        }
+    }
 
     static async getAllShelters(): Promise<Partial<ShelterResponse>[]> {
         try {
