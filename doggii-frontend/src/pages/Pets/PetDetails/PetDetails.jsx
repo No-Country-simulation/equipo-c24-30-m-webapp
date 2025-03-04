@@ -1,55 +1,59 @@
 import petDataMock from '../../../test/petsDataMock.json';
+import Button from '../../../components/Button';
 
 const PetDetails = () => {
   const pet = petDataMock[1];
-  const age = pet.age.years > 0 ? `${pet.age.years} años ` : 
-              (pet.age.months > 0 ? `${pet.age.months} meses ` :
+  const age = pet.age.years > 0 ? `${pet.age.years} años` : 
+              (pet.age.months > 0 ? `${pet.age.months} meses` :
               (pet.age.days > 0 ? `${pet.age.days} días` : ''));
 
   return (
-    <div>
-      <h2>{pet.name}</h2>
-      <div className='p-8 grid lg:grid-cols-3 sm:grid-cols-1 gap-10'>
-        <div className='col-span-1'>
-          <img src={pet.photo} alt={pet.name} className='w-full'/>
+    <div className='p-8'>
+      <h1 className='text-5xl'>{pet.name}</h1>
+      <div className='py-10 grid lg:grid-cols-5 sm:grid-cols-1 gap-10'>
+        <div className='lg:col-span-2'>
+          <img src={pet.photo} alt={pet.name} className='min-h-110 object-cover rounded-xl'/>
         </div>
-        <div className='col-span-2'>
-          <p>
-            <span>Sexo: </span>
+        <div className='lg:col-span-3 flex flex-col justify-between py-2'>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Sexo: </span>
             <span>{pet.sex}</span>
           </p>
-          <p>
-            <span>Edad: </span>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Edad: </span>
             <span>{age}</span>
           </p>
-          <p>
-            <span>Tamaño: </span>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Tamaño: </span>
             <span>{pet.size}</span>
           </p>
-          <p>
-            <span>Vacunación: </span>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Vacunación: </span>
             <span>{pet.vaccinated ? 'Al día' : 'Faltan vacunas'}</span>
           </p>
-          <p>
-            <span>Castración: </span>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Castración: </span>
             <span>{pet.neutered ? (pet.sex === 'macho' ? 'Castrado' : 'Castrada') : 'Pendiente'}</span>
           </p>
           {pet.specialCare && (
-            <p>
-              <span>Cuidados especiales: </span>
+            <p className='pb-2 text-xl'>
+              <span className='font-medium'>Cuidados especiales: </span>
               <span>{pet.specialCare}</span>
             </p>
           )}
-          <p>
-            <span>Descripción: </span>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Descripción: </span>
             <span>{pet.description}</span>
           </p>
-          <p>
-            <span>Refugio: </span>
+          <p className='pb-2 text-xl'>
+            <span className='font-medium'>Refugio: </span>
             <span>{pet.shelterName}</span>
           </p>
         </div>
       </div>
+      <Button className='text-2xl mx-auto w-60'>
+        Adoptar
+      </Button>
     </div>
   )
 }
