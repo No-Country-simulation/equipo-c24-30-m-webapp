@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+    title: Doggii API
+    description: API documentation for Doggii application
+    version: 1.0.0
+
+
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+        AdminData:
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: "672cd5cace845109a51a1c2e"
+                email:
+                    type: string
+                    example: "Arjun.Russel@gmail.com"
+                role:
+                    type: string
+                    example: "Adopter"
+                userName:
+                    type: string
+                    example: "Ramiro vallejos"
+                dateOfBirth:
+                    type: string
+                    format: date-time
+                    example: "2024-03-06T21:47:57.000Z"
+                status:
+                    type: boolean
+                    example: true
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-07T14:59:22.105Z"
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-11-12T01:52:26.332Z"
+
+        ErrorResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: false
+                error:
+                    type: object
+                    properties:
+                        message:
+                            type: string
+                            example: "An error occurred"
+                        details:
+                            type: string
+                            example: "Detailed error message"
