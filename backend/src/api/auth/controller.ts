@@ -10,16 +10,18 @@ import {
   AdopterUpdateFields,
 } from "../adopter/interface";
 import { ShelterCreateFields, ShelterResponse } from "../shelter/interface";
+import { AdminCreateFields, AdminResponse } from "../admin/interface";
 import { UserLoginFields } from "../user/interface";
 import UserService from "../user/service";
 import ShelterService from "../shelter/service";
 import apiResponse from "../../utils/apiResponse.utils";
+import AdminService from "../admin/service";
 
 export default class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     // FIXME: Check if the requester is an admin, and admit only admins to create users with roles
     try {
-      let userResponse: Partial<AdopterResponse | ShelterResponse> = {};
+      let userResponse: Partial<AdopterResponse | ShelterResponse | AdminResponse> = {};
 
       if (req.body.role === "Adopter") {
         const adopterData: AdopterCreateFields = req.body;
@@ -29,12 +31,10 @@ export default class AuthController {
         const shelterData: ShelterCreateFields = req.body;
         console.log(shelterData);
         userResponse = await ShelterService.createShelter(shelterData);
-      }
-
-      // }else if(req.body.role === "admin"){
-      //   const userData: UserCreateFields = req.body;
-      //   userResponse = await UserService.createUser
-      // }
+      } else if(req.body.role === "Admin"){
+         const userData: AdminCreateFields = req.body;
+         userResponse = await AdminService.createAdmin(userData);
+       }
 
       const response = apiResponse(true, userResponse);
       res.status(HTTP_STATUS.CREATED).json(response);

@@ -18,6 +18,7 @@ import {
     AdopterUpdateFields,
 } from "./interface";
 
+import { ITokenPayload } from "../auth/interface";
 
 export default class AdopterService {
 
@@ -119,6 +120,63 @@ export default class AdopterService {
                 err.status || HTTP_STATUS.SERVER_ERROR
             );
             throw error;
+        }
+    }
+
+    static async updateAdopter(
+        user: ITokenPayload,
+        updateFields: Partial<AdopterUpdateFields>
+    ): Promise<Partial<AdopterResponse>> {
+        try {
+            const adopterDao = new AdopterDAO();
+            const adopterFound = await adopterDao.read(user.id);
+            if (!adopterFound) {
+                throw new HttpError(
+                    "adopter not found",
+                    "ADOPTER_NOT_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
+
+
+            const adopterPayload: Partial<IAdopter> = {
+                ...adopterFound,
+                ...updateFields,
+            };
+
+            console.log("adopterPayload", adopterPayload);
+            console.log("adopterFound", adopterFound);
+
+            if (JSON.stringify(adopterFound) === JSON.stringify(adopterPayload)) {
+                throw new HttpError(
+                    "No changes detected",
+                    "NO_CHANGES",
+                    HTTP_STATUS.BAD_REQUEST
+                );
+            }
+
+            const updatedAdopter = await adopterDao.update(
+                user.id,
+                adopterPayload
+            );
+            if (!updatedAdopter) {
+                throw new HttpError(
+                    "adopter not updated",
+                    "ADOPTER_NOT_UPDATED",
+                    HTTP_STATUS.SERVER_ERROR
+                );
+            }
+
+            const adopterResponse = AdopterDto.adopterDTO(updatedAdopter);
+
+            return adopterResponse;
+        } catch (error: any) {
+            const err: HttpError = new HttpError(
+                error.description || error.message,
+                error.details || error.message,
+                error.status || HTTP_STATUS.SERVER_ERROR
+            );
+            throw err;
         }
     }
 

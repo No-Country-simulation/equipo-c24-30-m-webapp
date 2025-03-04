@@ -14,6 +14,14 @@ shelterRouter.get(
 );
 
 
+shelterRouter.put(
+    "/:id", 
+    authenticate,
+    authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
+    ShelterController.updateShelter
+);
+
+
 shelterRouter.post("/createAdoptionPost",
     authenticate,
     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
