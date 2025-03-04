@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
+import getTimeElapsed from '../../../utils/getTimeElapsed';
 import petDataMock from '../../../test/petsDataMock.json';
 
 const PetDetails = () => {
@@ -58,22 +59,28 @@ const PetDetails = () => {
             <span className='font-medium'>Descripción: </span>
             <span>{pet.description}</span>
           </p>
+          {userRole === "adopter" && (
+            <p className='pb-2 text-xl'>
+              <span className='font-medium'>Refugio: </span>
+              <span>{pet.shelterName}</span>
+            </p>
+          )}
           <p className='pb-2 text-xl'>
-            <span className='font-medium'>Refugio: </span>
-            <span>{pet.shelterName}</span>
+            <span className='font-medium'>Publicado hace: </span>
+            <span>{getTimeElapsed(pet.createdAt)}</span>
           </p>
         </div>
       </div>
       {userRole === "shelter" ?
-        <div>
-          <Button className='text-2xl mx-auto w-60'>
+        <div className='flex justify-around'>
+          <Button className='text-2xl w-50'>
+            Eliminar
+          </Button>
+          <Button className='text-2xl w-50'>
             Editar
           </Button>
-          <Button className='text-2xl mx-auto w-60'>
-            Pausar
-          </Button>
-          <Button className='text-2xl mx-auto w-60'>
-            Eliminar
+          <Button className='text-2xl w-50'>
+            {pet.available ? 'Pausar' : 'Reanudar'}
           </Button>
         </div>
         :

@@ -30,7 +30,7 @@ const AdopterPets = () => {
       </div>
       {visibleItems < petDataMock.length && (
         <Button
-          className='m-auto my-8 text-xl'
+          className='m-auto mt-8 text-xl'
           onClick={handleSeeMore}
         >
           Ver más
