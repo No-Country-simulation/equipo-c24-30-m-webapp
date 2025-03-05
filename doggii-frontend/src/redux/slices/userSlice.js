@@ -6,6 +6,8 @@ const initialState = {
   email: "",
   phone: "",
   shelterName: null,
+  shelterEmail: null,
+  shelterPhone: null,
   address: {
     street: "",
     city: "",
@@ -27,6 +29,8 @@ const userSlice = createSlice({
       state.email = action.payload.email || "";
       state.phone = action.payload.phone || "";
       state.shelterName = action.payload.shelterName || null;
+      state.shelterEmail = action.payload.shelterEmail || null;
+      state.shelterPhone = action.payload.shelterPhone || null;
       state.address = {
         street: action.payload.address?.street || "",
         city: action.payload.address?.city || "",
