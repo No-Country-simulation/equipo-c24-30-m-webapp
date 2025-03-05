@@ -1,11 +1,12 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from "../Button";
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 const BasicProfileForm = ({title, description}) => {
   const user = useSelector((state) => state.user);
-  const [formData, setFormData] = useState({
+  
+  const initialFormData = useMemo(() => ({
     userName: user.userName || '',
     shelterName: user.shelterName || '',
     email: user.email || '',
@@ -16,7 +17,25 @@ const BasicProfileForm = ({title, description}) => {
       province: user.address?.province || '',
       country: user.address?.country || ''
     }
-  });
+  }), [user]);
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const hasChanges = useMemo(() => {
+    const compareObjects = (obj1, obj2) => {
+      if (typeof obj1 !== 'object') return obj1 !== obj2;
+      if (!obj1 || !obj2) return true;
+      
+      const keys1 = Object.keys(obj1);
+      const keys2 = Object.keys(obj2);
+      
+      if (keys1.length !== keys2.length) return true;
+      
+      return keys1.some(key => compareObjects(obj1[key], obj2[key]));
+    };
+    
+    return compareObjects(initialFormData, formData);
+  }, [initialFormData, formData]);
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +59,7 @@ const BasicProfileForm = ({title, description}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form data to submit:', formData);
-    // Aquí puedes agregar la lógica para enviar los datos
+    
   };
 
   return (
@@ -147,7 +166,11 @@ const BasicProfileForm = ({title, description}) => {
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
             </div>
-            <Button type="submit" className="col-span-full mx-auto mt-6">
+            <Button
+              type="submit"
+              disabled={!hasChanges}
+              className={`col-span-full mx-auto mt-6 ${!hasChanges ? "grayscale cursor-not-allowed" : ''}`}
+            >
               Guardar
             </Button>
           </div>
