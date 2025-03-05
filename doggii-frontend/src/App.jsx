@@ -12,6 +12,7 @@ import FormShelter from './pages/FormShelter';
 import Users from './pages/Users/Users';
 import Reports from './pages/Reports/Reports';
 import LandingLayout from './layouts/LandingLayout';
+import PetDetails from './pages/Pets/PetDetails/PetDetails';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -93,6 +94,7 @@ function App() {
           <Route path='/adoption-form' element={<AdoptionForm />} />
           <Route path='/users' element={<Users />} />
           <Route path='/reports' element={<Reports />} />
+          <Route path='/pet/:id' element={<PetDetails />} />
         </Route>
         <Route path='/' element={<LandingLayout />} />
       </Routes>
