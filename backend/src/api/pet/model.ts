@@ -1,33 +1,27 @@
-// LIBRARIES
 import { Document, Schema, model } from "mongoose";
-
-// MODELS
-import { IPet, PetStatus, PetType } from "./interface";
+import { IPet, PetStatus, PetType, PetSize } from "./interface";
 import { Genders } from "../../constants/Genders";
 
-// PET MODEL
-const petSchema = new Schema({
+const petSchema = new Schema<IPet>({
     name: { type: String, required: true },
-    species: { type: String, enum: Object.values(PetType), required: true },
+    photos: { type: [String], required: true },
+    type: { type: String, enum: Object.values(PetType), required: true },
+    sex: { type: String, enum: Object.values(Genders), required: true },
     breed: { type: String },
     description: { type: String },
-    size: {type: String, enum: ["Small", "Medium", "Large"], required: true},
-    neutered: { type: Boolean, default: false },
-    specialCare: { type: Boolean, default: false },
     age: {
-        days: { type: Number, trim: true },
-        months: { type: Number, trim: true },
-        years: { type: Number, trim: true },
+        days: { type: Number, required: true },
+        months: { type: Number, required: true },
+        years: { type: Number, required: true },
     },
-    images: [{ type: String }],
-    gender: { type: String, enum: Genders, required: true },
-    healthStatus: { type: String, default: "Healthy" },
-    vaccinated: { type: Boolean, default: "false"},
-    shelter: { type: Schema.Types.ObjectId, ref: "Shelter" },
+    size: { type: String, enum: Object.values(PetSize), required: true },
+    neutered: { type: Boolean, default: false },
+    vaccinated: { type: Boolean, default: false },
+    specialCare: { type: Boolean, default: false },
+    shelter: { type: Schema.Types.ObjectId, ref: "Shelter", required: true },
     adopter: { type: Schema.Types.ObjectId, ref: "Adopter", default: null },
     status: { type: String, enum: Object.values(PetStatus), default: PetStatus.AVAILABLE},
     available: { type: Boolean, default: true },
 }, { timestamps: true });
 
-const Pet = model<IPet & Document>("Pet", petSchema); 
-export default Pet;
+export default model<IPet>("Pet", petSchema);
