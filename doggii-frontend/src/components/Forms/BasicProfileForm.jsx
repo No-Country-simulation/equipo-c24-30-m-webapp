@@ -1,66 +1,161 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from "../Button";
+import { useState } from 'react';
 
-const BasicProfileForm = ({title, description, isShelter = false}) => {
+const BasicProfileForm = ({title, description}) => {
+  const user = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({
+    userName: user.userName || '',
+    shelterName: user.shelterName || '',
+    email: user.email || '',
+    phone: user.phone || '',
+    address: {
+      street: user.address?.street || '',
+      city: user.address?.city || '',
+      province: user.address?.province || '',
+      country: user.address?.country || ''
+    }
+  });
+
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target;
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      setFormData(prev => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form data to submit:', formData);
+    // Aquí puedes agregar la lógica para enviar los datos
+  };
+
   return (
     <section className="p-6 my-8 rounded-md bg-(--secondary)">
-      <form noValidate="" action="" className="container flex flex-col mx-auto">
+      <form
+        noValidate
+        onSubmit={handleSubmit}
+        className="container flex flex-col mx-auto"
+      >
         <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm bg-(--accent)">
           <div className="space-y-2 col-span-full lg:col-span-1">
             <p className="font-medium">{title}</p>
             <p className="text-sm">{description}</p>
           </div>
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
-          {isShelter ? 
-            <div className="col-span-full">
-              <label htmlFor="firstname" className="text-sm">Nombre</label>
-              <input id="firstname" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"/>
-            </div>
-            :
-            <>
-              <div className="col-span-full md:col-span-3">
-                <label htmlFor="firstname" className="text-sm">Nombre</label>
-                <input id="firstname" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"/>
+            {user.role === "shelter" ? (
+              <div className="col-span-full">
+                <label htmlFor="shelterName" className="text-sm">Nombre del refugio</label>
+                <input
+                  id="shelterName"
+                  name="shelterName"
+                  type="text"
+                  value={formData.shelterName}
+                  onChange={handleFieldChange}
+                  className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                />
               </div>
-              <div className="col-span-full md:col-span-3">
-                <label htmlFor="lastname" className="text-sm">Apellido</label>
-                <input id="lastname" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+            ) : (
+              <div className="col-span-full">
+                <label htmlFor="fullName" className="text-sm">Nombre completo</label>
+                <input
+                  id="fullName"
+                  name="userName"
+                  type="text"
+                  value={formData.userName}
+                  onChange={handleFieldChange}
+                  className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                />
               </div>
-            </>
-          }
+            )}
             <div className="col-span-full lg:col-span-3">
               <label htmlFor="email" className="text-sm">Correo electrónico</label>
-              <input id="email" type="email" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleFieldChange}
+                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+              />
             </div>
             <div className="col-span-full lg:col-span-3">
               <label htmlFor="phone" className="text-sm">Número de teléfono</label>
-              <input id="phone" type="tel" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleFieldChange}
+                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+              />
             </div>
             <div className="col-span-full">
               <label htmlFor="address" className="text-sm">Dirección</label>
-              <input id="address" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+              <input
+                id="address"
+                name="address.street"
+                type="text"
+                value={formData.address.street}
+                onChange={handleFieldChange}
+                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+              />
             </div>
             <div className="col-span-full lg:col-span-2">
               <label htmlFor="city" className="text-sm">Ciudad</label>
-              <input id="city" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+              <input
+                id="city"
+                name="address.city"
+                type="text"
+                value={formData.address.city}
+                onChange={handleFieldChange}
+                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+              />
             </div>
             <div className="col-span-full lg:col-span-2">
               <label htmlFor="state" className="text-sm">Provincia/Estado</label>
-              <input id="state" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+              <input
+                id="state"
+                name="address.province"
+                type="text"
+                value={formData.address.province}
+                onChange={handleFieldChange}
+                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+              />
             </div>
             <div className="col-span-full lg:col-span-2">
               <label htmlFor="country" className="text-sm">País</label>
-              <input id="country" type="text" placeholder="" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300" />
+              <input
+                id="country"
+                name="address.country"
+                type="text"
+                value={formData.address.country}
+                onChange={handleFieldChange}
+                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+              />
             </div>
-            <Button className="col-span-full mx-auto mt-6">
+            <Button type="submit" className="col-span-full mx-auto mt-6">
               Guardar
             </Button>
           </div>
         </fieldset>
       </form>
     </section>
-  )
-}
+  );
+};
 
 export default BasicProfileForm;
 
@@ -68,4 +163,4 @@ BasicProfileForm.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   isShelter: PropTypes.bool
-}
+};
