@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { navItems } from "./sidebarConfig.js";
+import useLogout from "../../hooks/useLogout.js";
 
 const Sidebar = () => {
   const userRole = useSelector((state) => state.user.role);
   const currentNavItems = navItems[userRole];
   const location = useLocation();
+  const handleLogout = useLogout();
 
   return (
     <div className="h-full p-3 space-y-2 dark:bg-gray-50 dark:text-gray-800 flex flex-col">
@@ -26,7 +28,7 @@ const Sidebar = () => {
       </ul>
         <ul className="pt-4 pb-2 space-y-1 text-lg font-light">
           <li>
-            <Link to="/" className="flex items-center p-2 space-x-3 rounded-md">
+            <Link onClick={handleLogout} to="/" className="flex items-center p-2 space-x-3 rounded-md">
               <span>Cerrar sesión</span>
             </Link>
           </li>

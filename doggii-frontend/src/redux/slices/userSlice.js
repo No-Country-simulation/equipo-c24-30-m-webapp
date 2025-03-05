@@ -25,8 +25,18 @@ const userSlice = createSlice({
       state.createdAt = action.payload.createdAt;
       state.updatedAt = action.payload.updatedAt;
     },
+    resetUserInfo: (state) => {
+      state.id = "";
+      state.userName = "";
+      state.email = "";
+      state.role = "";
+      state.status = false;
+      state.favoritePets = [];
+      state.createdAt = "";
+      state.updatedAt = "";
+    }
   },
 });
 
-export const { setUserInfo } = userSlice.actions;
+export const { setUserInfo, resetUserInfo } = userSlice.actions;
 export default userSlice.reducer;
