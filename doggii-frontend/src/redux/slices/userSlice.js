@@ -4,9 +4,15 @@ const initialState = {
   id: "",
   userName: "",
   email: "",
+  phone: "",
+  shelterName: null,
+  address: {
+    street: "",
+    city: "",
+    province: "",
+    country: ""
+  },
   role: "",
-  status: false,
-  favoritePets: [],
   createdAt: "",
   updatedAt: ""
 };
@@ -16,14 +22,20 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
-      state.id = action.payload._id;
-      state.userName = action.payload.userName;
-      state.email = action.payload.email;
-      state.role = action.payload.role.toLowerCase();
-      state.status = action.payload.status;
-      state.favoritePets = action.payload.favoritePets;
-      state.createdAt = action.payload.createdAt;
-      state.updatedAt = action.payload.updatedAt;
+      state.id = action.payload._id || "";
+      state.userName = action.payload.userName || "";
+      state.email = action.payload.email || "";
+      state.phone = action.payload.phone || "";
+      state.shelterName = action.payload.shelterName || null;
+      state.address = {
+        street: action.payload.address?.street || "",
+        city: action.payload.address?.city || "",
+        province: action.payload.address?.province || "",
+        country: action.payload.address?.country || ""
+      };
+      state.role = action.payload.role.toLowerCase() || "";
+      state.createdAt = action.payload.createdAt || "";
+      state.updatedAt = action.payload.updatedAt || "";
     },
     resetUserInfo: (state) => {
       state.id = "";
