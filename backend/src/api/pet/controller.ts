@@ -36,8 +36,8 @@ export default class PetController {
 
     static async deletePet(req: Request, res: Response) {
         try {
-            await PetService.deletePet(req.params.id);
-            res.status(HTTP_STATUS.OK).json(apiResponse(true, { message: "Pet deleted successfully" }));
+            const result = await PetService.deletePet(req.params.id);
+            res.status(HTTP_STATUS.OK).json(apiResponse(true, result));
         } catch (err: any) {
             res.status(err.status || HTTP_STATUS.SERVER_ERROR)
                .json(apiResponse(false, err));

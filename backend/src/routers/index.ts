@@ -9,7 +9,7 @@ const apiRouter = Router();
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/adopter", adopterRouter);
-apiRouter.use("/pets", petRouter);
+apiRouter.use("/pet", petRouter);
 apiRouter.use("/shelter", shelterRouter);
 apiRouter.use("/admin", adminRouter);
 
