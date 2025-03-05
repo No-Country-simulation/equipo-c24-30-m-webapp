@@ -241,6 +241,5 @@ export default BasicProfileForm;
 
 BasicProfileForm.propTypes = {
   title: PropTypes.string,
-  description: PropTypes.string,
-  isShelter: PropTypes.bool
+  description: PropTypes.string
 };
