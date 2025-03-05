@@ -8,13 +8,13 @@ import Button from "../Button";
 const BasicProfileForm = ({title, description}) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [hasChanges, setHasChanges] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
   const initialFormData = useMemo(() => ({
     userName: user.userName || '',
-    shelterName: user.shelterName || '',
     email: user.email || '',
     phone: user.phone || '',
     address: {
@@ -22,26 +22,13 @@ const BasicProfileForm = ({title, description}) => {
       city: user.address?.city || '',
       province: user.address?.province || '',
       country: user.address?.country || ''
-    }
+    },
+    shelterName: user.shelterName || '',
+    shelterEmail: user.shelterEmail || '',
+    shelterPhone: user.shelterPhone || ''
   }), [user]);
 
   const [formData, setFormData] = useState(initialFormData);
-
-  const hasChanges = useMemo(() => {
-    const compareObjects = (obj1, obj2) => {
-      if (typeof obj1 !== 'object') return obj1 !== obj2;
-      if (!obj1 || !obj2) return true;
-      
-      const keys1 = Object.keys(obj1);
-      const keys2 = Object.keys(obj2);
-      
-      if (keys1.length !== keys2.length) return true;
-      
-      return keys1.some(key => compareObjects(obj1[key], obj2[key]));
-    };
-    
-    return compareObjects(initialFormData, formData);
-  }, [initialFormData, formData]);
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +47,7 @@ const BasicProfileForm = ({title, description}) => {
         [name]: value
       }));
     }
+    setHasChanges(true);
   };
 
   const handleSubmit = async (e) => {
@@ -81,17 +69,38 @@ const BasicProfileForm = ({title, description}) => {
         }
       };
 
+      if (user.role === "shelter") {
+        updateData.shelterName = formData.shelterName;
+        updateData.shelterEmail = formData.shelterEmail;
+        updateData.shelterPhone = formData.shelterPhone;
+      }
+
       const data = await userServices.updateUserProfile(user.id, user.role, updateData);
 
       dispatch(setUserInfo({
         ...data.payload,
-        _id: user.id
+        _id: user.id,
+
+        //Borrar cuando esté listo el backend
+        //Lo incluimos manualmente ahora porque el backend no lo devuelve
+        shelterName: updateData.shelterName,
+        shelterEmail: updateData.shelterEmail,
+        shelterPhone: updateData.shelterPhone
       }));
       
-      setFormData(data.payload);
+      // setFormData(data.payload);
+
+      //Borrar cuando esté listo el backend
+      setFormData({
+        ...data.payload,
+        shelterName: updateData.shelterName,
+        shelterEmail: updateData.shelterEmail,
+        shelterPhone: updateData.shelterPhone
+      });
       
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
+      setHasChanges(false);
     } catch (err) {
       setError(err.response?.data?.message || 'Error al actualizar el perfil. Intentá de nuevo.');
       setTimeout(() => setError(null), 3000);
@@ -142,9 +151,9 @@ const BasicProfileForm = ({title, description}) => {
               <label htmlFor="email" className="text-sm">Correo electrónico</label>
               <input
                 id="email"
-                name="email"
+                name={user.role === "shelter" ? "shelterEmail" : "email"}
                 type="email"
-                value={formData.email}
+                value={user.role === "shelter" ? formData.shelterEmail : formData.email}
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
@@ -153,9 +162,9 @@ const BasicProfileForm = ({title, description}) => {
               <label htmlFor="phone" className="text-sm">Número de teléfono</label>
               <input
                 id="phone"
-                name="phone"
+                name={user.role === "shelter" ? "shelterPhone" : "phone"}
                 type="tel"
-                value={formData.phone}
+                value={user.role === "shelter" ? formData.shelterPhone : formData.phone}
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
