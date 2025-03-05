@@ -45,9 +45,17 @@ const userSlice = createSlice({
       state.id = "";
       state.userName = "";
       state.email = "";
+      state.phone = "";
+      state.shelterName = null;
+      state.shelterEmail = null;
+      state.shelterPhone = null;
+      state.address = {
+        street: "",
+        city: "",
+        province: "",
+        country: ""
+      };
       state.role = "";
-      state.status = false;
-      state.favoritePets = [];
       state.createdAt = "";
       state.updatedAt = "";
     }
