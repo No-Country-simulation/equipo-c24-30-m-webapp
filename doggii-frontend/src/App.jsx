@@ -65,7 +65,10 @@ function App() {
         console.log('Respuesta del backend:', response.data);
         
         if (response.data.success) {
-          dispatch(setUserInfo(response.data.payload));
+          dispatch(setUserInfo({
+            ...response.data.payload,
+            _id: decodedToken.id
+          }));
           dispatch(loginSuccess(token));
         }
       } catch (error) {
