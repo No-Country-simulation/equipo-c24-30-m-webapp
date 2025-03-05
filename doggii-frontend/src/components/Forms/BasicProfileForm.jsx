@@ -1,11 +1,17 @@
-import { useSelector } from 'react-redux';
+import { useState, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserInfo } from '../../redux/slices/userSlice';
+import userServices from '../../services/userServices';
 import PropTypes from 'prop-types';
 import Button from "../Button";
-import { useState, useMemo } from 'react';
 
 const BasicProfileForm = ({title, description}) => {
   const user = useSelector((state) => state.user);
-  
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
   const initialFormData = useMemo(() => ({
     userName: user.userName || '',
     shelterName: user.shelterName || '',
@@ -56,10 +62,42 @@ const BasicProfileForm = ({title, description}) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form data to submit:', formData);
-    
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const updateData = {
+        userName: formData.userName,
+        email: formData.email,
+        phone: formData.phone,
+        address: {
+          street: formData.address.street,
+          city: formData.address.city,
+          province: formData.address.province,
+          country: formData.address.country
+        }
+      };
+
+      const data = await userServices.updateUserProfile(user.id, user.role, updateData);
+
+      dispatch(setUserInfo({
+        ...data.payload,
+        _id: user.id
+      }));
+      
+      setFormData(data.payload);
+      
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error al actualizar el perfil. Intentá de nuevo.');
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -168,11 +206,21 @@ const BasicProfileForm = ({title, description}) => {
             </div>
             <Button
               type="submit"
-              disabled={!hasChanges}
-              className={`col-span-full mx-auto mt-6 ${!hasChanges ? "grayscale cursor-not-allowed" : ''}`}
+              disabled={!hasChanges || isLoading}
+              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading ? "grayscale cursor-not-allowed" : ''}`}
             >
-              Guardar
+              {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>
+            {error && (
+              <p className="text-red-500 mt-2 text-center col-span-full">
+                {error}
+              </p>
+            )}
+            {success && (
+              <p className="text-green-500 mt-2 text-center col-span-full">
+                ¡Perfil actualizado con éxito!
+              </p>
+            )}
           </div>
         </fieldset>
       </form>
