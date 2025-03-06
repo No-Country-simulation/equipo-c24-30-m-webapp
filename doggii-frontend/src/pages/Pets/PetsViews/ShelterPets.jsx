@@ -46,14 +46,6 @@ const ShelterPets = () => {
     navigate('/pets/post');
   }
 
-  if (isLoading) {
-    return (
-      <div className="pl-8 pr-8 flex justify-center items-center min-h-[200px]">
-        <p>Cargando mascotas...</p>
-      </div>
-    );
-  }
-
   return (
     <div className='pl-8 pr-8'>
       <div className='flex justify-between items-center'>
@@ -65,7 +57,12 @@ const ShelterPets = () => {
           Nueva publicación
         </Button>
       </div>
-      {error ? (
+      {isLoading ? (
+        <div className='flex items-center justify-center h-150'>
+          <div className='animate-spin rounded-full h-30 w-30 my-auto border-b-8 border-(--secondary)'></div>
+        </div>
+      ) : (
+      error ? (
         <>
         <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
           <div className="flex items-center self-stretch justify-center">
@@ -103,7 +100,7 @@ const ShelterPets = () => {
             ))
           )}
         </div>
-      )}
+      ))}
     </div>
   )
 }
