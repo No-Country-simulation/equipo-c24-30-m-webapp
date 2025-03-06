@@ -1,18 +1,19 @@
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import Button from '../../../components/Button';
-import getTimeElapsed from '../../../utils/getTimeElapsed';
-import petDataMock from '../../../test/petsDataMock.json';
+//import Button from '../../../components/Button';
+//import getTimeElapsed from '../../../utils/getTimeElapsed';
+//import petDataMock from '../../../test/petsDataMock.json';
+import amplicationDataMock from '../../../test/applicationsDataMock.json';
 
-const PetDetails = () => {
+const AplicationDetail = () => {
   const userRole = useSelector((state) => state.user.role);
   const navigate = useNavigate();
 
-  const petId = useParams().id;
-  const pet = petDataMock.find((pet) => pet.id === petId);
-  const age = pet.age.years > 0 ? `${pet.age.years} años` : 
+  const applicationId = useParams().id;
+  const aplication = amplicationDataMock.find((aplication) => aplication.id === applicationId);
+/*   const age = pet.age.years > 0 ? `${pet.age.years} años` : 
               (pet.age.months > 0 ? `${pet.age.months} meses` :
-              (pet.age.days > 0 ? `${pet.age.days} días` : ''));
+              (pet.age.days > 0 ? `${pet.age.days} días` : '')); */
 
   const handleGoBack = () => {
     navigate(-1);
@@ -22,14 +23,14 @@ const PetDetails = () => {
     <div className='p-8'>
       <div className='flex items-center gap-6'>
         <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
-        <h1 className='text-5xl'>{pet.name}</h1>
+        <h1 className='text-5xl'>{aplication.petName}</h1>
       </div>
       <div className='py-10 grid lg:grid-cols-5 sm:grid-cols-1 gap-10'>
         <div className='lg:col-span-2'>
-          <img src={pet.photo} alt={pet.name} className='min-h-110 object-cover rounded-xl'/>
+          <img src={aplication.photo} alt={aplication.petName} className='min-h-110 object-cover rounded-xl'/>
         </div>
         <div className='lg:col-span-3 flex flex-col justify-between py-2'>
-          <p className='pb-2 text-xl'>
+{/*       <p className='pb-2 text-xl'>
             <span className='font-medium'>Sexo: </span>
             <span>{pet.sex}</span>
           </p>
@@ -58,20 +59,24 @@ const PetDetails = () => {
           <p className='pb-2 text-xl'>
             <span className='font-medium'>Descripción: </span>
             <span>{pet.description}</span>
-          </p>
+          </p> */}
           {userRole === "adopter" && (
             <p className='pb-2 text-xl'>
               <span className='font-medium'>Refugio: </span>
-              <span>{pet.shelterName}</span>
+              <span>{aplication.shelterName}</span>
             </p>
           )}
           <p className='pb-2 text-xl'>
+            <span className='font-medium'>Estado: </span>
+            <span>{aplication.status}</span>
+          </p>
+{/*           <p className='pb-2 text-xl'>
             <span className='font-medium'>Publicado hace: </span>
             <span>{getTimeElapsed(pet.createdAt)}</span>
-          </p>
+          </p> */}
         </div>
       </div>
-      {userRole === "shelter" ?
+      {/* {userRole === "shelter" ?
         <div className='flex justify-around'>
           <Button className='text-2xl w-50'>
             Eliminar
@@ -87,9 +92,9 @@ const PetDetails = () => {
         <Button className='text-2xl mx-auto w-60'>
           Adoptar
         </Button>
-      }
+      } */}
     </div>
   )
 }
 
-export default PetDetails;
+export default AplicationDetail;

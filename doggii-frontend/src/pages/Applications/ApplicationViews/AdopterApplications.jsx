@@ -16,7 +16,7 @@ const AdopterApplications = () => {
   }
 
     const handleGoToApplicationDetails = (id) => {
-    navigate(`/pet/${id}`);
+    navigate(`/adoption-request/${id}`);
   }
 
   return (

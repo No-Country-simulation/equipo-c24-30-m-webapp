@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Button from '../Button';
 
-const HorizontalCard = ({image, title, subtitle, text, isShelter = false}) => {
+const HorizontalCard = ({image, title, subtitle, text, isShelter = false, onSee}) => {
   return (
     <div className="w-md rounded-md shadow-md bg-gray-100">
       <div className="flex flex-row">
@@ -19,7 +19,7 @@ const HorizontalCard = ({image, title, subtitle, text, isShelter = false}) => {
           Gestionar
         </Button>
         :
-        <Button link=""  className='w-40 m-auto mb-4 bg-(--secondary)'>
+        <Button onClick={onSee}  className='w-40 m-auto mb-4 bg-(--secondary)'>
           Ver más
         </Button>
       }
@@ -34,5 +34,6 @@ HorizontalCard.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
-  isShelter: PropTypes.bool
+  isShelter: PropTypes.bool,
+  onSee: PropTypes.func.isRequired
 }

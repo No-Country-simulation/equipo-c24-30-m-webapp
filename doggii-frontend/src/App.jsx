@@ -95,7 +95,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/pets' element={<Pets />} />
           <Route path='/applications' element={<Applications />} />
-          <Route path='/applications/:id' element={<ApplicationDetail />} />
+          <Route path='/adoption-request/:id' element={<ApplicationDetail />} />
           <Route path='/adoption-form' element={<AdoptionForm />} />
           <Route path='/users' element={<Users />} />
           <Route path='/reports' element={<Reports />} />
