@@ -141,7 +141,6 @@ export default class PetService {
             vaccinated: pet.vaccinated,
             specialCare: pet.specialCare,
             description: pet.description,
-            images: pet.images,
             shelter: pet.shelter,
             adopter: pet.adopter,
             status: pet.status,
