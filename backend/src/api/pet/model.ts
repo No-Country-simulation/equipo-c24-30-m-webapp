@@ -17,7 +17,7 @@ const petSchema = new Schema<IPet>({
     size: { type: String, enum: Object.values(PetSize), required: true },
     neutered: { type: Boolean, default: false },
     vaccinated: { type: Boolean, default: false },
-    specialCare: { type: Boolean, default: false },
+    specialCare: { type: String, default: "" },
     shelter: { type: Schema.Types.ObjectId, ref: "Shelter", required: true },
     adopter: { type: Schema.Types.ObjectId, ref: "Adopter", default: null },
     status: { type: String, enum: Object.values(PetStatus), default: PetStatus.AVAILABLE},

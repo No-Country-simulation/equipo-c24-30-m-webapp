@@ -36,7 +36,7 @@ export interface IPet extends Document {
     breed?: string;
     neutered?: boolean;
     vaccinated?: boolean;
-    specialCare?: boolean | null;
+    specialCare?: string;
     description?: string;
     shelter: Types.ObjectId;
     adopter?: Types.ObjectId;
@@ -60,7 +60,7 @@ export interface PetCreateFields {
     neutered: boolean;
     vaccinated: boolean;
     available: boolean;
-    specialCare: boolean | null;
+    specialCare?: string;
     breed?: string;
     description?: string;
     shelter: Types.ObjectId;
@@ -75,7 +75,7 @@ export interface PetUpdateFields {
     breed?: string;
     neutered?: boolean;
     vaccinated?: boolean;
-    specialCare?: boolean | null;
+    specialCare?: string;
     description?: string;
     status?: PetStatus;
     shelter?: Types.ObjectId;
@@ -93,7 +93,7 @@ export interface PetResponse {
     breed?: string;
     neutered?: boolean;
     vaccinated?: boolean;
-    specialCare?: boolean | null;
+    specialCare?: string;
     description?: string;
     shelter: Types.ObjectId;
     adopter?: Types.ObjectId;
