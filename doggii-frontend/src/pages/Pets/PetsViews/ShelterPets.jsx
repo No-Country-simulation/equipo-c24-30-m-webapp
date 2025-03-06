@@ -3,20 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import VerticalCard from '../../../components/Cards/VerticalCard';
 import Button from '../../../components/Button';
+import Modal from '../../../components/Modal/Modal';
 import petServices from '../../../services/petServices';
+import userServices from '../../../services/userServices';
 
 const ShelterPets = () => {
-  const shelterId = useSelector((state) => state.user.id);
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [pets, setPets] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const handleGetPets = useCallback(async () => {
     try {
       setError(null);
       setIsLoading(true);
-      const response = await petServices.getPetsByShelter(shelterId);
+      const response = await petServices.getPetsByShelter(user.id);
       setPets(response.payload);
     } catch (error) {
       console.error('Error fetching pets:', error);
@@ -24,7 +27,7 @@ const ShelterPets = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [shelterId]);
+  }, [user.id]);
 
   useEffect(() => {
     handleGetPets();
@@ -42,8 +45,39 @@ const ShelterPets = () => {
     navigate(`/pet/${id}`);
   }
 
-  const handleGoToPetPost = () => {
-    navigate('/pets/post');
+  const checkProfileCompletion = async () => {
+    try {
+      const response = await userServices.getUser(user.id, user.role);
+      const userData = response.payload;
+      
+      const requiredFields = {
+        shelterName: userData.shelterName,
+        userName: userData.userName,
+        email: userData.email,
+        phone: userData.phone,
+        shelterEmail: userData.shelterEmail,
+        shelterPhone: userData.shelterPhone,
+        address: userData.address && userData.address.street && userData.address.city && userData.address.province && userData.address.country
+      };
+
+      return Object.values(requiredFields).every(field => field);
+    } catch (error) {
+      console.error('Error checking profile completion:', error);
+      return false;
+    }
+  };
+
+  const handleGoToPetPost = async () => {
+    const isProfileComplete = await checkProfileCompletion();
+    if (isProfileComplete) {
+      navigate('/pets/post');
+    } else {
+      setShowProfileModal(true);
+    }
+  }
+
+  const handleGoToProfile = () => {
+    navigate('/profile');
   }
 
   return (
@@ -101,6 +135,15 @@ const ShelterPets = () => {
           )}
         </div>
       ))}
+      {showProfileModal && (
+        <Modal
+          title="Perfil incompleto"
+          description="Para poder publicar mascotas en adopción, necesitás completar todos los datos de tu perfil primero."
+          buttonText="Ir a mi perfil"
+          buttonAction={handleGoToProfile}
+          onClose={() => setShowProfileModal(false)}
+        />
+      )}
     </div>
   )
 }
