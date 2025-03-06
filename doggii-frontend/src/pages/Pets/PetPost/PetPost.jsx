@@ -1,14 +1,34 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import uploadImage  from '../../../services/petImageService';
 import Button from '../../../components/Button';
 
 const PetPost = () => {
   const navigate = useNavigate();
   const [requiresSpecialCare, setRequiresSpecialCare] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleGoBack = () => {
     navigate(-1);
-  }
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    
+    try {
+      const url = await uploadImage(file);
+      setImageUrl(url);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error al subir la imagen. Intentá de nuevo.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   return (
     <div className='p-8'>
@@ -16,7 +36,7 @@ const PetPost = () => {
         <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
         <h1 className='text-5xl'>Publicar una mascota</h1>
       </div>
-      <section className="p-6 my-8 mx-40 rounded-md bg-(--secondary)">
+      <section className="p-6 my-8 mx-10 xl:mx-40 rounded-md bg-(--secondary)">
         <form
           noValidate
           //onSubmit={handleSubmit}
@@ -146,13 +166,26 @@ const PetPost = () => {
                   type="file"
                   accept="image/png, image/jpeg"
                   className="w-full file:w-45 file:h-10 file:rounded-md file:bg-(--primary-light) file:font-normal font-light"
+                  onChange={handleImageUpload}
+                  disabled={isUploading}
                 />
+                {isUploading && <p className="mt-2 text-sm">Subiendo imagen...</p>}
+                {imageUrl && (
+                  <div className="mt-2">
+                    <img src={imageUrl} alt="Preview" className="max-w-xs rounded-md" />
+                  </div>
+                )}
               </div>
               <Button
                 className='col-span-full mx-auto mt-6 w-50 text-xl'
               >
                 Publicar
               </Button>
+              {error && (
+                <p className="text-red-500 mt-2 text-center col-span-full">
+                  {error}
+                </p>
+            )}
             </div>
           </fieldset>
         </form>
