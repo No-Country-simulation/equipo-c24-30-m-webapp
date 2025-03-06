@@ -1,11 +1,29 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import VerticalCard from '../../../components/Cards/VerticalCard';
 import Button from '../../../components/Button';
-import petDataMock from '../../../test/petsDataMock.json';
+import petServices from '../../../services/petServices';
 
 const ShelterPets = () => {
+  const shelterId = useSelector((state) => state.user.id);
   const navigate = useNavigate();
-  const pets = petDataMock.filter((pet) => pet.shelterId === '0001');
+  const [pets, setPets] = useState([]);
+
+  const handleGetPets = useCallback(async () => {
+    try {
+      const response = await petServices.getPetsByShelter(shelterId);
+      setPets(response.payload);
+      console.log(response.payload);
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+      // TODO: Add proper error handling
+    }
+  }, [shelterId]);
+
+  useEffect(() => {
+    handleGetPets();
+  }, [handleGetPets]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -36,7 +54,15 @@ const ShelterPets = () => {
       </div>
       <div className='flex flex-wrap justify-center gap-6 py-8'>
         {pets.map((pet, index) => (
-          <VerticalCard key={index} id={pet.id} image={pet.photo} title={pet.name} description={`Última actualización: ${formatDate(pet.updatedAt)}`} isPaused={!pet.available} onSee={() => handleGoToPetDetails(pet.id)}/>
+          <VerticalCard 
+            key={index} 
+            id={pet.id} 
+            image={pet.photos[0]} 
+            title={pet.name} 
+            description={`Última actualización: ${formatDate(pet.updatedAt)}`} 
+            isPaused={!pet.available} 
+            onSee={() => handleGoToPetDetails(pet.id)}
+          />
         ))}
       </div>
     </div>
