@@ -33,14 +33,6 @@ export default class AdopterController {
             const { user } = res.locals;
             const { ...updateFields } = req.body;
 
-            if (user.role !== Roles.ADMIN && user.id !== req.params.id) {
-                throw new HttpError(
-                    "Unauthorized action",
-                    "UNAUTHORIZED",
-                    HTTP_STATUS.UNAUTHORIZED
-                );
-            }
-
             console.log(updateFields);
             console.log(user);
 

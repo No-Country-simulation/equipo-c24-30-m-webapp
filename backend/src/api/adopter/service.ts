@@ -137,28 +137,32 @@ export default class AdopterService {
                     HTTP_STATUS.NOT_FOUND
                 );
             }
-
-
-            const adopterPayload: Partial<IAdopter> = {
-                ...adopterFound,
-                ...updateFields,
+    
+           
+            const adopterObj = adopterFound.toObject ? adopterFound.toObject() : adopterFound;
+    
+           
+            const { updatedAt: _, ...adopterFoundWithoutUpdatedAt } = adopterObj;
+    
+            
+            const adopterPayload = { 
+                ...adopterFoundWithoutUpdatedAt, 
+                ...updateFields 
             };
-
-            console.log("adopterPayload", adopterPayload);
-            console.log("adopterFound", adopterFound);
-
-            if (JSON.stringify(adopterFound) === JSON.stringify(adopterPayload)) {
+    
+            
+            if (JSON.stringify(adopterFoundWithoutUpdatedAt) === JSON.stringify(adopterPayload)) {
                 throw new HttpError(
                     "No changes detected",
                     "NO_CHANGES",
                     HTTP_STATUS.BAD_REQUEST
                 );
             }
-
-            const updatedAdopter = await adopterDao.update(
-                user.id,
-                adopterPayload
-            );
+    
+            
+            adopterPayload.updatedAt = new Date();
+    
+            const updatedAdopter = await adopterDao.update(user.id, adopterPayload);
             if (!updatedAdopter) {
                 throw new HttpError(
                     "adopter not updated",
@@ -166,18 +170,15 @@ export default class AdopterService {
                     HTTP_STATUS.SERVER_ERROR
                 );
             }
-
-            const adopterResponse = AdopterDto.adopterDTO(updatedAdopter);
-
-            return adopterResponse;
+    
+            return AdopterDto.adopterDTO(updatedAdopter);
         } catch (error: any) {
-            const err: HttpError = new HttpError(
+            throw new HttpError(
                 error.description || error.message,
                 error.details || error.message,
                 error.status || HTTP_STATUS.SERVER_ERROR
             );
-            throw err;
         }
-    }
+    }    
 
 }

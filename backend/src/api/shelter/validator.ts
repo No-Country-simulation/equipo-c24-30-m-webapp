@@ -20,7 +20,18 @@ export const shelterUpdatePayloadValidator = z.object({
         .trim()
         .email({ message: "Invalid email" })
         .optional(),
+    shelterEmail: z
+        .string()
+        .trim()
+        .email({ message: "Invalid email" })
+        .optional(),
     phone: z
+        .string()
+        .trim()
+        .min(10, "Phone number is too short")
+        .max(15, "Phone number is too long")
+        .optional(),
+    shelterPhone: z
         .string()
         .trim()
         .min(10, "Phone number is too short")

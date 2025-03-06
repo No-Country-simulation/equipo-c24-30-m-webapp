@@ -15,30 +15,30 @@ shelterRouter.get(
 
 
 shelterRouter.put(
-    "/:id", 
+    "/", 
     authenticate,
-    authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
+    authorizeRoles([Roles.SHELTER]),
     ShelterController.updateShelter
 );
 
 
-shelterRouter.post("/createAdoptionPost",
-    authenticate,
-    authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
-    ShelterController.CreateAdoptionPost
-);
+// shelterRouter.post("/createAdoptionPost",
+//     authenticate,
+//     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
+//     ShelterController.CreateAdoptionPost
+// );
 
-shelterRouter.put("/updateAdoptionPost/:id",
-    authenticate,
-    authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
-    ShelterController.UpdateAdoptionPost
-);
+// shelterRouter.put("/updateAdoptionPost/:id",
+//     authenticate,
+//     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
+//     ShelterController.UpdateAdoptionPost
+// );
 
-shelterRouter.delete("/deleteAdoptionPost/:id",
-    authenticate, 
-    authorizeRoles([Roles.SHELTER, Roles.ADMIN]),  
-    ShelterController.DeleteAdoptionPost
-);
+// shelterRouter.delete("/deleteAdoptionPost/:id",
+//     authenticate, 
+//     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),  
+//     ShelterController.DeleteAdoptionPost
+// );
 
 
 export default shelterRouter;

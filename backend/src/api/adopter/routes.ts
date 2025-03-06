@@ -10,13 +10,15 @@ const adopterRouter = Router();
 
 adopterRouter.get(
     "/:id",
+    authenticate,
+    authorizeRoles([Roles.ADOPTER, Roles.ADMIN, Roles.SHELTER]),
     AdopterController.getAdopter
 );
 
 adopterRouter.put(
-    "/:id", 
+    "/", 
     authenticate,
-    authorizeRoles([Roles.ADOPTER, Roles.ADMIN]),
+    authorizeRoles([Roles.ADOPTER]),
     schemaValidator(adopterUpdatePayloadValidator, null),
     AdopterController.updateAdopter
 );
