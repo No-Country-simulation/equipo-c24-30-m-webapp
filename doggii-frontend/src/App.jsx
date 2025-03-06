@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Profile from './pages/Profile/Profile';
 import Pets from './pages/Pets/Pets';
 import Applications from './pages/Applications/Applications';
+import ApplicationDetail from './pages/Applications/ApplicationViews/AplicationDetail.jsx';
 import AdoptionForm from './pages/AdoptionForm';
 import OptionsForms from './pages/OptionsForms';
 import FormAdopter from './pages/FormAdopter';
@@ -94,6 +95,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/pets' element={<Pets />} />
           <Route path='/applications' element={<Applications />} />
+          <Route path='/adoption-request/:id' element={<ApplicationDetail />} />
           <Route path='/adoption-form' element={<AdoptionForm />} />
           <Route path='/users' element={<Users />} />
           <Route path='/reports' element={<Reports />} />

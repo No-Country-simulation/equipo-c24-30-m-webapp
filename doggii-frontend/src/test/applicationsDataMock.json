@@ -1,0 +1,32 @@
+[
+{
+"id": "1234",
+"petId": "1234",    
+"petName": "Rufus",
+"photo": "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+"shelterName": "Huellitas",
+"shelterId": "0001",
+"status": "pendiente",
+ 	"formAnswers": []
+},
+{
+"id": "2345",
+"petId": "2345",    
+"petName": "Tobi",
+"photo": "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+"shelterName": "Patitas",
+"shelterId": "0002",
+"status": "aprobada",
+ 	"formAnswers": []
+},
+{
+"id": "3456",
+"petId": "3456",    
+"petName": "Mía",
+"photo": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+"shelterName": "Huellitas",
+"shelterId": "0001",
+"status": "rechazada",
+ 	"formAnswers": []
+}
+]
