@@ -29,5 +29,6 @@ petRouter.delete(
 
 petRouter.get("/:id", PetController.getPet);
 petRouter.get("/", PetController.getAllPets);
+petRouter.get("/shelter/:shelterId", PetController.getPetsByShelter);
 
 export default petRouter;
