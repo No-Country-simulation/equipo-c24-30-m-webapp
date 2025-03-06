@@ -5,6 +5,8 @@ import { IUser } from "../user/interface";
 export interface IShelter extends IUser {
     shelterName: string;
     verified: boolean;
+    shelterEmail: string;
+    shelterPhone: string;
 }
 
 export interface ShelterCreateFields {
@@ -13,6 +15,8 @@ export interface ShelterCreateFields {
     shelterName: string;
     address?: { street: string, city: string, province: string, country: string };
     phone?: string;
+    shelterEmail: string;
+    shelterPhone: string;
 }
 
 export interface ShelterUpdateFields {
@@ -20,6 +24,8 @@ export interface ShelterUpdateFields {
     address?: { street: string, city: string, province: string, country: string };
     phone?: string;
     verified?: boolean;
+    shelterEmail: string;
+    shelterPhone: string;
 }
 
 export interface ShelterResponse

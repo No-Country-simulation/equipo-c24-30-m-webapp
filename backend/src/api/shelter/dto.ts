@@ -14,6 +14,8 @@ export default class ShelterDto {
             userName: shelter.userName,
             role: shelter.role,
             shelterName: shelter.shelterName,
+            shelterEmail: shelter.shelterEmail,
+            shelterPhone: shelter.shelterPhone,
             createdAt: shelter.createdAt,
             verified: shelter.verified,
             address: shelter.address,  
