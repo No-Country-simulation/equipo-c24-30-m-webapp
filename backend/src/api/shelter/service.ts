@@ -93,12 +93,23 @@ export default class ShelterService {
                 );
             }
 
+            const { updatedAt: _, ...shelterFoundWithoutUpdatedAt } = shelterFound.toObject ? shelterFound.toObject() : shelterFound;
+            const shelterPayload = { 
+                ...shelterFoundWithoutUpdatedAt, 
+                ...updateFields };
 
-            const shelterPayload: Partial<IShelter> = {
-                ...shelterFound,
-                ...updateFields,
-                updatedAt: new Date(),
-            };
+            
+
+            if (JSON.stringify(shelterFoundWithoutUpdatedAt) === JSON.stringify(shelterPayload)) {
+                throw new HttpError(
+                    "No changes detected",
+                    "NO_CHANGES",
+                    HTTP_STATUS.BAD_REQUEST
+                );
+            }
+
+            shelterPayload.updatedAt = new Date();
+
             const updatedShelter = await shelterDao.update(
                 user.id,
                 shelterPayload
