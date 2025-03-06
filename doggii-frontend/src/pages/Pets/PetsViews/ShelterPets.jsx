@@ -19,11 +19,18 @@ const ShelterPets = () => {
     navigate(`/pet/${id}`);
   }
 
+  const handleGoToPetPost = () => {
+    navigate('/pets/post');
+  }
+
   return (
     <div className='pl-8 pr-8'>
       <div className='flex justify-between items-center'>
         <p>Estas son las mascotas que publicaste para dar en adopción.</p>
-        <Button className='w-50'>
+        <Button
+          onClick={handleGoToPetPost}
+          className='w-50'
+        >
           Nueva publicación
         </Button>
       </div>

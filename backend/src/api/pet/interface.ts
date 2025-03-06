@@ -20,8 +20,8 @@ export enum PetType {
 }
 
 export enum PetSize {
-    SMALL = "small",
-    MEDIUM = "medium",
+    SMALL = "pequeño",
+    MEDIUM = "mediano",
     LARGE = "grande"
 }
 
