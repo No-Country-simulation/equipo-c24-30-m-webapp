@@ -160,4 +160,10 @@ export default class PetService {
         );
         return updatedPet;
     }
+
+    static async getPetsByShelterId(shelterId: string): Promise<PetResponse[]> {
+        const pets = await this.petDao.find({ shelter: shelterId });
+        return pets.map(pet => this.transformPetResponse(pet));
+    }
+    
 }

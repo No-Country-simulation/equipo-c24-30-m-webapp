@@ -54,4 +54,16 @@ export default class PetController {
                .json(apiResponse(false, err));
         }
     }
+
+    static async getPetsByShelter(req: Request, res: Response) {
+        try {
+            const shelterId = req.params.shelterId;
+            const pets = await PetService.getPetsByShelterId(shelterId);
+            res.status(HTTP_STATUS.OK).json(apiResponse(true, pets));
+        } catch (err: any) {
+            res.status(err.status || HTTP_STATUS.SERVER_ERROR)
+               .json(apiResponse(false, err));
+        }
+    }    
+
 }
