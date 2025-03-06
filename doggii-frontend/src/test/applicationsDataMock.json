@@ -1,0 +1,32 @@
+[
+{
+"id": "1234",
+"petId": "1234",    
+"petName": "Rufus",
+    	"photo": "https://image.com/photo",
+    	"shelterName": "Huellitas",
+    	"shelterId": "0001",
+"status": "pendiente",
+ 	"formAnswers": []
+},
+{
+"id": "2345",
+"petId": "2345",    
+"petName": "Tobi",
+    	"photo": "https://image.com/photo",
+    	"shelterName": "Patitas",
+    	"shelterId": "0002",
+"status": "aprobada",
+ 	"formAnswers": []
+},
+{
+"id": "3456",
+"petId": "3456",    
+"petName": "Mía",
+    	"photo": "https://image.com/photo",
+    	"shelterName": "Huellitas",
+    	"shelterId": "0001",
+"status": "rechazada",
+ 	"formAnswers": []
+}
+]

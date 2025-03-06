@@ -19,7 +19,7 @@ const HorizontalCard = ({image, title, subtitle, text, isShelter = false}) => {
           Gestionar
         </Button>
         :
-        <Button className='w-40 m-auto mb-4 bg-(--secondary)'>
+        <Button link=""  className='w-40 m-auto mb-4 bg-(--secondary)'>
           Ver más
         </Button>
       }
