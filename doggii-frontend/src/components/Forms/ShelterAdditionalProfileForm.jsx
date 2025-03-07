@@ -44,7 +44,7 @@ const ShelterAdditionalProfileForm = () => {
         phone: formData.phone,
       };
 
-      const data = await userServices.updateUserProfile(user.id, user.role, updateData);
+      const data = await userServices.updateUserProfile(user.role, updateData);
 
       dispatch(setUserInfo({
         ...data.payload,

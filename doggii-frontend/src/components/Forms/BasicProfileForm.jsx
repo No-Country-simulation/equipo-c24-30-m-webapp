@@ -75,29 +75,14 @@ const BasicProfileForm = ({title, description}) => {
         updateData.shelterPhone = formData.shelterPhone;
       }
 
-      const data = await userServices.updateUserProfile(user.id, user.role, updateData);
+      const data = await userServices.updateUserProfile(user.role, updateData);
 
       dispatch(setUserInfo({
         ...data.payload,
         _id: user.id,
-
-        //Borrar cuando esté listo el backend
-        //Lo incluimos manualmente ahora porque el backend no lo devuelve
-        shelterName: updateData.shelterName,
-        shelterEmail: updateData.shelterEmail,
-        shelterPhone: updateData.shelterPhone
       }));
       
-      // setFormData(data.payload);
-
-      //Borrar cuando esté listo el backend
-      setFormData({
-        ...data.payload,
-        shelterName: updateData.shelterName,
-        shelterEmail: updateData.shelterEmail,
-        shelterPhone: updateData.shelterPhone
-      });
-      
+      setFormData(data.payload);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
       setHasChanges(false);
