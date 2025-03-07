@@ -5,7 +5,7 @@ import VerticalCard from '../../../components/Cards/VerticalCard';
 import Button from '../../../components/Button';
 import Modal from '../../../components/Modal/Modal';
 import petServices from '../../../services/petServices';
-import userServices from '../../../services/userServices';
+import { useProfileValidation } from '../../../hooks/useProfileValidation';
 
 const ShelterPets = () => {
   const user = useSelector((state) => state.user);
@@ -14,7 +14,7 @@ const ShelterPets = () => {
   const [fetchError, setFetchError] = useState(null);
   const [updateError, setUpdateError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showProfileModal, setShowProfileModal] = useState(false);
+  const { showProfileModal, setShowProfileModal, checkProfileCompletion } = useProfileValidation();
 
   const handleGetPets = useCallback(async () => {
     try {
@@ -42,36 +42,14 @@ const ShelterPets = () => {
     return `${day}/${month}/${year}`;
   }
 
-  const checkProfileCompletion = async () => {
-    try {
-      const response = await userServices.getUser(user.id, user.role);
-      const userData = response.payload;
-      
-      const requiredFields = {
-        shelterName: userData.shelterName,
-        userName: userData.userName,
-        email: userData.email,
-        phone: userData.phone,
-        shelterEmail: userData.shelterEmail,
-        shelterPhone: userData.shelterPhone,
-        address: userData.address && userData.address.street && userData.address.city && userData.address.province && userData.address.country
-      };
-
-      return Object.values(requiredFields).every(field => field);
-    } catch (error) {
-      console.error('Error checking profile completion:', error);
-      return false;
-    }
-  };
-
   const handleGoToPetPost = async () => {
-    const isProfileComplete = await checkProfileCompletion();
-    if (isProfileComplete) {
+    const isComplete = await checkProfileCompletion();
+    if (isComplete) {
       navigate('/pets/post');
     } else {
       setShowProfileModal(true);
     }
-  }
+  };
 
   const handleGoToProfile = () => {
     navigate('/profile');
