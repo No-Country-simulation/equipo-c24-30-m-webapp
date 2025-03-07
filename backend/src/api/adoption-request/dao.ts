@@ -32,6 +32,7 @@ class AdoptionRequestDAO {
     findWithShelterMatch(query: FilterQuery<IAdoptionRequest>, shelterMatch: any): Promise<IAdoptionRequest[]> {
         return this.model.find({ ...query, shelter: shelterMatch }).lean().exec();
     }
+    
 }
 
 export default AdoptionRequestDAO;

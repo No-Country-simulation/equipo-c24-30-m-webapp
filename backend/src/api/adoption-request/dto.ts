@@ -12,6 +12,7 @@ export default class AdoptionRequestDto {
             _id: adoptionRequest._id,
             adopter: adoptionRequest.adopter,
             pet: adoptionRequest.pet,
+            shelter: adoptionRequest.shelter,
             status: adoptionRequest.status,
             reason: adoptionRequest.reason,
             formAnswers: adoptionRequest.formAnswers,

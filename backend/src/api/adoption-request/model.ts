@@ -17,6 +17,11 @@ const adoptionRequestSchema = new Schema(
             ref: "Pet", 
             required: true 
         },
+        shelter: {
+            type: Schema.Types.ObjectId,
+            ref: "Shelter",
+            required: true
+        },
         status: {
             type: String,
             enum: Object.values(StatusRequest),

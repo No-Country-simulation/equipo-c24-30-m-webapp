@@ -4,6 +4,7 @@ import HTTP_STATUS from "../../constants/HttpStatus";
 import HttpError from "../../utils/HttpError.utils";
 import AdoptionRequestService from "./service";
 import { Roles } from "../../constants/Roles";
+import PetService from "../pet/service";
 
 export default class AdoptionRequestController { 
     static async createAdoptionRequest(req: Request, res: Response) { 
@@ -12,6 +13,9 @@ export default class AdoptionRequestController {
             const { ...adoptionRequestFields } = req.body; 
             console.log("adopter", user);
             console.log("adoptionRequestFields", adoptionRequestFields);
+
+            const shelterId = PetService.getPetById(adoptionRequestFields.pet);
+
             const adoptionRequest = await AdoptionRequestService.createAdoptionRequest(
                 user.id, 
                 adoptionRequestFields 
@@ -95,6 +99,27 @@ export default class AdoptionRequestController {
         } catch (err: any) {
             res.status(err.status || HTTP_STATUS.SERVER_ERROR)
                .json(apiResponse(false, err));
+        }
+    }
+
+    static async getAdoptionRequestsByFilter(req: Request, res: Response) {
+        try {
+            const { shelter, pet, adopter } = req.query;
+            console.log("shelter", shelter);
+            console.log("pet", pet);
+            console.log("adopter", adopter);
+            const filter: any = {};
+            if (shelter) filter.shelter = shelter;
+            if (pet) filter.pet = pet;
+            if (adopter) filter.adopter = adopter;
+            
+            console.log("filter", filter);
+
+            const adoptionRequests = await AdoptionRequestService.getAdoptionRequestsByFilter(filter);
+            res.status(HTTP_STATUS.OK).json(apiResponse(true, adoptionRequests));
+        } catch (err: any) {
+            res.status(err.status || HTTP_STATUS.SERVER_ERROR)
+               .json(apiResponse(false, new HttpError(err.message, err.details, err.status)));
         }
     }
 }
