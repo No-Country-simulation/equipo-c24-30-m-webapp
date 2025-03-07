@@ -20,11 +20,17 @@ const updatePet = async (petId, pet) => {
   return response.data;
 }
 
+const deletePet = async (petId) => {
+  const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URI}/api/pet/${petId}`);
+  return response.data;
+}
+
 const petServices = {
   createPet,
   getPetsByShelter,
   getPet,
-  updatePet
+  updatePet,
+  deletePet
 };
 
 export default petServices;
