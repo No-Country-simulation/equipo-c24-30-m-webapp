@@ -14,6 +14,7 @@ import Users from './pages/Users/Users';
 import Reports from './pages/Reports/Reports';
 import LandingLayout from './layouts/LandingLayout';
 import PetPost from './pages/Pets/PetPost/PetPost';
+import PetEdit from './pages/Pets/PetEdit/PetEdit';
 import PetDetails from './pages/Pets/PetDetails/PetDetails';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -102,6 +103,7 @@ function App() {
           <Route path='/reports' element={<Reports />} />
           <Route path='/pets/post' element={<PetPost />} />
           <Route path='/pet/:id' element={<PetDetails />} />
+          <Route path='/pet/edit/:id' element={<PetEdit />} />
         </Route>
         <Route path='/' element={<LandingLayout />} />
       </Routes>
