@@ -1,13 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HorizontalCard from '../../../components/Cards/HorizontalCard'
 import applicationsDataMock from '../../../test/applicationsDataMock.json'
 import Button from '../../../components/Button'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
 
 const AdopterApplications = () => {
   const [visibleItems, setVisibleItems] = useState(6);
   const [applications, setApplications] = useState(applicationsDataMock.slice(0, visibleItems));
   const navigate = useNavigate();
+  const [petsData, setPetsData] = useState([]);
+
+  useEffect(() => {
+    const fetchAdoptionRequestsAndPets = async () => {
+      const token = localStorage.getItem('accessToken');
+      const adoptionRequestsEndpoint = import.meta.env.VITE_BACKEND_URI + "/api/adoptionRequest/";
+      
+      if (!token) return;
+
+      try {
+        // Validar si el token ha expirado
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp < currentTime) {
+          localStorage.removeItem('accessToken');
+          delete axios.defaults.headers.common['Authorization'];
+          return;
+        }
+        
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
+        // Obtener las solicitudes de adopción
+        const response = await axios.get(adoptionRequestsEndpoint);
+        console.log('Respuesta del backend (solicitudes de adopción):', response);
+        
+        // Validar que la respuesta contenga datos y que el array de solicitudes no esté vacío
+        if (response.data && Array.isArray(response.data.payload) && response.data.payload.length > 0) {
+          const adoptionRequests = response.data.payload;
+          
+          // Para cada solicitud, obtener la información completa de la mascota
+          const petDetailsPromises = adoptionRequests.map(async (request) => {
+            const petEndpoint = import.meta.env.VITE_BACKEND_URI + '/api/pet/' + request.pet;
+            const petResponse = await axios.get(petEndpoint);
+            return petResponse.data;
+          });
+          
+          // Ejecutar todas las peticiones de forma concurrente
+          const petsDetails = await Promise.all(petDetailsPromises);
+          
+          // Guardar los datos para renderizarlos
+          setPetsData(petsDetails);
+        } else {
+          console.warn('No se encontraron solicitudes de adopción.');
+        }
+      } catch (error) {
+        console.error('Error al obtener solicitudes de adopción o detalles de mascotas:', error);
+      }
+    };
+
+    fetchAdoptionRequestsAndPets();
+    
+  }, []);
+  console.log('Pets data:', petsData);
 
   const handleSeeMore = () => {
     const newVisibleItems = visibleItems + 6;
