@@ -104,6 +104,10 @@ const ShelterPets = () => {
     }
   }
 
+  const handleGoEdit = (petId) => {
+    navigate(`/pet/edit/${petId}`);
+  }
+
   return (
     <div className='pl-8 pr-8'>
       <div className='flex justify-between items-center'>
@@ -166,6 +170,7 @@ const ShelterPets = () => {
                   isPaused={!pet.available} 
                   onSee={() => handleGoToPetDetails(pet.id)}
                   onPause={() => handleChangePetAvailability(pet)}
+                  onEdit={() => handleGoEdit(pet.id)}
                 />
               </div>
             ))
