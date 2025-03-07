@@ -3,6 +3,8 @@ import ShelterController from "./controller";
 import authenticate from "../../middleware/authenticate.middleware";
 import authorizeRoles from "../../middleware/authorization.middleware";
 import { Roles } from "../../constants/Roles";
+import schemaValidator from "../../middleware/schemaValidators.middlewares";
+import { shelterUpdatePayloadValidator } from "./validator";
 
 const shelterRouter = Router();
 
@@ -18,6 +20,7 @@ shelterRouter.put(
     "/", 
     authenticate,
     authorizeRoles([Roles.SHELTER]),
+    schemaValidator(shelterUpdatePayloadValidator, null),
     ShelterController.updateShelter
 );
 

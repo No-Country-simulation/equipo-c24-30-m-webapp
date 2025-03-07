@@ -1,12 +1,21 @@
 import { Router } from "express";
 import AuthController from "./controller";
 import passport from "passport";
+import { userCreatePayloadValidator, userLoginPayloadValidator } from "./validator";
+import schemaValidator from "../../middleware/schemaValidators.middlewares";
 
 const authRouter = Router();
 
 
-authRouter.post("/register", AuthController.register);
-authRouter.post("/login", AuthController.login);
+authRouter.post("/register",
+    schemaValidator(userCreatePayloadValidator, null), 
+    AuthController.register
+);
+
+authRouter.post("/login",
+    schemaValidator(userLoginPayloadValidator, null),  
+    AuthController.login
+);
 
 // Rutas para Google y Facebook
 authRouter.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

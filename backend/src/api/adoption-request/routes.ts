@@ -6,6 +6,7 @@ import authorizeRoles from "../../middleware/authorization.middleware";
 import schemaValidator from "../../middleware/schemaValidators.middlewares";
 import AdopterController from "../adopter/controller";
 import AdoptionRequestController from "./controller";
+import { adoptionRequestCreatePayloadValidator, adoptionRequestUpdatePayloadValidator } from "./validator";
 
 const adoptionRequestRouter = Router();
 
@@ -13,6 +14,7 @@ adoptionRequestRouter.post(
     "/",
     authenticate,
     authorizeRoles([Roles.ADOPTER]),
+    schemaValidator(adoptionRequestCreatePayloadValidator, null),
     AdoptionRequestController.createAdoptionRequest
 );
 
@@ -48,6 +50,7 @@ adoptionRequestRouter.put(
     "/:id",
     authenticate,
     authorizeRoles([Roles.ADOPTER, Roles.ADMIN, Roles.SHELTER]),
+    schemaValidator(adoptionRequestUpdatePayloadValidator, null),
     AdoptionRequestController.updateAdoptionRequest
 );
 

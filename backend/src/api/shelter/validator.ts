@@ -45,10 +45,7 @@ export const shelterUpdatePayloadValidator = z.object({
             country: z.string().trim().min(2, "Country is too short").optional(),
         })
         .optional(),
-    gender: z.nativeEnum(Genders, { message: "Invalid gender" }).optional(),
-    dateOfBirth: z.string().date().optional(),
-    favoritePets: z.array(z.string()).optional(), 
-    role: z.literal(Roles.ADOPTER).optional(),
+    role: z.literal(Roles.SHELTER).optional(),
     status: z.boolean().optional(),
     updatedBy: z.string().trim().optional(),
 }).strict();;
