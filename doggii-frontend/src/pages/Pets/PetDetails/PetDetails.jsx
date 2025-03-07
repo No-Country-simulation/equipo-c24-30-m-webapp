@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
+import Modal from '../../../components/Modal/Modal';
 import getTimeElapsed from '../../../utils/getTimeElapsed';
 import petServices from '../../../services/petServices';
 
@@ -11,7 +12,9 @@ const PetDetails = () => {
   const petId = useParams().id;
   const [pet, setPet] = useState(null);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleGetPet = useCallback(async () => {
     try {
@@ -43,6 +46,22 @@ const PetDetails = () => {
     } catch (error) {
       console.error('Error updating pet:', error);
       setError('No pudimos cambiar la disponibilidad de la mascota. Intentá de nuevo.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const handleDeletePet = async () => {
+    try {
+      setShowDeleteModal(false);
+      setError(null);
+      setIsLoading(true);
+      const response = await petServices.deletePet(petId);
+      setSuccess(response.success);
+      setTimeout(() => navigate('/pets'), 3000);
+    } catch (error) {
+      console.error('Error deleting pet:', error);
+      setError('No pudimos eliminar la mascota. Intentá de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +143,7 @@ const PetDetails = () => {
               </p>
               <p className='pb-2 text-xl'>
                 <span className='font-medium'>Castración: </span>
-                <span>{pet.neutered ? (pet.sex === 'macho' ? 'castrado' : 'castrada') : 'pendiente'}</span>
+                <span>{pet.neutered ? (pet.sex === 'male' ? 'castrado' : 'castrada') : 'pendiente'}</span>
               </p>
               {pet.specialCare && (
                 <p className='pb-2 text-xl'>
@@ -147,9 +166,21 @@ const PetDetails = () => {
                 <span>{getTimeElapsed(pet.createdAt)}</span>
               </p>
             </div>
+            {success && (
+              <div className="lg:col-span-5 sm:col-span-1 flex items-center justify-between gap-4 p-4 mx-auto rounded-lg bg-(--secondary-light)">
+                <div className="flex items-center self-stretch justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-7 h-7">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                  </svg>
+                </div>
+                <span className='text-xl'>La mascota se eliminó correctamente.</span>
+              </div>
+            )}
             {userRole === "shelter" ?
               <div className='flex justify-around col-span-5'>
-                <Button className='text-2xl w-50'>
+                <Button
+                  onClick={() => setShowDeleteModal(true)}
+                  className='text-2xl w-50'>
                   Eliminar
                 </Button>
                 <Button className='text-2xl w-50'>
@@ -166,6 +197,15 @@ const PetDetails = () => {
                 Adoptar
               </Button>
             }
+            {showDeleteModal && (
+              <Modal
+                title="¿Eliminar mascota?"
+                description="Esta acción no se puede deshacer. La mascota se eliminará de forma permanente. Si querés que la mascota deje de mostrarse de forma temporal, te recomendamos que pauses la publicación."
+                buttonText="Eliminar"
+                buttonAction={handleDeletePet}
+                onClose={() => setShowDeleteModal(false)}
+              />
+            )}
           </>
         )}
       </div>
