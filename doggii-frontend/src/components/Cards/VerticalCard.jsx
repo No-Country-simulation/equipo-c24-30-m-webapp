@@ -17,6 +17,14 @@ const VerticalCard = ({image, title, description, isPaused = false, onEdit, onPa
             </svg>
           </button>
         )}
+        {isPaused && (
+          <div className='absolute inset-0 z-10 w-fit h-fit my-auto mx-auto py-2 px-3 bg-(--primary-light) rounded-xl'>
+            <p className='text-xl font-normal text-center'>
+              PUBLICACIÓN PAUSADA
+            </p>
+            <p className='text-center text-base'>No se mostrará a posibles adoptantes</p>
+          </div>
+        )}
       </div>
       <div className='flex flex-col justify-between p-6 space-y-8'>
         <div className='space-y-2'>
