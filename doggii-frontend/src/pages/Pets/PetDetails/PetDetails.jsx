@@ -20,7 +20,7 @@ const PetDetails = () => {
       const response = await petServices.getPet(petId);
       setPet(response.payload);
     } catch (error) {
-      console.log('Error fetching pet:', error);
+      console.error('Error fetching pet:', error);
       setError('No pudimos cargar la mascota. Tocá el botón para intentar de nuevo.');
     } finally {
       setIsLoading(false);
@@ -30,6 +30,23 @@ const PetDetails = () => {
   useEffect(() => {
     handleGetPet();
   }, [handleGetPet]);
+
+  const handleChangePetAvailability = async () => {
+    try {
+      setError(null);
+      setIsLoading(true);
+      const response = await petServices.updatePet(petId, {
+        ...pet,
+        available: !pet.available
+      });
+      setPet(response.payload);
+    } catch (error) {
+      console.error('Error updating pet:', error);
+      setError('No pudimos cambiar la disponibilidad de la mascota. Intentá de nuevo.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleGoBack = () => {
     navigate(-1);
@@ -72,11 +89,19 @@ const PetDetails = () => {
                 <img 
                   src={pet.photos[0]} 
                   alt={pet.name} 
-                  className='absolute inset-0 w-full h-full object-cover rounded-xl'
+                  className={`absolute inset-0 w-full h-full object-cover rounded-xl ${pet.available ? '' : 'grayscale'}`}
                 />
               </div>
             </div>
             <div className='lg:col-span-3 flex flex-col justify-between py-2'>
+              {!pet.available && (
+                <div className='w-fit mx-auto py-1 px-3 border-4 border-(--secondary) rounded-xl'>
+                  <p className='text-3xl font-normal text-center'>
+                    PUBLICACIÓN PAUSADA
+                  </p>
+                  <p className='text-center text-gray-500 text-md'>No se mostrará a posibles adoptantes</p>
+                </div>
+              )}
               <p className='pb-2 text-xl'>
                 <span className='font-medium'>Sexo: </span>
                 <span>{pet.sex === 'male' ? 'macho' : (pet.sex === 'female' ? 'hembra' : '')}</span>
@@ -130,7 +155,9 @@ const PetDetails = () => {
                 <Button className='text-2xl w-50'>
                   Editar
                 </Button>
-                <Button className='text-2xl w-50'>
+                <Button
+                  onClick={handleChangePetAvailability}
+                  className='text-2xl w-50'>
                   {pet.available ? 'Pausar' : 'Reanudar'}
                 </Button>
               </div>
