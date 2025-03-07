@@ -16,10 +16,10 @@ const Modal = ({title, description, buttonText, onClose, buttonAction}) => {
             </svg>
           </button>
           <h2 className="text-3xl font-normal">{title}</h2>
-          <p className="flex-1 text-center text-lg ">{description}</p>
+          <p className="flex-1 text-center text-xl">{description}</p>
           <Button
             onClick={buttonAction}
-            className="w-50 text-lg"
+            className="w-50 text-xl"
           >
             {buttonText}
           </Button>
