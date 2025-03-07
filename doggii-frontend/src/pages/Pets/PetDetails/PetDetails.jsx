@@ -71,6 +71,10 @@ const PetDetails = () => {
     navigate(-1);
   }
 
+  const handleGoEdit = () => {
+    navigate(`/pet/edit/${petId}`);
+  }
+
   return (
     <div className='p-8'>
       <div className='flex items-center gap-6'>
@@ -183,7 +187,10 @@ const PetDetails = () => {
                   className='text-2xl w-50'>
                   Eliminar
                 </Button>
-                <Button className='text-2xl w-50'>
+                <Button
+                  onClick={handleGoEdit}
+                  className='text-2xl w-50'
+                >
                   Editar
                 </Button>
                 <Button
