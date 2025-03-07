@@ -17,6 +17,13 @@ adoptionRequestRouter.post(
 );
 
 adoptionRequestRouter.get(
+    "/filter/",
+    authenticate,
+    authorizeRoles([Roles.ADOPTER, Roles.ADMIN, Roles.SHELTER]),
+    AdoptionRequestController.getAdoptionRequestsByFilter
+);
+
+adoptionRequestRouter.get(
     "/",
     authenticate,
     authorizeRoles([Roles.ADOPTER, Roles.ADMIN, Roles.SHELTER]),
@@ -43,6 +50,7 @@ adoptionRequestRouter.put(
     authorizeRoles([Roles.ADOPTER, Roles.ADMIN, Roles.SHELTER]),
     AdoptionRequestController.updateAdoptionRequest
 );
+
 
 
 export default adoptionRequestRouter;

@@ -233,4 +233,48 @@ export default class AdoptionRequestService {
       );
     }
   }
+  static async getAdoptionRequestsByFilter(filter: {
+    shelter?: string;
+    pet?: string;
+    adopter?: string;
+  }): Promise<Partial<AdoptionRequestResponse>[]> {
+    try {
+      const adoptionRequestDao = new AdoptionRequestDAO(AdoptionRequest);
+  
+      
+      if (!filter.shelter && !filter.pet && !filter.adopter) {
+        throw new HttpError(
+          "At least one filter parameter must be provided",
+          "MISSING_FILTER_PARAMETER",
+          HTTP_STATUS.BAD_REQUEST
+        );
+      }
+  
+      
+      const query: any = {};
+      if (filter.shelter) query.shelter = filter.shelter;
+      if (filter.pet) query.pet = filter.pet;
+      if (filter.adopter) query.adopter = filter.adopter;
+  
+      console.log("Query: ", query);
+      
+      const adoptionRequests = await adoptionRequestDao.find(query);
+  
+      if (!adoptionRequests || adoptionRequests.length === 0) {
+        throw new HttpError(
+          "No adoption requests found",
+          "NO_ADOPTION_REQUESTS_FOUND",
+          HTTP_STATUS.NOT_FOUND
+        );
+      }
+  
+      return AdoptionRequestDto.adoptionRequestArrayDTO(adoptionRequests);
+    } catch (err: any) {
+      throw new HttpError(
+        err.description || err.message,
+        err.details || err.message,
+        err.status || HTTP_STATUS.SERVER_ERROR
+      );
+    }
+  }
 }
