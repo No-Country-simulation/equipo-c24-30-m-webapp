@@ -11,20 +11,21 @@ const PetDetails = () => {
   const navigate = useNavigate();
   const petId = useParams().id;
   const [pet, setPet] = useState(null);
-  const [error, setError] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
+  const [changeError, setChangeError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleGetPet = useCallback(async () => {
     try {
-      setError(null);
+      setFetchError(null);
       setIsLoading(true);
       const response = await petServices.getPet(petId);
       setPet(response.payload);
     } catch (error) {
       console.error('Error fetching pet:', error);
-      setError('No pudimos cargar la mascota. Tocá el botón para intentar de nuevo.');
+      setFetchError('No pudimos cargar la mascota. Tocá el botón para intentar de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -36,7 +37,7 @@ const PetDetails = () => {
 
   const handleChangePetAvailability = async () => {
     try {
-      setError(null);
+      setChangeError(null);
       setIsLoading(true);
       const response = await petServices.updatePet(petId, {
         ...pet,
@@ -45,7 +46,7 @@ const PetDetails = () => {
       setPet(response.payload);
     } catch (error) {
       console.error('Error updating pet:', error);
-      setError('No pudimos cambiar la disponibilidad de la mascota. Intentá de nuevo.');
+      setChangeError('No pudimos cambiar la disponibilidad de la mascota. Intentá de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -54,14 +55,14 @@ const PetDetails = () => {
   const handleDeletePet = async () => {
     try {
       setShowDeleteModal(false);
-      setError(null);
+      setChangeError(null);
       setIsLoading(true);
       const response = await petServices.deletePet(petId);
       setSuccess(response.success);
       setTimeout(() => navigate('/pets'), 3000);
     } catch (error) {
       console.error('Error deleting pet:', error);
-      setError('No pudimos eliminar la mascota. Intentá de nuevo.');
+      setChangeError('No pudimos eliminar la mascota. Intentá de nuevo.');
     } finally {
       setIsLoading(false);
     }
@@ -86,15 +87,15 @@ const PetDetails = () => {
           <div className='animate-spin rounded-full h-30 w-30 my-auto border-b-8 border-(--secondary)'></div>
         </div>
       ) : (
-      error ? (
+      fetchError ? (
         <>
         <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
           <div className="flex items-center self-stretch justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
             </svg>
           </div>
-          <span className='text-lg'>{error}</span>
+          <span className='text-lg'>{fetchError}</span>
         </div>
         <Button 
           onClick={handleGetPet}
@@ -178,6 +179,16 @@ const PetDetails = () => {
                   </svg>
                 </div>
                 <span className='text-xl'>La mascota se eliminó correctamente.</span>
+              </div>
+            )}
+            {changeError && (
+              <div className="col-span-full flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto rounded-md bg-red-100">
+                <div className="flex items-center self-stretch justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
+                  </svg>
+                </div>
+                <span className='text-lg'>{changeError}</span>
               </div>
             )}
             {userRole === "shelter" ?

@@ -114,7 +114,7 @@ const ShelterPets = () => {
         <p>Estas son las mascotas que publicaste para dar en adopción.</p>
         <Button
           onClick={handleGoToPetPost}
-          className='w-50'
+          className='w-50 text-lg'
         >
           Nueva publicación
         </Button>
