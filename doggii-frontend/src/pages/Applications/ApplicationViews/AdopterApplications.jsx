@@ -43,14 +43,23 @@ const AdopterApplications = () => {
           const petDetailsPromises = adoptionRequests.map(async (request) => {
             const petEndpoint = import.meta.env.VITE_BACKEND_URI + '/api/pet/' + request.pet;
             const petResponse = await axios.get(petEndpoint);
-            return petResponse.data;
+             // Crear un nuevo objeto que combine la información de la mascota con el status de la solicitud
+            const newPetDetail = {
+              ...petResponse.data,
+              payload: {
+                ...petResponse.data.payload,
+                status: request.status // Se reemplaza el status del pet por el status de la solicitud
+              }
+            };
+            return newPetDetail;
           });
           
           // Ejecutar todas las peticiones de forma concurrente
-          const petsDetails = await Promise.all(petDetailsPromises);
+          const combinedPetsDetails = await Promise.all(petDetailsPromises);
+          console.log('Detalles combinados de las mascotas:', combinedPetsDetails);
           
           // Guardar los datos para renderizarlos
-          setPetsData(petsDetails);
+          setPetsData(combinedPetsDetails);
         } else {
           console.warn('No se encontraron solicitudes de adopción.');
         }
