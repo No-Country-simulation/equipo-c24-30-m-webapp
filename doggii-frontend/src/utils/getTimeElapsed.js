@@ -2,31 +2,35 @@ const getTimeElapsed = (dateString) => {
   const start = new Date(dateString);
   const today = new Date();
   
-  const yearsDiff = today.getFullYear() - start.getFullYear();
-  const monthsDiff = today.getMonth() - start.getMonth();
-  const daysDiff = today.getDate() - start.getDate();
-
-  let years = yearsDiff;
-  let months = monthsDiff;
-  let days = daysDiff;
-
-  if (daysDiff < 0) {
-    months--;
-    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, start.getDate());
-    days = Math.floor((today - lastMonth) / (1000 * 60 * 60 * 24));
+  const diffInMilliseconds = today - start;
+  const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+  
+  if (diffInDays === 0) {
+    const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+    if (diffInHours === 0) {
+      const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+      return `${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+    }
+    return `${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
   }
 
-  if (monthsDiff < 0 || (monthsDiff === 0 && daysDiff < 0)) {
-    years--;
-    months += 12;
+  if (diffInDays < 30) {
+    return `${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
   }
 
-  const parts = [];
-  if (years > 0) parts.push(`${years} ${years === 1 ? 'año' : 'años'}`);
-  if (months > 0) parts.push(`${months} ${months === 1 ? 'mes' : 'meses'}`);
-  if (days > 0) parts.push(`${days} ${days === 1 ? 'día' : 'días'}`);
+  const months = Math.floor(diffInDays / 30);
+  if (months < 12) {
+    return `${months} ${months === 1 ? 'mes' : 'meses'}`;
+  }
 
-  return parts.join(', ');
+  const years = Math.floor(diffInDays / 365);
+  const remainingMonths = Math.floor((diffInDays % 365) / 30);
+
+  if (remainingMonths === 0) {
+    return `${years} ${years === 1 ? 'año' : 'años'}`;
+  }
+
+  return `${years} ${years === 1 ? 'año' : 'años'} y ${remainingMonths} ${remainingMonths === 1 ? 'mes' : 'meses'}`;
 }
 
 export default getTimeElapsed;
