@@ -32,6 +32,15 @@ class AdoptionRequestDAO {
     findWithShelterMatch(query: FilterQuery<IAdoptionRequest>, shelterMatch: any): Promise<IAdoptionRequest[]> {
         return this.model.find({ ...query, shelter: shelterMatch }).lean().exec();
     }
+
+    findById(id: string): Promise<IAdoptionRequest | null> {
+        return this.model.findById(id)
+        .populate("adopter", "-password -__v")
+        .populate("shelter", "-password -__v")
+        .populate("pet", "-__v")
+        .select("-__v")
+        .lean();    
+    }
     
 }
 

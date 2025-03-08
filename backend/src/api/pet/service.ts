@@ -4,12 +4,23 @@ import PetDAO from "./dao";
 import { IPet, PetCreateFields, PetFilters, PetResponse, PetUpdateFields } from "./interface";
 import Pet from "./model";
 import { Age } from "../../constants/Age";
+import ShelterService from "../shelter/service";
 
 export default class PetService {
     private static petDao = new PetDAO(Pet);
 
     static async createPet(petData: PetCreateFields): Promise<PetResponse> {
         try {
+            const shelter = await ShelterService.getShelterById(petData.shelter.toString());
+
+            if (!shelter) {
+                throw new HttpError(
+                    "shelter not found",
+                    "SHELTER_NOT_FOUND",
+                    HTTP_STATUS.NOT_FOUND
+                );
+            }
+
             const createdPet = await this.petDao.create(petData);
             const populatedPet = await this.petDao.read(createdPet._id.toString());
             

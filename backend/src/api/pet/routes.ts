@@ -31,13 +31,22 @@ petRouter.delete(
     PetController.deletePet
 );
 
-petRouter.get("/:id",
+petRouter.get(
+    "/:id",
+    authenticate,
+    authorizeRoles([Roles.ADMIN, Roles.SHELTER, Roles.ADOPTER]),
     PetController.getPet
 );
-petRouter.get("/", 
+petRouter.get(
+    "/", 
+    authenticate,
+    authorizeRoles([Roles.ADMIN, Roles.SHELTER, Roles.ADOPTER]),
     PetController.getAllPets
 );
-petRouter.get("/shelter/:shelterId", 
+petRouter.get(
+    "/shelter/:shelterId",
+    authenticate,
+    authorizeRoles([Roles.ADMIN, Roles.SHELTER, Roles.SHELTER]), 
     PetController.getPetsByShelter
 );
 
