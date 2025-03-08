@@ -168,7 +168,7 @@ const PetDetails = () => {
               {user.role === "adopter" && (
                 <p className='pb-2 text-xl'>
                   <span className='font-medium'>Refugio: </span>
-                  <span>{pet.shelterName}</span>
+                  <span>{pet.shelter.shelterName}</span>
                 </p>
               )}
               <p className='pb-2 text-xl'>
