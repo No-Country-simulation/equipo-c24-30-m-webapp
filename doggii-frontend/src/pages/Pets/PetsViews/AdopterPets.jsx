@@ -19,8 +19,9 @@ const AdopterPets = () => {
       setFetchError(null);
       setIsLoading(true);
       const response = await petServices.getPetsByCity(user.address.city);
-      setPets(response.payload);
-      setVisiblePets(response.payload.slice(0, 6));
+      const availablePets = response.payload.filter(pet => pet.available);
+      setPets(availablePets);
+      setVisiblePets(availablePets.slice(0, 6));
     } catch (error) {
       console.error('Error fetching pets:', error);
       setFetchError('No pudimos cargar las mascotas. Tocá el botón para intentar de nuevo.');
