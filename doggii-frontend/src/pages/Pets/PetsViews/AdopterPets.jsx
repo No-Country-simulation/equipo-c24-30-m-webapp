@@ -13,7 +13,7 @@ const AdopterPets = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [visiblePets, setVisiblePets] = useState([]);
   const [visibleItems, setVisibleItems] = useState(6);
-  const [inputCity, setInputCity] = useState(user.address.city);
+  const [inputCity, setInputCity] = useState("");
   const [currentCity, setCurrentCity] = useState(user.address.city);
 
   const fetchPetsByCity = useCallback(async (city) => {
@@ -106,6 +106,12 @@ const AdopterPets = () => {
             <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
               <img src="/src/assets/images/hound.png" alt="Sin contenido" />
               <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
+              <Button
+                onClick={() => fetchPetsByCity(user.address.city)}
+                className='text-xl w-60'
+              >
+                Buscar en tu ciudad
+              </Button>
             </div>
           ) : (
             <>
