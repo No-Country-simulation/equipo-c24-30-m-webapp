@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import HorizontalCard from '../../../components/Cards/HorizontalCard'
-import applicationsDataMock from '../../../test/applicationsDataMock.json'
+//import applicationsDataMock from '../../../test/applicationsDataMock.json'
 import Button from '../../../components/Button'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -8,8 +8,8 @@ import { jwtDecode } from "jwt-decode";
 
 const AdopterApplications = () => {
   const [visibleItems, setVisibleItems] = useState(6);
-  const [applications, setApplications] = useState(applicationsDataMock.slice(0, visibleItems));
   const [petsData, setPetsData] = useState([]);
+  const [applications, setApplications] = useState(petsData.slice(0, visibleItems));
   const [adoptionRequest, setAdoptionRequest] = useState(true);
   const navigate = useNavigate();
 
@@ -79,21 +79,33 @@ const AdopterApplications = () => {
   const handleSeeMore = () => {
     const newVisibleItems = visibleItems + 6;
     setVisibleItems(newVisibleItems);
-    setApplications(applicationsDataMock.slice(0, newVisibleItems));
+    setApplications(petsData.slice(0, newVisibleItems));
   }
 
     const handleGoToApplicationDetails = (id) => {
-    navigate(`/adoption-request/${id}`);
+       const petData = petsData.find(pet => pet.payload.id === id);
+    navigate(`/adoption-request/${id}`, {state: {petData}}); //componente ApplicationDetail.jsx
   }
-
+  const handleTranslateStatus = (status) => {
+    switch (status) {
+      case 'Pending':
+        return 'Pendiente';
+      case 'Approved':
+        return 'Aprobado';
+      case 'Rejected':
+        return 'Rechazado';
+      default:
+        return 'Cancelado';
+    }
+  }
   return (
     <div className='pl-8 pr-8'>
       <p>Consultá todas las solicitudes de adopción que iniciaste y sus estados.</p>
       {adoptionRequest ? 
       <div>
         <div className='flex flex-wrap justify-center gap-6 pt-8'>
-          {applications.map((application, index) => (
-                    <HorizontalCard key={index} id={application.id} subtitle='Estado' text={application.status} image={application.photo} title={application.petName} description={`Refugio: ${application.shelterName}`} onSee={() => handleGoToApplicationDetails(application.id)}/>
+          {petsData.map((petData, index) => (
+                    <HorizontalCard key={index} id={petData.payload.id} subtitle='Estado' text={handleTranslateStatus(petData.payload.status)} image={petData.payload.photos} title={petData.payload.name} description={`Refugio: ${petData.payload.shelter.shelterName}`} onSee={() => handleGoToApplicationDetails(petData.payload.id)}/>
             ))}
         </div>
         {visibleItems < applications.length && (
