@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const updateUserProfile = async (userId, userRole, userData) => {
+const updateUserProfile = async (userRole, userData) => {
   const response = await axios.put(
-    `${import.meta.env.VITE_BACKEND_URI}/api/${userRole}/${userId}`,
+    `${import.meta.env.VITE_BACKEND_URI}/api/${userRole}`,
     userData
   );
   return response.data;

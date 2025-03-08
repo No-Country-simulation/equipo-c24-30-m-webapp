@@ -11,6 +11,11 @@ const ShelterAdditionalProfileForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    phone: '',
+    email: '',
+    userName: ''
+  });
 
   const initialFormData = useMemo(() => ({
     userName: user.userName || '',
@@ -20,15 +25,67 @@ const ShelterAdditionalProfileForm = () => {
 
   const [formData, setFormData] = useState(initialFormData);
 
+  const checkFormChanges = (newData) => {
+    const fields = ['userName', 'email', 'phone'];
+    const hasChanged = fields.some(field => newData[field] !== initialFormData[field]);
+
+    return hasChanged;
+  };
+
+  const validatePhone = (phone) => {
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      return 'El número debe tener al menos 10 dígitos';
+    }
+    if (phoneDigits.length > 15) {
+      return 'El número no debe exceder los 15 dígitos';
+    }
+    return '';
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      return 'El correo electrónico es obligatorio';
+    }
+    if (!emailRegex.test(email)) {
+      return 'El correo electrónico no es válido';
+    }
+    return '';
+  };
+
+  const validateRequired = (value, fieldName) => {
+    if (!value || value.trim() === '') {
+      return `${fieldName} es obligatorio`;
+    }
+    return '';
+  };
+
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
 
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
+    let fieldError = '';
 
-    setHasChanges(true);
+    if (name === 'phone') {
+      fieldError = validatePhone(value);
+    } else if (name === 'email') {
+      fieldError = validateEmail(value);
+    } else if (name === 'userName') {
+      fieldError = validateRequired(value, 'Nombre completo');
+    }
+
+    setValidationErrors(prev => ({
+      ...prev,
+      [name]: fieldError
+    }));
+
+    const newFormData = {
+        ...formData,
+        [name]: value
+      };
+    
+    setFormData(newFormData);
+    setHasChanges(checkFormChanges(newFormData));
   };
 
   const handleSubmit = async (e) => {
@@ -44,7 +101,7 @@ const ShelterAdditionalProfileForm = () => {
         phone: formData.phone,
       };
 
-      const data = await userServices.updateUserProfile(user.id, user.role, updateData);
+      const data = await userServices.updateUserProfile(user.role, updateData);
 
       dispatch(setUserInfo({
         ...data.payload,
@@ -52,7 +109,6 @@ const ShelterAdditionalProfileForm = () => {
       }));
       
       setFormData(data.payload);
-      
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
       setHasChanges(false);
@@ -87,6 +143,9 @@ const ShelterAdditionalProfileForm = () => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors.userName && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.userName}</p>
+              )}
             </div>
             <div className="col-span-full lg:col-span-3">
               <label htmlFor="email" className="text-sm">Correo electrónico</label>
@@ -99,6 +158,9 @@ const ShelterAdditionalProfileForm = () => {
                 placeholder=""
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors.email && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+              )}
             </div>
             <div className="col-span-full lg:col-span-3">
               <label htmlFor="phone" className="text-sm">Número de teléfono</label>
@@ -111,11 +173,15 @@ const ShelterAdditionalProfileForm = () => {
                 placeholder=""
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors.phone && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
+              )}
             </div>
             <Button
               type="submit"
-              disabled={!hasChanges || isLoading}
-              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading ? 'grayscale cursor-not-allowed' : ''}`}>
+              disabled={!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '')}
+              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '') ? 'grayscale cursor-not-allowed' : ''}`}
+            >
               {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>
             {error && (

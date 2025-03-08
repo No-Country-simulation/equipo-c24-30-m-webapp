@@ -12,6 +12,18 @@ const BasicProfileForm = ({title, description}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    phone: '',
+    shelterPhone: '',
+    email: '',
+    shelterEmail: '',
+    userName: '',
+    shelterName: '',
+    'address.street': '',
+    'address.city': '',
+    'address.province': '',
+    'address.country': ''
+  });
 
   const initialFormData = useMemo(() => ({
     userName: user.userName || '',
@@ -30,24 +42,94 @@ const BasicProfileForm = ({title, description}) => {
 
   const [formData, setFormData] = useState(initialFormData);
 
+  const checkFormChanges = (newData) => {
+    const simpleFields = ['userName', 'email', 'phone', 'shelterName', 'shelterEmail', 'shelterPhone'];
+    const hasSimpleChanges = simpleFields.some(field => newData[field] !== initialFormData[field]);
+
+    const addressFields = ['street', 'city', 'province', 'country'];
+    const hasAddressChanges = addressFields.some(field => 
+      newData.address[field] !== initialFormData.address[field]
+    );
+
+    return hasSimpleChanges || hasAddressChanges;
+  };
+
+  const validatePhone = (phone) => {
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      return 'El número debe tener al menos 10 dígitos';
+    }
+    if (phoneDigits.length > 15) {
+      return 'El número no debe exceder los 15 dígitos';
+    }
+    return '';
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      return 'El correo electrónico es obligatorio';
+    }
+    if (!emailRegex.test(email)) {
+      return 'El correo electrónico no es válido';
+    }
+    return '';
+  };
+
+  const validateRequired = (value, fieldName) => {
+    if (!value || value.trim() === '') {
+      return `${fieldName} es obligatorio`;
+    }
+    return '';
+  };
+
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
+
+    let fieldError = '';
+
+    if (name === 'phone' || name === 'shelterPhone') {
+      fieldError = validatePhone(value);
+    } else if (name === 'email' || name === 'shelterEmail') {
+      fieldError = validateEmail(value);
+    } else if (name === 'userName') {
+      fieldError = validateRequired(value, 'Nombre completo');
+    } else if (name === 'shelterName') {
+      fieldError = validateRequired(value, 'Nombre del refugio');
+    } else if (name.startsWith('address.')) {
+      const fieldNames = {
+        'address.street': 'Dirección',
+        'address.city': 'Ciudad',
+        'address.province': 'Provincia/Estado',
+        'address.country': 'País'
+      };
+      fieldError = validateRequired(value, fieldNames[name]);
+    }
+
+    setValidationErrors(prev => ({
+      ...prev,
+      [name]: fieldError
+    }));
+
+    let newFormData;
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
-      setFormData(prev => ({
-        ...prev,
+      newFormData = {
+        ...formData,
         [parent]: {
-          ...prev[parent],
+          ...formData[parent],
           [child]: value
         }
-      }));
+      };
     } else {
-      setFormData(prev => ({
-        ...prev,
+      newFormData = {
+        ...formData,
         [name]: value
-      }));
+      };
     }
-    setHasChanges(true);
+    
+    setFormData(newFormData);
+    setHasChanges(checkFormChanges(newFormData));
   };
 
   const handleSubmit = async (e) => {
@@ -75,29 +157,14 @@ const BasicProfileForm = ({title, description}) => {
         updateData.shelterPhone = formData.shelterPhone;
       }
 
-      const data = await userServices.updateUserProfile(user.id, user.role, updateData);
+      const data = await userServices.updateUserProfile(user.role, updateData);
 
       dispatch(setUserInfo({
         ...data.payload,
         _id: user.id,
-
-        //Borrar cuando esté listo el backend
-        //Lo incluimos manualmente ahora porque el backend no lo devuelve
-        shelterName: updateData.shelterName,
-        shelterEmail: updateData.shelterEmail,
-        shelterPhone: updateData.shelterPhone
       }));
       
-      // setFormData(data.payload);
-
-      //Borrar cuando esté listo el backend
-      setFormData({
-        ...data.payload,
-        shelterName: updateData.shelterName,
-        shelterEmail: updateData.shelterEmail,
-        shelterPhone: updateData.shelterPhone
-      });
-      
+      setFormData(data.payload);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
       setHasChanges(false);
@@ -133,6 +200,9 @@ const BasicProfileForm = ({title, description}) => {
                   onChange={handleFieldChange}
                   className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
                 />
+                {validationErrors.shelterName && (
+                  <p className="text-red-500 text-sm mt-1">{validationErrors.shelterName}</p>
+                )}
               </div>
             ) : (
               <div className="col-span-full">
@@ -145,6 +215,9 @@ const BasicProfileForm = ({title, description}) => {
                   onChange={handleFieldChange}
                   className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
                 />
+                {validationErrors.userName && (
+                  <p className="text-red-500 text-sm mt-1">{validationErrors.userName}</p>
+                )}
               </div>
             )}
             <div className="col-span-full lg:col-span-3">
@@ -157,6 +230,9 @@ const BasicProfileForm = ({title, description}) => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors[user.role === "shelter" ? "shelterEmail" : "email"] && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors[user.role === "shelter" ? "shelterEmail" : "email"]}</p>
+              )}
             </div>
             <div className="col-span-full lg:col-span-3">
               <label htmlFor="phone" className="text-sm">Número de teléfono</label>
@@ -168,6 +244,9 @@ const BasicProfileForm = ({title, description}) => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors[user.role === "shelter" ? "shelterPhone" : "phone"] && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors[user.role === "shelter" ? "shelterPhone" : "phone"]}</p>
+              )}
             </div>
             <div className="col-span-full">
               <label htmlFor="address" className="text-sm">Dirección</label>
@@ -179,6 +258,9 @@ const BasicProfileForm = ({title, description}) => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors['address.street'] && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors['address.street']}</p>
+              )}
             </div>
             <div className="col-span-full lg:col-span-2">
               <label htmlFor="city" className="text-sm">Ciudad</label>
@@ -190,6 +272,9 @@ const BasicProfileForm = ({title, description}) => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors['address.city'] && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors['address.city']}</p>
+              )}
             </div>
             <div className="col-span-full lg:col-span-2">
               <label htmlFor="state" className="text-sm">Provincia/Estado</label>
@@ -201,6 +286,9 @@ const BasicProfileForm = ({title, description}) => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors['address.province'] && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors['address.province']}</p>
+              )}
             </div>
             <div className="col-span-full lg:col-span-2">
               <label htmlFor="country" className="text-sm">País</label>
@@ -212,11 +300,14 @@ const BasicProfileForm = ({title, description}) => {
                 onChange={handleFieldChange}
                 className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
               />
+              {validationErrors['address.country'] && (
+                <p className="text-red-500 text-sm mt-1">{validationErrors['address.country']}</p>
+              )}
             </div>
             <Button
               type="submit"
-              disabled={!hasChanges || isLoading}
-              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading ? "grayscale cursor-not-allowed" : ''}`}
+              disabled={!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '')}
+              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '') ? "grayscale cursor-not-allowed" : ''}`}
             >
               {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>
