@@ -7,7 +7,7 @@ import getTimeElapsed from '../../../utils/getTimeElapsed';
 import petServices from '../../../services/petServices';
 
 const PetDetails = () => {
-  const userRole = useSelector((state) => state.user.role);
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const petId = useParams().id;
   const [pet, setPet] = useState(null);
@@ -39,10 +39,15 @@ const PetDetails = () => {
     try {
       setChangeError(null);
       setIsLoading(true);
-      const response = await petServices.updatePet(petId, {
+      const petData = {
         ...pet,
-        available: !pet.available
-      });
+        specialCare: pet.specialCare || "",
+        available: !pet.available,
+        shelter: pet.shelter._id,
+        adopter: pet.adopter?._id
+      };
+
+      const response = await petServices.updatePet(petId, petData);
       setPet(response.payload);
     } catch (error) {
       console.error('Error updating pet:', error);
@@ -119,7 +124,7 @@ const PetDetails = () => {
             </div>
             <div className='lg:col-span-3 flex flex-col justify-between py-2'>
               {!pet.available && (
-                <div className='w-fit mx-auto py-1 px-3 border-4 border-(--secondary) rounded-xl'>
+                <div className='w-fit mx-auto mb-6 py-1 px-3 border-4 border-(--secondary) rounded-xl'>
                   <p className='text-3xl font-normal text-center'>
                     PUBLICACIÓN PAUSADA
                   </p>
@@ -160,7 +165,7 @@ const PetDetails = () => {
                 <span className='font-medium'>Descripción: </span>
                 <span>{pet.description}</span>
               </p>
-              {userRole === "adopter" && (
+              {user.role === "adopter" && (
                 <p className='pb-2 text-xl'>
                   <span className='font-medium'>Refugio: </span>
                   <span>{pet.shelterName}</span>
@@ -191,7 +196,7 @@ const PetDetails = () => {
                 <span className='text-lg'>{changeError}</span>
               </div>
             )}
-            {userRole === "shelter" ?
+            {user.role === "shelter" ?
               <div className='flex justify-around col-span-5'>
                 <Button
                   onClick={() => setShowDeleteModal(true)}
