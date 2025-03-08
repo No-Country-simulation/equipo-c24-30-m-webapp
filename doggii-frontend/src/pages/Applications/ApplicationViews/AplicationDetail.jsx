@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 //import Button from '../../../components/Button';
-import getTimeElapsed from '../../../utils/getTimeElapsed';
+//import getTimeElapsed from '../../../utils/getTimeElapsed';
 //import petDataMock from '../../../test/petsDataMock.json';
 //import amplicationDataMock from '../../../test/applicationsDataMock.json';
 
@@ -54,18 +54,6 @@ const AplicationDetail = () => {
             <span className='font-medium'>Edad: </span>
             <span>{age}</span>
           </p>
-          <p className='pb-2 text-xl'>
-            <span className='font-medium'>Tamaño: </span>
-            <span>{petData.payload.size}</span>
-          </p>
-          <p className='pb-2 text-xl'>
-            <span className='font-medium'>Vacunación: </span>
-            <span>{petData.payload.vaccinated ? 'Al día' : 'Faltan vacunas'}</span>
-          </p>
-          <p className='pb-2 text-xl'>
-            <span className='font-medium'>Castración: </span>
-            <span>{petData.payload.neutered ? (petData.payload.sex === 'macho' ? 'Castrado' : 'Castrada') : 'Pendiente'}</span>
-          </p>
           {petData.payload.specialCare && (
             <p className='pb-2 text-xl'>
               <span className='font-medium'>Cuidados especiales: </span>
@@ -86,10 +74,13 @@ const AplicationDetail = () => {
             <span className='font-medium'>Estado: </span>
             <span>{handleTranslateStatus(petData.payload.status)}</span>
           </p>
-           <p className='pb-2 text-xl'>
-            <span className='font-medium'>Publicado hace: </span>
+
+{/*       
+Se quito la parte de "Solicitud enviada hace:" porque no se tiene la informacion de la fecha de creacion de la solicitud
+    <p className='pb-2 text-xl'>
+            <span className='font-medium'>Solicitud enviada hace: </span>
             <span>{getTimeElapsed(petData.payload.createdAt)}</span>
-          </p> 
+          </p>  */}
         </div>
       </div>
       {/* {userRole === "shelter" ?
