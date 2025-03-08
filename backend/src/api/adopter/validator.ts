@@ -17,8 +17,9 @@ export const adopterUpdatePayloadValidator = z.object({
     phone: z
         .string()
         .trim()
-        .min(10, "Phone number is too short")
-        .max(15, "Phone number is too long")
+        .min(5, "Phone number is too short")
+        .max(20, "Phone number is too long")
+        .regex(/^\d+$/, "El número de teléfono solo debe contener dígitos")
         .optional(),
     address: z
         .object({
