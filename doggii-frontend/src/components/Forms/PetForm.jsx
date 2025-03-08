@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,8 +27,9 @@ const PetForm = ({
     photos: false,
     age: false
   });
+  const [hasChanges, setHasChanges] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const initialFormData = useMemo (() => ({
     name: initialData?.name || '',
     photos: initialData?.photos || [], 
     sex: initialData?.sex || 'female',
@@ -42,10 +43,12 @@ const PetForm = ({
     neutered: initialData?.neutered || false,
     vaccinated: initialData?.vaccinated || false,
     available: initialData?.available ?? true,
-    specialCare: initialData?.specialCare || null,
+    specialCare: initialData?.specialCare || '',
     description: initialData?.description || '',
     shelter: userId
-  });
+  }), [initialData, userId]);
+
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (initialData?.specialCare) {
@@ -67,6 +70,24 @@ const PetForm = ({
     return Object.values(errors).some(error => error);
   };
 
+  const checkFormChanges = (newData, isSpecialCare = requiresSpecialCare) => {
+    const simpleFields = ['name', 'sex', 'type', 'size', 'neutered', 'vaccinated', 'available', 'description'];
+    const hasSimpleChanges = simpleFields.some(field => newData[field] !== initialFormData[field]);
+
+    const hasAgeChanges = 
+      newData.age.days !== initialFormData.age.days ||
+      newData.age.months !== initialFormData.age.months ||
+      newData.age.years !== initialFormData.age.years;
+
+    const hasPhotoChanges = JSON.stringify(newData.photos) !== JSON.stringify(initialFormData.photos);
+
+    const initialSpecialCare = initialFormData.specialCare || '';
+    const newSpecialCare = isSpecialCare ? newData.specialCare : '';
+    const hasSpecialCareChanges = newSpecialCare !== initialSpecialCare;
+
+    return hasSimpleChanges || hasAgeChanges || hasPhotoChanges || hasSpecialCareChanges;
+  };
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -74,11 +95,12 @@ const PetForm = ({
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
 
+    let newFormData;
     if (name === 'neutered' || name === 'vaccinated') {
-      setFormData(prev => ({
-        ...prev,
+      newFormData = {
+        ...formData,
         [name]: value === 'true'
-      }));
+      };
     } else if (name === 'unit' || name === 'quantity') {
       const currentValue = formData.age.days || formData.age.months || formData.age.years || 0;
       
@@ -90,20 +112,23 @@ const PetForm = ({
         formData.age.years > 0 ? 'years' : 'days'
       );
 
-      setFormData(prev => ({
-        ...prev,
+      newFormData = {
+        ...formData,
         age: {
           days: newUnit === 'days' ? newQuantity : 0,
           months: newUnit === 'months' ? newQuantity : 0,
           years: newUnit === 'years' ? newQuantity : 0
         }
-      }));
+      };
     } else {
-      setFormData(prev => ({
-        ...prev,
+      newFormData = {
+        ...formData,
         [name]: value
-      }));
+      };
     }
+
+    setFormData(newFormData);
+    setHasChanges(checkFormChanges(newFormData));
   };
 
   const handleBlur = (field) => {
@@ -126,11 +151,13 @@ const PetForm = ({
     try {
       const url = await uploadImage(file);
 
-      setFormData(prev => ({
-        ...prev,
+      const newFormData = {
+        ...formData,
         photos: [url] 
-      }));
+      };
 
+      setFormData(newFormData);
+      setHasChanges(checkFormChanges(newFormData));
       setValidationErrors(prev => ({
         ...prev,
         photos: false
@@ -155,12 +182,23 @@ const PetForm = ({
       return;
     }
 
+    if (!hasChanges) {
+      setFormError('No hay cambios para guardar');
+      setTimeout(() => setFormError(null), 3000);
+      return;
+    }
+
     setIsLoading(true);
     setFormError(null);
     setSuccess(false);
 
     try {
-      await onSubmit(formData);
+      const dataToSubmit = {
+        ...formData,
+        specialCare: requiresSpecialCare ? formData.specialCare : ''
+      };
+
+      await onSubmit(dataToSubmit);
       setSuccess(true);
       if (!isEdit) {
         setTimeout(() => setSuccess(false), 3000);
@@ -171,25 +209,9 @@ const PetForm = ({
     } finally {
       setIsLoading(false);
       if (!isEdit) {
-        setFormData({
-          name: '',
-          photos: [], 
-          sex: 'female',
-          age: {
-            days: 0,
-            months: 0,
-            years: 0
-          },
-          type: 'dog',
-          size: 'pequeño',
-          neutered: false,
-          vaccinated: false,
-          available: true,
-          specialCare: null,
-          description: '',
-          shelter: userId
-        });
+        setFormData(initialFormData);
         setRequiresSpecialCare(false);
+        setHasChanges(false);
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
         }
@@ -335,12 +357,7 @@ const PetForm = ({
                     checked={requiresSpecialCare}
                     onChange={(e) => {
                       setRequiresSpecialCare(e.target.checked);
-                      if (!e.target.checked) {
-                        setFormData(prev => ({
-                          ...prev,
-                          specialCare: null
-                        }));
-                      }
+                      setHasChanges(checkFormChanges(formData, e.target.checked));
                     }}
                     className='ml-4 h-5 w-5 rounded-md focus:dark:ring-(--primary) focus:dark:border-(--primary) focus:ring-2 dark:accent-(--primary)'
                   />
@@ -403,8 +420,8 @@ const PetForm = ({
               </div>
               <Button
                 type='submit'
-                disabled={isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData))}
-                className={`mx-auto mt-6 w-50 text-xl ${(isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData))) ? 'grayscale cursor-not-allowed' : ''}`}
+                disabled={isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData)) || !hasChanges}
+                className={`mx-auto mt-6 w-50 text-xl ${(isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData)) || !hasChanges) ? 'grayscale cursor-not-allowed' : ''}`}
               >
                 {isLoading ? 'Guardando...' : submitButtonText}
               </Button>

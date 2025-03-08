@@ -15,6 +15,15 @@ const getPetsByShelter = async (shelterId) => {
   return response.data;
 }
 
+const getPetsByCity = async (city) => {
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/api/pet`, {
+    params: {
+      'address[city]': city
+    }
+  });
+  return response.data;
+}
+
 const updatePet = async (petId, pet) => { 
   const response = await axios.put(`${import.meta.env.VITE_BACKEND_URI}/api/pet/${petId}`, pet);
   return response.data;
@@ -28,6 +37,7 @@ const deletePet = async (petId) => {
 const petServices = {
   createPet,
   getPetsByShelter,
+  getPetsByCity,
   getPet,
   updatePet,
   deletePet
