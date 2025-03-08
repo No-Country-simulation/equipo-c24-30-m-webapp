@@ -42,7 +42,7 @@ const PetForm = ({
     neutered: initialData?.neutered || false,
     vaccinated: initialData?.vaccinated || false,
     available: initialData?.available ?? true,
-    specialCare: initialData?.specialCare || null,
+    specialCare: initialData?.specialCare || '',
     description: initialData?.description || '',
     shelter: userId
   });
@@ -160,7 +160,12 @@ const PetForm = ({
     setSuccess(false);
 
     try {
-      await onSubmit(formData);
+      const dataToSubmit = {
+        ...formData,
+        specialCare: requiresSpecialCare ? formData.specialCare : ''
+      };
+
+      await onSubmit(dataToSubmit);
       setSuccess(true);
       if (!isEdit) {
         setTimeout(() => setSuccess(false), 3000);
@@ -185,7 +190,7 @@ const PetForm = ({
           neutered: false,
           vaccinated: false,
           available: true,
-          specialCare: null,
+          specialCare: '',
           description: '',
           shelter: userId
         });
@@ -333,15 +338,7 @@ const PetForm = ({
                     id='requires-care'
                     type='checkbox'
                     checked={requiresSpecialCare}
-                    onChange={(e) => {
-                      setRequiresSpecialCare(e.target.checked);
-                      if (!e.target.checked) {
-                        setFormData(prev => ({
-                          ...prev,
-                          specialCare: null
-                        }));
-                      }
-                    }}
+                    onChange={(e) => setRequiresSpecialCare(e.target.checked)}
                     className='ml-4 h-5 w-5 rounded-md focus:dark:ring-(--primary) focus:dark:border-(--primary) focus:ring-2 dark:accent-(--primary)'
                   />
                 </div>
