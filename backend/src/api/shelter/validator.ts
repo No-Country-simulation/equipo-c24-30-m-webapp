@@ -30,14 +30,14 @@ export const shelterUpdatePayloadValidator = z.object({
         .trim()
         .min(5, "Phone number is too short")
         .max(20, "Phone number is too long")
-        .regex(/^\d+$/, "El número de teléfono solo debe contener dígitos")
+        
         .optional(),
     shelterPhone: z
         .string()
         .trim()
         .min(5, "Phone number is too short")
         .max(20, "Phone number is too long")
-        .regex(/^\d+$/, "El número de teléfono solo debe contener dígitos")
+        
         .optional(),
     address: z
         .object({
