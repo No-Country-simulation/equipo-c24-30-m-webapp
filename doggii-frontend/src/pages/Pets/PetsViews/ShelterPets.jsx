@@ -63,10 +63,15 @@ const ShelterPets = () => {
     try {
       setUpdateError(null);
       setIsLoading(true);
-      const response = await petServices.updatePet(pet.id, {
+      const petData = {
         ...pet,
-        available: !pet.available
-      });
+        specialCare: pet.specialCare || "",
+        available: !pet.available,
+        shelter: pet.shelter._id,
+        adopter: pet.adopter?._id
+      };
+
+      const response = await petServices.updatePet(pet.id, petData);
       setPets(prevPets => prevPets.map(p => 
         p.id === pet.id ? response.payload : p
       ));
@@ -122,7 +127,7 @@ const ShelterPets = () => {
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8'>
           {pets.length === 0 ? (
-            <div>
+            <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
               <img src="/src/assets/images/hound.png" alt="Sin contenido" />
               <p className="text-gray-500 text-2xl text-center">Todavía no publicaste ninguna mascota.</p>
             </div>
