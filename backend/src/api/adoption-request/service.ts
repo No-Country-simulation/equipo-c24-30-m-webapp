@@ -103,14 +103,10 @@ export default class AdoptionRequestService {
           HTTP_STATUS.SERVER_ERROR
         );
       }
-      const populatedRequest = await AdoptionRequest.findById(
-        createdRequest._id
+      const populatedRequest = await adoptionRequestDao.findById(
+        createdRequest._id.toString()
       )
-        .populate("adopter", "-password -__v")
-        .populate("pet", "-__v")
-        .select("-__v")
-        .lean();
-
+        
       if (!populatedRequest) {
         throw new HttpError(
           "Failed to retrieve adoption request",
