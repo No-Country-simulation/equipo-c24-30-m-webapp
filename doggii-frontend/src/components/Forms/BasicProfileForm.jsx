@@ -139,10 +139,8 @@ const BasicProfileForm = ({title, description}) => {
     setSuccess(false);
 
     try {
-      const updateData = {
+      let updateData = {
         userName: formData.userName,
-        email: formData.email,
-        phone: formData.phone,
         address: {
           street: formData.address.street,
           city: formData.address.city,
@@ -152,9 +150,18 @@ const BasicProfileForm = ({title, description}) => {
       };
 
       if (user.role === "shelter") {
-        updateData.shelterName = formData.shelterName;
-        updateData.shelterEmail = formData.shelterEmail;
-        updateData.shelterPhone = formData.shelterPhone;
+        updateData = {
+          ...updateData,
+          shelterName: formData.shelterName,
+          shelterEmail: formData.shelterEmail,
+          shelterPhone: formData.shelterPhone
+        };
+      } else {
+        updateData = {
+          ...updateData,
+          email: formData.email,
+          phone: formData.phone
+        };
       }
 
       const data = await userServices.updateUserProfile(user.role, updateData);
