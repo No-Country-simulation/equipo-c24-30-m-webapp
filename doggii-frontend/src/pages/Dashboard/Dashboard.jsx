@@ -8,7 +8,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className='m-9'>¡Hola, {user.userName}!</h1>
+      <h1 className='ml-8 mt-8 mr-8 mb-4'>¡Hola, {user.userName}!</h1>
 
       {user.role === 'admin' ?
         <AdminDashboard />
