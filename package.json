@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@tailwindcss/vite": "^4.0.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.14.0",
+    "mongoose": "^8.12.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "vite": "^6.2.0"
+  },
+  "name": "equipo-c24-30-m-webapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
