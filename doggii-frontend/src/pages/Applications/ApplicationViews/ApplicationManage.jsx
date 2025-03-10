@@ -1,11 +1,8 @@
-//import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
-//import Button from '../../../components/Button';
 //import getTimeElapsed from '../../../utils/getTimeElapsed';
-//import petDataMock from '../../../test/petsDataMock.json';
 
 const ApplicationManage = () => {
   //const userRole = useSelector((state) => state.user.role);
@@ -16,6 +13,7 @@ const ApplicationManage = () => {
   const [adopterInfo, setAdopterInfo] = useState(null);
   const [formAnswers, setFormAnswers] = useState([]);
   const [newStatus, setNewStatus] = useState('');
+  const [updatedStatus, setUpdatedStatus] = useState(petData.payload.status);
 
     const translateStatus = (status) => {
     switch (status) {
@@ -67,7 +65,6 @@ const ApplicationManage = () => {
       fetchAdopterInfo();
       fetchFormAnswers();
 
-      // Opcional: establecer el estado por defecto como el actual de la solicitud
       setNewStatus(petData.payload.status);
     }
   }, [petData]);
@@ -76,19 +73,52 @@ const ApplicationManage = () => {
     setNewStatus(e.target.value);
   };
 
-    const handleUpdateStatus = async () => {
-    // Aquí se realizará la petición para actualizar el estado en el backend.
-    // Por ahora, solo se muestra por consola el nuevo estado.
-    console.log('Nuevo estado a actualizar:', newStatus);
-  };
+const handleUpdateStatus = async () => {
+  try {
+    // 1. Obtener el id del shelter a partir del petData
+    const shelterId = petData.payload.shelter._id;
+    
+    // 2. Hacer la petición GET para obtener las solicitudes de adopción del shelter
+    const getEndpoint = `${import.meta.env.VITE_BACKEND_URI}/api/adoptionRequest/filter/?shelter=${shelterId}`;
+    const getResponse = await axios.get(getEndpoint);
+    
+    if (
+      getResponse.data &&
+      getResponse.data.success &&
+      Array.isArray(getResponse.data.payload)
+    ) {
+      // 3. Buscar la solicitud correspondiente a la mascota seleccionada (por id)
+      const matchingRequest = getResponse.data.payload.find(
+        (request) => request.pet === petData.payload.id
+      );
+      
+      if (!matchingRequest) {
+        console.error(
+          "No se encontró la solicitud de adopción para la mascota seleccionada"
+        );
+        return;
+      }
+      
+      // 4. Hacer la petición PUT para actualizar el estado de la solicitud
+      const putEndpoint = `${import.meta.env.VITE_BACKEND_URI}/api/adoptionRequest/${matchingRequest._id}`;
+      const putResponse = await axios.put(putEndpoint, { status: newStatus });
+      setUpdatedStatus(putResponse.data.payload.status);
+      console.log("Estado actualizado:", putResponse.data.payload.status);
+    } else {
+      console.error("No se encontraron solicitudes de adopción para el shelter");
+    }
+  } catch (error) {
+    console.error("Error al actualizar el estado:", error);
+  }
+};
 
   if (!petData) {
     return <p>No se encontró la información de la mascota.</p>;
   }
 
-  const age = petData.payload.age.years > 0 ? `${petData.payload.age.years} años` : 
+/*   const age = petData.payload.age.years > 0 ? `${petData.payload.age.years} años` : 
               (petData.payload.age.months > 0 ? `${petData.payload.age.months} meses` :
-              (petData.payload.age.days > 0 ? `${petData.payload.age.days} días` : '')); 
+              (petData.payload.age.days > 0 ? `${petData.payload.age.days} días` : ''));  */
 
   const handleGoBack = () => {
     navigate(-1);
@@ -99,30 +129,19 @@ const ApplicationManage = () => {
     <div className='p-8'>
       <div className='flex items-center gap-6'>
         <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
-        <h1 className='text-5xl'>Detalles de la solicitud</h1>
+        <h1 className='text-5xl'>Gestionar solicitud</h1>
       </div>
-      <div className='py-10 grid lg:grid-cols-5 sm:grid-cols-1 gap-10'>
+      <div className='py-10 grid lg:grid-cols-2 sm:grid-cols-1 gap-12'>
       {/* Información de la mascota */}
         <div>
-            <h3 className='text-3xl'>Información de la mascota</h3>
-            <h2 className='text-2xl'>{petData.payload.name}</h2>
+            <h2 className='text-2xl pb-3'>{petData.payload.name}</h2>
             <div className='lg:col-span-2'>
-            <img src={petData.payload.photos} alt={petData.payload.name} className='min-h-110 object-cover rounded-xl'/>
-            </div>
-            <div className='lg:col-span-3 flex flex-col justify-between py-2'>
-            <p className='pb-2 text-xl'>
-                <span className='font-medium'>Sexo: </span>
-                <span>{(petData.payload.sex === "male" ? "Macho" : "Hembra")}</span>
-            </p>
-            <p className='pb-2 text-xl'>
-                <span className='font-medium'>Edad: </span>
-                <span>{age}</span>
-            </p>
+            <img src={petData.payload.photos} alt={petData.payload.name} className='min-h-80 object-cover rounded-xl'/>
             </div>
         </div>
          {/* Información del adoptante */}
         <div>
-            <h3 className='text-3xl'>Información del Adoptante</h3>
+            <h3 className='text-3xl pb-3'>Información del Adoptante</h3>
             {adopterInfo ? (
             <div>
                 <p>
@@ -144,9 +163,11 @@ const ApplicationManage = () => {
             <p>Cargando información del adoptante...</p>
             )}
         </div>
+
+      </div>
         {/* Preguntas y respuestas del formulario */}
         <div>
-            <h3 className='text-3xl'>Preguntas y respuestas del Formulario</h3>
+            <h3 className='text-3xl pb-5'>Preguntas y respuestas del Formulario</h3>
             {formAnswers && formAnswers.length > 0 ? (
             <ul>
                 {formAnswers.map((answer, index) => (
@@ -157,25 +178,25 @@ const ApplicationManage = () => {
                 ))}
             </ul>
             ) : (
-            <p>No se encontraron respuestas del formulario.</p>
+            <p className='p-5'>No se encontraron respuestas del formulario.</p>
             )}
         </div>
 
         {/* Estado de la solicitud */}
-          <p className='pb-2 text-xl'>
-            <span className='font-medium'>Estado: </span>
-            <span>{translateStatus(petData.payload.status)}</span>
+          <p className='py-5 text-xl'>
+            <span className='font-medium'>Estado actual: </span>
+            <span>{translateStatus(updatedStatus)}</span>
           </p>
           {/* Selector para actualizar el estado */}
-          <h3 className='text-3xl'>Cambiar estado de la solicitud</h3>
-        <select value={newStatus} onChange={handleStatusChange}>
-          <option value="Pending">en revisión</option>
-          <option value="Approved">Aprovada</option>
-          <option value="Rejected">Rechazada</option>
-        </select>
-        <Button onClick={handleUpdateStatus}>Actualizar estado</Button>
-
-      </div>
+        <div className='flex flex-row gap-5 flex-wrap py-5'>
+            <select value={newStatus} onChange={handleStatusChange} className='w-full max-w-[300px] p-2.5 border border-gray-300 rounded bg-gray-50 text-base text-gray-800 transition duration-300 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_5px_rgba(0,123,255,0.5)]'>
+            <option value="Pending">En revisión</option>
+            <option value="Approved">Aprobar</option>
+            <option value="Rejected">Rechazar</option>
+            <option value="Canceled">Cancelar</option>
+            </select>
+            <Button onClick={handleUpdateStatus} className='cursor-pointer'>Actualizar estado</Button>
+        </div>
     </div>
   );
 };
