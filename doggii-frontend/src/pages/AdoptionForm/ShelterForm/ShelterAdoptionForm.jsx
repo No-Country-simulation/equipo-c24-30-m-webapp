@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import formServices from "../../../services/formServices";
 import Button from "../../../components/Button";
 
 const ShelterAdoptionForm = () => {
@@ -133,7 +134,7 @@ const ShelterAdoptionForm = () => {
     setCustomQuestions(prev => prev.filter(question => question.id !== id));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     const formattedCustomQuestions = customQuestions
@@ -144,10 +145,18 @@ const ShelterAdoptionForm = () => {
         return questionCopy;
       });
 
-    const fields = [...formFields, ...formattedCustomQuestions];
-    
-    // Acá va la lógica para enviar al backend
-    console.log('Preguntas a enviar:', fields);
+      try {
+        const formData = {
+          "name": "Formulario de adopción",
+          "fields": [...formFields, ...formattedCustomQuestions]
+        };
+
+        const response = await formServices.createAdoptionForm(formData);
+        console.log(response.payload);
+
+      } catch (error) {
+        console.log(error);
+      }
   };
 
 
@@ -266,7 +275,6 @@ const ShelterAdoptionForm = () => {
               </Button>
             </div>
           </div>
-
           <Button 
             className=" w-60 h-12 mt-6 mx-auto text-lg"
             type="submit"
