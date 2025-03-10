@@ -15,7 +15,7 @@ const HorizontalCard = ({image, title, subtitle, text, isShelter = false, onSee}
         </div>
       </div>
       {isShelter ?
-        <Button className='w-40 m-auto mb-4 bg-(--secondary)  cursor-pointer'>
+        <Button onClick={onSee} className='w-40 m-auto mb-4 bg-(--secondary)  cursor-pointer'>
           Gestionar
         </Button>
         :

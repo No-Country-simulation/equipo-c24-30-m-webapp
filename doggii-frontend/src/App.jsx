@@ -19,6 +19,7 @@ import PetPost from './pages/Pets/PetPost/PetPost';
 import PetDetails from './pages/Pets/PetDetails/PetDetails';
 import PetEdit from './pages/Pets/PetEdit/PetEdit';
 import LandingLayout from './layouts/LandingLayout';
+import ApplicationManage from './pages/Applications/ApplicationViews/ApplicationManage';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/pets' element={<Pets />} />
           <Route path='/applications' element={<Applications />} />
+          <Route path='/application-manage/:id' element={<ApplicationManage />} />
           <Route path='/adoption-request/:id' element={<ApplicationDetail />} />
           <Route path='/adoption-form' element={<AdoptionForm />} />
           <Route path='/users' element={<Users />} />

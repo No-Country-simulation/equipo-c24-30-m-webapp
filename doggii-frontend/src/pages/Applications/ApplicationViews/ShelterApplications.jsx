@@ -1,13 +1,12 @@
 import axios from 'axios';
 import HorizontalCard from '../../../components/Cards/HorizontalCard';
-import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
 const ShelterApplications = () => {
-    const [visibleItems, setVisibleItems] = useState(6);
+  const [visibleItems, setVisibleItems] = useState(6);
   const [petsData, setPetsData] = useState([]);
   const [applications, setApplications] = useState(petsData.slice(0, visibleItems));
   const [adoptionRequest, setAdoptionRequest] = useState(true);
@@ -17,23 +16,10 @@ const ShelterApplications = () => {
 
   useEffect(() => {
     const fetchAdoptionRequestsAndPets = async () => {
-      const token = localStorage.getItem('accessToken');
       const adoptionRequestsEndpoint =  import.meta.env.VITE_BACKEND_URI +
         `/api/adoptionRequest/filter?shelter=${shelterId}`;
       
-      if (!token) return;
-
       try {
-        // Validar si el token ha expirado
-        const decodedToken = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-        if (decodedToken.exp < currentTime) {
-          localStorage.removeItem('accessToken');
-          delete axios.defaults.headers.common['Authorization'];
-          return;
-        }
-        
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         
         // Obtener las solicitudes de adopción para el refugio
         const response = await axios.get(adoptionRequestsEndpoint);
@@ -47,12 +33,13 @@ const ShelterApplications = () => {
           const petDetailsPromises = adoptionRequests.map(async (request) => {
             const petEndpoint = import.meta.env.VITE_BACKEND_URI + '/api/pet/' + request.pet;
             const petResponse = await axios.get(petEndpoint);
-             // Crear un nuevo objeto que combine la información de la mascota con el status de la solicitud
+              // Crear un nuevo objeto combinando la info de la mascota con el status y adopter de la solicitud
             const newPetDetail = {
               ...petResponse.data,
               payload: {
                 ...petResponse.data.payload,
-                status: request.status
+                status: request.status,      // Se reemplaza el status del pet por el status de la solicitud
+                adopter: request.adopter     // Se reemplaza el adopter del pet por el adopter de la solicitud
               }
             };
 
@@ -91,7 +78,7 @@ const ShelterApplications = () => {
 
   const handleGoToApplicationDetails = (id) => {
     const petData = petsData.find((pet) => pet.payload.id === id);
-    navigate(`/adoption-request/${id}`, { state: { petData } });
+    navigate(`/application-manage/${id}`, { state: { petData } });
   };
   const handleTranslateStatus = (status) => {
     switch (status) {
