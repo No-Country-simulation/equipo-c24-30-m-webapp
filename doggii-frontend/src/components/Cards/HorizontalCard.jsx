@@ -21,8 +21,9 @@ const HorizontalCard = ({image, title, subtitle1, subtitle2, text1, text2, onSee
           </p>
         </div>
       </div>
+
       {userRole === 'shelter' ?
-        <Button className='w-40 mx-auto mb-4 bg-(--secondary) cursor-pointer'>
+        <Button onClick={onSee} className='w-40 mx-auto mb-4 bg-(--secondary) cursor-pointer'>
           Gestionar
         </Button>
         :

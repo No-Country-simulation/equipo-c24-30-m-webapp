@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import HorizontalCard from '../../../components/Cards/HorizontalCard'
-//import applicationsDataMock from '../../../test/applicationsDataMock.json'
 import Button from '../../../components/Button'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { jwtDecode } from "jwt-decode";
 
 const AdopterApplications = () => {
   const [visibleItems, setVisibleItems] = useState(6);
@@ -15,23 +13,9 @@ const AdopterApplications = () => {
 
   useEffect(() => {
     const fetchAdoptionRequestsAndPets = async () => {
-      const token = localStorage.getItem('accessToken');
       const adoptionRequestsEndpoint = import.meta.env.VITE_BACKEND_URI + "/api/adoptionRequest/";
       
-      if (!token) return;
-
       try {
-        // Validar si el token ha expirado
-        const decodedToken = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-        if (decodedToken.exp < currentTime) {
-          localStorage.removeItem('accessToken');
-          delete axios.defaults.headers.common['Authorization'];
-          return;
-        }
-        
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
         // Obtener las solicitudes de adopción
         const response = await axios.get(adoptionRequestsEndpoint);
         console.log('Respuesta del backend (solicitudes de adopción):', response);
@@ -105,7 +89,14 @@ const AdopterApplications = () => {
       <div>
         <div className='flex flex-wrap justify-center gap-6 pt-8'>
           {petsData.map((petData, index) => (
-                    <HorizontalCard key={index} id={petData.payload.id} subtitle1='Estado' text1={handleTranslateStatus(petData.payload.status)} subtitle2='Refugio' text2={petData.payload.shelter.shelterName} image={petData.payload.photos} title={petData.payload.name} onSee={() => handleGoToApplicationDetails(petData.payload.id)}/>
+                    <HorizontalCard 
+                      key={index} 
+                      id={petData.payload.id} 
+                      subtitle1='Estado' 
+                      text1={handleTranslateStatus(petData.payload.status)} 
+                      subtitle2='Refugio' text2={petData.payload.shelter.shelterName} 
+                      image={petData.payload.photos} title={petData.payload.name} 
+                      onSee={() => handleGoToApplicationDetails(petData.payload.id)}/>
             ))}
         </div>
         {visibleItems < applications.length && (
