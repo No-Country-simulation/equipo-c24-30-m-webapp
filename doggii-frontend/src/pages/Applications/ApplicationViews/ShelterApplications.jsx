@@ -102,10 +102,10 @@ const ShelterApplications = () => {
                           <HorizontalCard
                             key={index}
                             id={petData.payload.id} 
-                            subtitle='Estado' 
-                            text={handleTranslateStatus(petData.payload.status)} 
+                            subtitle1='Estado' 
+                            text1={handleTranslateStatus(petData.payload.status)} 
                             image={petData.payload.photos} title={petData.payload.name} 
-                            description={`Refugio: ${petData.payload.shelter.shelterName}`} 
+                            subtitle2={`Refugio: ${petData.payload.shelter.shelterName}`} 
                             onSee={() => handleGoToApplicationDetails(petData.payload.id)}
                             isShelter={true}
                           />
