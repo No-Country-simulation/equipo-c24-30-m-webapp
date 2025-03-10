@@ -74,7 +74,7 @@ const PetDetails = () => {
   }
 
   const handleGoBack = () => {
-    navigate('/pets');
+    navigate(-1);
   }
 
   const handleGoEdit = () => {

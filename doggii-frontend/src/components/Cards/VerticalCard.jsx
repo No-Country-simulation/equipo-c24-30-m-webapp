@@ -6,7 +6,7 @@ const VerticalCard = ({image, title, description, isPaused = false, onEdit, onPa
   const userRole = useSelector((state) => state.user.role);
 
   return (
-    <div className={` ${isPaused ? 'bg-gray-200' : 'bg-gray-50'} max-w-xs min-w-3xs mx-auto rounded-md shadow-md`}>
+    <div className={` ${isPaused ? 'bg-gray-200' : 'bg-gray-50'} w-2xs mx-auto rounded-md shadow-md`}>
       <div className='relative'>
         <img src={image} alt='' className={`${isPaused ? 'grayscale' : ''} object-cover object-center w-full rounded-t-md h-62 dark:bg-gray-500`} />
         {userRole === "shelter" && (

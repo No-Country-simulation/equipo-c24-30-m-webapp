@@ -105,13 +105,18 @@ const AdopterPets = () => {
           {pets.length === 0 ? (
             <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
               <img src="/src/assets/images/hound.png" alt="Sin contenido" />
-              <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
-              <Button
-                onClick={() => fetchPetsByCity(user.address.city)}
-                className='text-xl w-60'
-              >
-                Buscar en tu ciudad
-              </Button>
+              <div>
+                <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
+                <p className="text-gray-500 text-2xl text-center">Probá buscar en otra ciudad.</p>
+              </div>
+              {user.address.city !== currentCity && (
+                <Button
+                  onClick={() => fetchPetsByCity(user.address.city)}
+                  className='text-xl w-60'
+                >
+                  Buscar en tu ciudad
+                </Button>
+              )}
             </div>
           ) : (
             <>
@@ -121,7 +126,6 @@ const AdopterPets = () => {
                   image={pet.photos[0]}
                   title={pet.name}
                   description={`Refugio: ${pet.shelter.shelterName}`} 
-                  isPaused={!pet.available} //borrar
                   onSee={() => handleGoToPetDetails(pet.id)}
                 />
               ))}
