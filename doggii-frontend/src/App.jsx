@@ -10,9 +10,9 @@ import PlatformLayout from './layouts/PlatformLayout';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Profile from './pages/Profile/Profile';
 import Pets from './pages/Pets/Pets';
+import ShelterAdoptionForm from './pages/AdoptionForm/ShelterForm/ShelterAdoptionForm.jsx';
 import Applications from './pages/Applications/Applications';
 import ApplicationDetail from './pages/Applications/ApplicationViews/AplicationDetail.jsx';
-import AdoptionForm from './pages/AdoptionForm';
 import Users from './pages/Users/Users';
 import Reports from './pages/Reports/Reports';
 import PetPost from './pages/Pets/PetPost/PetPost';
@@ -36,10 +36,10 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/pets' element={<Pets />} />
+          <Route path='/adoption-form' element={<ShelterAdoptionForm />} />
           <Route path='/applications' element={<Applications />} />
           <Route path='/application-manage/:id' element={<ApplicationManage />} />
           <Route path='/adoption-request/:id' element={<ApplicationDetail />} />
-          <Route path='/adoption-form' element={<AdoptionForm />} />
           <Route path='/users' element={<Users />} />
           <Route path='/reports' element={<Reports />} />
           <Route path='/pets/post' element={<PetPost />} />
