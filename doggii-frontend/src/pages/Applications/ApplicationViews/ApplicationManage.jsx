@@ -2,10 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
-//import getTimeElapsed from '../../../utils/getTimeElapsed';
 
 const ApplicationManage = () => {
-  //const userRole = useSelector((state) => state.user.role);
   const navigate = useNavigate();
   const location = useLocation();
   const { petData } = location.state || {};
@@ -116,14 +114,9 @@ const handleUpdateStatus = async () => {
     return <p>No se encontró la información de la mascota.</p>;
   }
 
-/*   const age = petData.payload.age.years > 0 ? `${petData.payload.age.years} años` : 
-              (petData.payload.age.months > 0 ? `${petData.payload.age.months} meses` :
-              (petData.payload.age.days > 0 ? `${petData.payload.age.days} días` : ''));  */
-
   const handleGoBack = () => {
     navigate(-1);
   }
-
 
   return (
     <div className='p-8'>
