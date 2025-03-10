@@ -1,21 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import Button from "../../../components/Button";
 
 const ShelterAdoptionForm = () => {
   const [formFields, setFormFields] = useState([]);
-
-  useEffect(() => {
-    console.log('formFields actualizado:', formFields);
-  }, [formFields]);
-
-  const handleCheckboxChange = (question, checked) => {
-    if (checked) {
-      const { label, type, options, required } = question;
-      setFormFields(prev => [...prev, { label, type, options, required }]);
-    } else {
-      setFormFields(prev => prev.filter(field => field.label !== question.label));
-    }
-  };
+  const [customQuestions, setCustomQuestions] = useState([]);
+  const [hasChanges, setHasChanges] = useState({});
+  const inputRefs = useRef({});
+  const selectRefs = useRef({});
 
   const predefinedQuestions = [
     {
@@ -87,20 +78,92 @@ const ShelterAdoptionForm = () => {
       type: 'text',
       required: true,
     }
-  ]
+  ];
+
+  const handleCheckboxChange = (question, checked) => {
+    if (checked) {
+      const { label, type, options, required } = question;
+      const newField = {
+        label,
+        type,
+        required
+      };
+      
+      if (type === 'select' || type === 'checkbox') {
+        newField.options = options;
+      }
+      
+      setFormFields(prev => [...prev, newField]);
+    } else {
+      setFormFields(prev => prev.filter(field => field.label !== question.label));
+    }
+  };
+
+  const handleAddCustomQuestion = (e) => {
+    e.preventDefault();
+    setCustomQuestions(prev => [...prev, { 
+      id: prev.length + 1,
+      label: '',
+      type: 'text',
+      required: true
+    }]);
+  };
+
+  const handleSaveCustomQuestion = (id, inputValue, selectValue) => {
+    const newQuestion = {
+      label: inputValue,
+      type: selectValue,
+      required: true
+    };
+
+    if (selectValue === 'select') {
+      newQuestion.options = ['Sí', 'No'];
+    }
+
+    setCustomQuestions(prev => prev.map(question => 
+      question.id === id ? { 
+        id,  
+        ...newQuestion
+      } : question
+    ));
+    setHasChanges(prev => ({...prev, [id]: false}));
+  };
+
+  const handleRemoveCustomQuestion = (id) => {
+    setCustomQuestions(prev => prev.filter(question => question.id !== id));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const formattedCustomQuestions = customQuestions
+      .filter(question => question.label.trim() !== '')
+      .map(question => {
+        const questionCopy = { ...question };
+        delete questionCopy.id;
+        return questionCopy;
+      });
+
+    const fields = [...formFields, ...formattedCustomQuestions];
+    
+    // Acá va la lógica para enviar al backend
+    console.log('Preguntas a enviar:', fields);
+  };
+
+
 
   return(
     <div className="m-8">
       <h1>Formulario de adopción</h1>
-      <p>En esta sección, podés definir las preguntas que querés incluir en el formulario que los adoptantes deben completar para solicitar la adopción de alguna de tus mascotas publicadas. En <strong>Preguntas predefinidas</strong>, podés marcar las preguntas que quieras incluir en el formulario. En <strong>Preguntas personalizadas</strong>, podés agregar tus propias preguntas. Por último, en <strong>Requisitos</strong>, podés escribir los requisitos obligatorios que el adoptante debe cumplir. Al completar el formulario, el adoptante deberá marcar que leyó y acepta los requisitos.</p>
-      <form action="">
+      <p>En esta sección, podés definir las preguntas que querés incluir en el formulario que los adoptantes deben completar para solicitar la adopción de alguna de tus mascotas publicadas. En <strong>Preguntas predefinidas</strong>, podés marcar las preguntas que quieras incluir en el formulario. En <strong>Preguntas personalizadas</strong>, podés agregar tus propias preguntas.</p>
+      <form onSubmit={handleSubmit}>
         <fieldset>
           <div className="my-10">
             <h2 >Preguntas predefinidas</h2>
             <p className="mb-4">Marcá las preguntas que quieras incluir en el formulario de adopción.</p>
             <div className="flex flex-col gap-6">
               {predefinedQuestions.map((question, index) => (
-                <div key={index}>
+                <div key={index} className="border-3 border-(--secondary) p-4 rounded-lg shadow-md">
                   <div className='flex items-center'>
                     <input
                       id={`predefinedQuestion${index + 1}`}
@@ -140,19 +203,32 @@ const ShelterAdoptionForm = () => {
           </div>
 
           <div className="my-10">
-            <h2 className="mb-4">Preguntas personalizadas</h2>
+            <h2>Preguntas personalizadas</h2>
+            <p className="mb-4">Tocá el botón <strong>Nueva pregunta</strong> para agregar una pregunta personalizada. Podés agregar tantas como quieras.</p>
             <div>
-              <div className="flex items-end gap-4">
-                <div className="w-8/12">
-                  <label htmlFor='custom-question' className='text-lg font-medium'>Pregunta</label>
-                  <input id="custom-question" type="text" placeholder="Escribí la pregunta" className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4"/>
-                </div>
-                <div className="w-3/12">
-                    <label htmlFor='responseType' className='text-lg font-medium'>Tipo de respuesta</label>
+              {customQuestions.map((question) => (
+                <div key={question.id} className="flex items-end gap-4">
+                  <div className="w-8/12">
+                    <label htmlFor={`customQuestion-${question.id}`} className='text-lg font-medium'>Pregunta</label>
+                    <input 
+                      ref={el => inputRefs.current[question.id] = el}
+                      id={`customQuestion-${question.id}`} 
+                      type="text" 
+                      placeholder="Escribí la pregunta" 
+                      className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+                      defaultValue={question.label}
+                      onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
+                    />
+                  </div>
+                  <div className="w-2/12">
+                    <label htmlFor={`responseType-${question.id}`} className='text-lg font-medium'>Tipo de respuesta</label>
                     <select
-                      id='responseType'
-                      name='responseType'
-                      className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                      ref={el => selectRefs.current[question.id] = el}
+                      id={`responseType-${question.id}`}
+                      name={`responseType-${question.id}`}
+                      className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+                      defaultValue={question.type}
+                      onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
                     >
                       <option value='text'>Texto libre</option>
                       <option value='select'>Sí o no</option>
@@ -160,25 +236,42 @@ const ShelterAdoptionForm = () => {
                   </div>
                   <div className="w-1/12">
                     <Button
-                      className="w-25 h-10 bg-red-400"
+                      className={`w-full h-10 bg-(--primary) ${!hasChanges[question.id] ? 'bg-gray-400 cursor-not-allowed' : ''}`}
+                      onClick={() => {
+                        handleSaveCustomQuestion(question.id, inputRefs.current[question.id].value, selectRefs.current[question.id].value);
+                      }}
+                      type="button"
+                      disabled={!hasChanges[question.id]}
+                    >
+                      Guardar
+                    </Button>
+                  </div>
+                  <div className="w-1/12">
+                    <Button
+                      className="w-full h-10 bg-red-400"
+                      onClick={() => handleRemoveCustomQuestion(question.id)}
+                      type="button"
                     >
                       Eliminar
                     </Button>
                   </div>
                 </div>
-              <Button className=" w-50 h-10 mt-6">
+              ))}
+              <Button 
+                className="w-50 h-10 mt-6"
+                onClick={handleAddCustomQuestion}
+                type="button"
+              >
                 Nueva pregunta
               </Button>
             </div>
           </div>
 
-          <div className="my-10">
-            <h2 className="mt-6 mb-4">Requisitos</h2>
-            <textarea name="custom-requirements" id="custom-requirements" placeholder="Escribí tus requisitos" className="w-full h-40 p-3 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"></textarea>
-          </div>
-
-          <Button className=" w-60 h-12 mt-6 mx-auto text-lg">
-            GUARDAR
+          <Button 
+            className=" w-60 h-12 mt-6 mx-auto text-lg"
+            type="submit"
+          >
+            Guardar formulario
           </Button>
         </fieldset>
       </form>
