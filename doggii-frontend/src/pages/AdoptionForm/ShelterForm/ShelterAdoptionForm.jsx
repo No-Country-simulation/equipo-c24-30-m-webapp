@@ -6,6 +6,10 @@ const ShelterAdoptionForm = () => {
   const [formFields, setFormFields] = useState([]);
   const [customQuestions, setCustomQuestions] = useState([]);
   const [hasChanges, setHasChanges] = useState({});
+  const [savedQuestions, setSavedQuestions] = useState({});  
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const inputRefs = useRef({});
   const selectRefs = useRef({});
 
@@ -128,6 +132,11 @@ const ShelterAdoptionForm = () => {
       } : question
     ));
     setHasChanges(prev => ({...prev, [id]: false}));
+    
+    setSavedQuestions(prev => ({...prev, [id]: true}));
+    setTimeout(() => {
+      setSavedQuestions(prev => ({...prev, [id]: false}));
+    }, 3000);
   };
 
   const handleRemoveCustomQuestion = (id) => {
@@ -136,6 +145,9 @@ const ShelterAdoptionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
     
     const formattedCustomQuestions = customQuestions
       .filter(question => question.label.trim() !== '')
@@ -152,20 +164,39 @@ const ShelterAdoptionForm = () => {
         };
 
         const response = await formServices.createAdoptionForm(formData);
-        console.log(response.payload);
-
-      } catch (error) {
-        console.log(error);
+        setSuccess(response.success);
+        setTimeout(() => setSuccess(false), 3000);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Error al guardar el formulario. Intentá de nuevo.');
+        setTimeout(() => setError(null), 3000);
+      } finally {
+        setIsLoading(false);
       }
   };
-
-
 
   return(
     <div className="m-8">
       <h1>Formulario de adopción</h1>
       <p>En esta sección, podés definir las preguntas que querés incluir en el formulario que los adoptantes deben completar para solicitar la adopción de alguna de tus mascotas publicadas. En <strong>Preguntas predefinidas</strong>, podés marcar las preguntas que quieras incluir en el formulario. En <strong>Preguntas personalizadas</strong>, podés agregar tus propias preguntas.</p>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="container relative"
+      >
+        {success && (
+          <div className='absolute inset-0 pb-10 flex items-end justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
+            <div className='py-2 px-3 bg-(--accent) rounded-xl flex items-center gap-2'>
+              <div>    
+                <svg className='w-8 h-8 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
+                  <circle fill="currentColor" cx="24" cy="24" r="22"/>
+                  <path fill="none" stroke="#FFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" d="M14 27l5.917 4.917L34 17"/>
+                </svg>
+              </div>
+              <p className='p-2 text-2xl'>
+                El formulario se guardó correctamente.
+              </p>
+            </div>
+          </div>
+        )}
         <fieldset>
           <div className="my-10">
             <h2 >Preguntas predefinidas</h2>
@@ -216,54 +247,61 @@ const ShelterAdoptionForm = () => {
             <p className="mb-4">Tocá el botón <strong>Nueva pregunta</strong> para agregar una pregunta personalizada. Podés agregar tantas como quieras.</p>
             <div>
               {customQuestions.map((question) => (
-                <div key={question.id} className="flex items-end gap-4">
-                  <div className="w-8/12">
-                    <label htmlFor={`customQuestion-${question.id}`} className='text-lg font-medium'>Pregunta</label>
-                    <input 
-                      ref={el => inputRefs.current[question.id] = el}
-                      id={`customQuestion-${question.id}`} 
-                      type="text" 
-                      placeholder="Escribí la pregunta" 
-                      className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
-                      defaultValue={question.label}
-                      onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
-                    />
+                <div key={question.id}>
+                  <div className="flex items-end gap-4">
+                    <div className="w-8/12">
+                      <label htmlFor={`customQuestion-${question.id}`} className='text-lg font-medium'>Pregunta</label>
+                      <input 
+                        ref={el => inputRefs.current[question.id] = el}
+                        id={`customQuestion-${question.id}`} 
+                        type="text" 
+                        placeholder="Escribí la pregunta" 
+                        className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+                        defaultValue={question.label}
+                        onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
+                      />
+                    </div>
+                    <div className="w-2/12">
+                      <label htmlFor={`responseType-${question.id}`} className='text-lg font-medium'>Tipo de respuesta</label>
+                      <select
+                        ref={el => selectRefs.current[question.id] = el}
+                        id={`responseType-${question.id}`}
+                        name={`responseType-${question.id}`}
+                        className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+                        defaultValue={question.type}
+                        onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
+                      >
+                        <option value='text'>Texto libre</option>
+                        <option value='select'>Sí o no</option>
+                      </select>
+                    </div>
+                    <div className="w-1/12">
+                      <Button
+                        className={`w-full h-10 bg-(--primary) ${!hasChanges[question.id] ? 'bg-gray-400 cursor-not-allowed' : ''}`}
+                        onClick={() => {
+                          handleSaveCustomQuestion(question.id, inputRefs.current[question.id].value, selectRefs.current[question.id].value);
+                        }}
+                        type="button"
+                        disabled={!hasChanges[question.id]}
+                      >
+                        Guardar
+                      </Button>
+                    </div>
+                    <div className="w-1/12">
+                      <Button
+                        className="w-full h-10 bg-red-400"
+                        onClick={() => handleRemoveCustomQuestion(question.id)}
+                        type="button"
+                      >
+                        Eliminar
+                      </Button>
+                    </div>
                   </div>
-                  <div className="w-2/12">
-                    <label htmlFor={`responseType-${question.id}`} className='text-lg font-medium'>Tipo de respuesta</label>
-                    <select
-                      ref={el => selectRefs.current[question.id] = el}
-                      id={`responseType-${question.id}`}
-                      name={`responseType-${question.id}`}
-                      className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
-                      defaultValue={question.type}
-                      onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
-                    >
-                      <option value='text'>Texto libre</option>
-                      <option value='select'>Sí o no</option>
-                    </select>
-                  </div>
-                  <div className="w-1/12">
-                    <Button
-                      className={`w-full h-10 bg-(--primary) ${!hasChanges[question.id] ? 'bg-gray-400 cursor-not-allowed' : ''}`}
-                      onClick={() => {
-                        handleSaveCustomQuestion(question.id, inputRefs.current[question.id].value, selectRefs.current[question.id].value);
-                      }}
-                      type="button"
-                      disabled={!hasChanges[question.id]}
-                    >
-                      Guardar
-                    </Button>
-                  </div>
-                  <div className="w-1/12">
-                    <Button
-                      className="w-full h-10 bg-red-400"
-                      onClick={() => handleRemoveCustomQuestion(question.id)}
-                      type="button"
-                    >
-                      Eliminar
-                    </Button>
-                  </div>
+                  {savedQuestions[question.id] && (
+                    <p className="text-green-600 text-md mt-2 text-center">
+                      Pregunta guardada.
+                    </p>
+                  )}
                 </div>
               ))}
               <Button 
@@ -276,11 +314,17 @@ const ShelterAdoptionForm = () => {
             </div>
           </div>
           <Button 
-            className=" w-60 h-12 mt-6 mx-auto text-lg"
             type="submit"
+            disabled={isLoading}
+            className={`w-60 h-12 mt-6 mx-auto text-lg ${isLoading ? 'grayscale cursor-not-allowed' : ''}`}
           >
-            Guardar formulario
+            {isLoading ? 'Guardando...' : 'Guardar formulario'}
           </Button>
+          {error && (
+            <p className="text-red-500 mt-2 text-center col-span-full">
+              {error}
+            </p>
+          )}
         </fieldset>
       </form>
     </div>
