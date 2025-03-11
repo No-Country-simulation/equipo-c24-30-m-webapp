@@ -5,8 +5,14 @@ const createAdoptionForm = async (formData) => {
   return response.data;
 }
 
+const getAdoptionForm = async (shelterId) => {
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/api/adoptionForm/getFormByShelter/${shelterId}`);
+  return response.data;
+}
+
 const formServices = {
-  createAdoptionForm
+  createAdoptionForm,
+  getAdoptionForm
 };
 
 export default formServices;
