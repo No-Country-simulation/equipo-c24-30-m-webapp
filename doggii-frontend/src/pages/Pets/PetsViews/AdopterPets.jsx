@@ -14,7 +14,7 @@ const AdopterPets = () => {
   const [visiblePets, setVisiblePets] = useState([]);
   const [visibleItems, setVisibleItems] = useState(6);
   const [inputCity, setInputCity] = useState("");
-  const [currentCity, setCurrentCity] = useState(user.address.city);
+  const [currentCity, setCurrentCity] = useState("");
 
   const fetchPetsByCity = useCallback(async (city) => {
     if (!city.trim()) return;
@@ -36,8 +36,12 @@ const AdopterPets = () => {
   }, []);
 
   useEffect(() => {
-    fetchPetsByCity(currentCity);
-  }, [fetchPetsByCity, currentCity]);
+    if (user.address?.city) {
+      fetchPetsByCity(user.address.city);
+    } else {
+      setIsLoading(false);
+    }
+  }, [fetchPetsByCity, user.address?.city]);
 
   const handleSearch = () => {
     fetchPetsByCity(inputCity);
@@ -57,6 +61,10 @@ const AdopterPets = () => {
 
   const handleGoToPetDetails = (id) => {
     navigate(`/pet/${id}`);
+  };
+
+  const handleGoToProfile = () => {
+    navigate('/profile');
   }
 
   return (
@@ -78,68 +86,85 @@ const AdopterPets = () => {
           Buscar
         </Button>
       </div>
-      <h2 className='text-3xl text-center mt-6'>Mascotas en adopción en {currentCity}</h2>
-      {isLoading ? (
-        <div className='flex items-center justify-center h-150'>
-          <div className='animate-spin rounded-full h-30 w-30 my-auto border-b-8 border-(--secondary)'></div>
-        </div>
-      ) : fetchError ? (
-        <>
-          <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
-            <div className="flex items-center self-stretch justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
-              </svg>
-            </div>
-            <span className='text-lg'>{fetchError}</span>
+      {!currentCity ? (
+        <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6 mt-6'>
+          <img src="/src/assets/images/hound.png" alt="Sin contenido" />
+          <div>
+            <p className="text-gray-500 px-20 text-2xl text-center">Cómo no tenemos tu dirección, no te podemos mostrar las mascotas que están en adopción en tu ciudad. Completá tu perfil para que se muestren de forma automática o usá el buscador que se encuentra arriba para hacerlo manualmente.</p>
+            <Button
+              onClick={handleGoToProfile}
+              className="mx-auto w-50 mt-6 text-lg"
+            >
+              Completar perfil
+            </Button>
           </div>
-          <Button 
-            onClick={() => fetchPetsByCity(currentCity)}
-            className="mx-auto w-50 text-lg"
-          >
-            Reintentar
-          </Button>
-        </>
+        </div>
       ) : (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8'>
-          {pets.length === 0 ? (
-            <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
-              <img src="/src/assets/images/hound.png" alt="Sin contenido" />
-              <div>
-                <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
-                <p className="text-gray-500 text-2xl text-center">Probá buscar en otra ciudad.</p>
+        <>
+          <h2 className='text-3xl text-center mt-6'>Mascotas en adopción en {currentCity}</h2>
+          {isLoading ? (
+            <div className='flex items-center justify-center h-150'>
+              <div className='animate-spin rounded-full h-30 w-30 my-auto border-b-8 border-(--secondary)'></div>
+            </div>
+          ) : fetchError ? (
+            <>
+              <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
+                <div className="flex items-center self-stretch justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
+                  </svg>
+                </div>
+                <span className='text-lg'>{fetchError}</span>
               </div>
-              {user.address.city !== currentCity && (
-                <Button
-                  onClick={() => fetchPetsByCity(user.address.city)}
-                  className='text-xl w-60'
-                >
-                  Buscar en tu ciudad
-                </Button>
+              <Button 
+                onClick={() => fetchPetsByCity(currentCity)}
+                className="mx-auto w-50 text-lg"
+              >
+                Reintentar
+              </Button>
+            </>
+          ) : (
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8'>
+              {pets.length === 0 ? (
+                <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
+                  <img src="/src/assets/images/hound.png" alt="Sin contenido" />
+                  <div>
+                    <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
+                    <p className="text-gray-500 text-2xl text-center">Probá buscar en otra ciudad.</p>
+                  </div>
+                  {user.address?.city !== currentCity && user.address?.city && (
+                    <Button
+                      onClick={() => fetchPetsByCity(user.address.city)}
+                      className='text-xl w-60'
+                    >
+                      Buscar en tu ciudad
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <>
+                  {visiblePets.map((pet) => (
+                    <VerticalCard
+                      key={pet.id}
+                      image={pet.photos[0]}
+                      title={pet.name}
+                      description={`Refugio: ${pet.shelter.shelterName}`} 
+                      onSee={() => handleGoToPetDetails(pet.id)}
+                    />
+                  ))}
+                  {visibleItems < pets.length && (
+                    <Button
+                      className='col-span-full mx-auto w-50 mt-8 text-xl'
+                      onClick={handleSeeMore}
+                    >
+                      Ver más
+                    </Button>
+                  )}
+                </>
               )}
             </div>
-          ) : (
-            <>
-              {visiblePets.map((pet) => (
-                <VerticalCard
-                  key={pet.id}
-                  image={pet.photos[0]}
-                  title={pet.name}
-                  description={`Refugio: ${pet.shelter.shelterName}`} 
-                  onSee={() => handleGoToPetDetails(pet.id)}
-                />
-              ))}
-              {visibleItems < pets.length && (
-                <Button
-                  className='col-span-full mx-auto w-50 mt-8 text-xl'
-                  onClick={handleSeeMore}
-                >
-                  Ver más
-                </Button>
-              )}
-            </>
           )}
-        </div>
+        </>
       )}
     </div>
   )

@@ -5,6 +5,7 @@ import Button from '../../../components/Button';
 import Modal from '../../../components/Modal/Modal';
 import getTimeElapsed from '../../../utils/getTimeElapsed';
 import petServices from '../../../services/petServices';
+import { useProfileValidation } from '../../../hooks/useProfileValidation';
 
 const PetDetails = () => {
   const user = useSelector((state) => state.user);
@@ -16,6 +17,7 @@ const PetDetails = () => {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { checkProfileCompletion, showProfileModal, setShowProfileModal } = useProfileValidation();
 
   const handleGetPet = useCallback(async () => {
     try {
@@ -79,6 +81,19 @@ const PetDetails = () => {
 
   const handleGoEdit = () => {
     navigate(`/pet/edit/${petId}`);
+  }
+
+  const handleGoToAdoptionForm = async () => {
+    const isProfileComplete = await checkProfileCompletion();
+    if (isProfileComplete) {
+      navigate(`/adoption-form/${petId}`);
+    } else {
+      setShowProfileModal(true);
+    }
+  }
+
+  const handleGoToProfile = () => {
+    navigate('/profile');
   }
 
   return (
@@ -216,7 +231,10 @@ const PetDetails = () => {
                 </Button>
               </div>
               :
-              <Button className='text-2xl mx-auto w-60 col-span-5'>
+              <Button
+                onClick={handleGoToAdoptionForm}
+                className='text-2xl mx-auto w-60 col-span-5'
+              >
                 Adoptar
               </Button>
             }
@@ -227,6 +245,15 @@ const PetDetails = () => {
                 buttonText="Eliminar"
                 buttonAction={handleDeletePet}
                 onClose={() => setShowDeleteModal(false)}
+              />
+            )}
+            {showProfileModal && (
+              <Modal
+                title="Perfil incompleto"
+                description="Para poder iniciar una solicitud de adopción, primero debés completar todos los datos de tu perfil."
+                buttonText="Ir a mi perfil"
+                buttonAction={handleGoToProfile}
+                onClose={() => setShowProfileModal(false)}
               />
             )}
           </>

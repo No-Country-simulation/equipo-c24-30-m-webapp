@@ -12,15 +12,25 @@ export const useProfileValidation = () => {
       setIsValidating(true);
       const response = await userServices.getUser(user.id, user.role);
       const userData = response.payload;
-      
-      const requiredFields = {
-        shelterName: userData.shelterName,
+
+      const baseFields = {
         userName: userData.userName,
         email: userData.email,
         phone: userData.phone,
-        shelterEmail: userData.shelterEmail,
-        shelterPhone: userData.shelterPhone,
         address: userData.address && userData.address.street && userData.address.city && userData.address.province && userData.address.country
+      };
+
+      const shelterFields = user.role === 'shelter' 
+        ? {
+            shelterName: userData.shelterName,
+            shelterEmail: userData.shelterEmail,
+            shelterPhone: userData.shelterPhone
+          }
+        : {};
+
+      const requiredFields = {
+        ...baseFields,
+        ...shelterFields
       };
 
       return Object.values(requiredFields).every(field => field);
