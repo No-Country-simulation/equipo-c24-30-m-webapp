@@ -1,17 +1,24 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
 import { setUserInfo } from "../redux/slices/userSlice";
 
 export default function Login() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const userRole = useSelector((state) => state.user.role);
+
+  // Redirigir si el usuario ya está autenticado
+  useEffect(() => {
+    if (userRole && localStorage.getItem('accessToken')) {
+      navigate('/dashboard');
+    }
+  }, [userRole, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,9 +53,7 @@ export default function Login() {
   return (
     <div className='mx-auto w-1/2 max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
       <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
-
       <h1 className='py-4 text-center text-2xl font-bold'>Iniciar sesión</h1>
-
       <form onSubmit={handleLogin} noValidate='' action='' className='space-y-6'>
         <div className='space-y-1 text-sm'>
           <label htmlFor='email' className='block dark:text-gray-600'>
