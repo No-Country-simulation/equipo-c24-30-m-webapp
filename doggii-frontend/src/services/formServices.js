@@ -10,9 +10,15 @@ const getAdoptionForm = async (shelterId) => {
   return response.data;
 }
 
+const updateAdoptionForm = async (formData) => {
+  const response = await axios.put(`${import.meta.env.VITE_BACKEND_URI}/api/adoptionForm`, formData);
+  return response.data;
+}
+
 const formServices = {
   createAdoptionForm,
-  getAdoptionForm
+  getAdoptionForm,
+  updateAdoptionForm
 };
 
 export default formServices;
