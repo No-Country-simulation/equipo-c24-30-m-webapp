@@ -2,20 +2,27 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import petServices from '../../../services/petServices';
 import formServices from '../../../services/formServices';
+import applicationServices from '../../../services/applicationServices';
 import Button from '../../../components/Button';
 
 const AdopterAdoptionForm = () => {
   const navigate = useNavigate();
-
   const petId = useParams().id;
+
+  //Datos de la mascota, del formulario de adopción y respuestas del formulario
   const [pet, setPet] = useState(null);
   const [form, setForm] = useState(null);
   const [applicationFields, setApplicationFields] = useState([]);
 
+  //Manejo de errores (carga de datos, envío de datos y validación de campos), procesamiento exitoso, carga y cambios
   const [fetchError, setFetchError] = useState(null);
+  const [postError, setPostError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasChanges, setHasChanges] = useState(false);
 
+  //Obtener los datos de la mascota y el formulario del refugio
   const handleGetPetAndForm = useCallback(async () => {
     try {
       setFetchError(null);
@@ -38,11 +45,47 @@ const AdopterAdoptionForm = () => {
     handleGetPetAndForm();
   }, [handleGetPetAndForm]);
 
+  //Volver a la sección anterior
   const handleGoBack = () => {
     navigate(-1);
   }
 
+  //Validar los campos y devolver errores (si los hay)
+  const checkValidationErrors = (fields) => {
+    if (!form?.fields) return {};
+
+    const errors = {};
+    form.fields.forEach((field, index) => {
+      const answer = fields.find(f => f.question === field.label)?.answer;
+
+      if (['text', 'select'].includes(field.type)) {
+        if (!answer || !answer.trim()) {
+          errors[`field-${index}`] = true;
+        }
+      } else if (field.type === 'checkbox') {
+        if (!answer || (Array.isArray(answer) && answer.length === 0)) {
+          errors[`field-${index}`] = true;
+        }
+      }
+    });
+    return errors;
+  };
+
+  //Verificar si hay errores de validación activos
+  const hasValidationErrors = (errors) => {
+    return Object.values(errors).some(error => error);
+  };
+
+  //Gestionar los cambios en los campos y actualizar estados de cambio, errores de validación y respuestas del formulario
   const handleInputChange = (field, value, optionIndex = null) => {
+    setHasChanges(true);
+
+    const fieldIndex = form.fields.findIndex(f => f.label === field.label);
+    setValidationErrors(prev => ({
+      ...prev,
+      [`field-${fieldIndex}`]: false
+    }));
+
     setApplicationFields(prevFields => {
       const existingFieldIndex = prevFields.findIndex(f => f.question === field.label);
       
@@ -62,24 +105,72 @@ const AdopterAdoptionForm = () => {
         newAnswer = value;
       }
 
-      if (existingFieldIndex >= 0) {
-        const newFields = [...prevFields];
-        newFields[existingFieldIndex] = {
-          question: field.label,
-          answer: newAnswer
-        };
-        return newFields;
-      } else {
-        return [...prevFields, {
-          question: field.label,
-          answer: newAnswer
-        }];
-      }
-    });
+      const newFields = [...prevFields];
+      const newField = {
+        question: field.label,
+        answer: newAnswer
+      };
 
-    console.log(applicationFields);
+      if (existingFieldIndex >= 0) {
+        newFields[existingFieldIndex] = newField;
+      } else {
+        newFields.push(newField);
+      }
+
+      return newFields;
+    });
   };
 
+  //Validar un campo específico cuando pierde el foco
+  const handleBlur = (field) => {
+    const errors = checkValidationErrors(applicationFields);
+    setValidationErrors(prev => ({
+      ...prev,
+      [field]: errors[field] || false
+    }));
+  };
+
+  //Procesar y enviar una solicitud de adopción con los datos del formulario
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const newValidationErrors = checkValidationErrors(applicationFields);
+    setValidationErrors(newValidationErrors);
+
+    if (hasValidationErrors(newValidationErrors)) {
+      setPostError('Por favor, completá todos los campos requeridos');
+      setTimeout(() => setPostError(null), 3000);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setPostError(null);
+      setSuccess(false);
+
+      const formattedAnswers = applicationFields.map(field => ({
+        question: field.question,
+        answer: Array.isArray(field.answer) ? field.answer.join(', ') : field.answer
+      }));
+
+      const applicationData = {
+        pet: petId,
+        formAnswers: formattedAnswers
+      };
+
+      const response = await applicationServices.createApplication(applicationData);
+      console.log(response);
+      setSuccess(response.success);
+      setTimeout(() => setSuccess(false), 3000);
+      navigate(`/adoption-request/${response.payload.id}`);
+    } catch (error) {
+      console.error('Error creating application:', error);
+      setPostError('No pudimos enviar tu solicitud. Intentá de nuevo.');
+      setTimeout(() => setPostError(null), 3000);
+    }
+  };
+
+  //Renderizar el tipo de input correspondiente según el campo del formulario
   const handleInputType = (field, index) => {
     switch (field.type) {
       case 'text':
@@ -88,6 +179,7 @@ const AdopterAdoptionForm = () => {
             id={`question${index + 1}`}
             type='text'
             onChange={(e) => handleInputChange(field, e.target.value)}
+            onBlur={() => handleBlur(`field-${index}`)}
             className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
           />
         );
@@ -99,6 +191,7 @@ const AdopterAdoptionForm = () => {
                 id={`question${index + 1}-${i + 1}`}
                 type='checkbox'
                 onChange={(e) => handleInputChange(field, e.target.checked, i)}
+                onBlur={() => handleBlur(`field-${index}`)}
                 className='mr-2 h-4 w-4 rounded-md accent-(--primary) checked:bg-(--primary) checked:hover:bg-(--primary) focus:ring-(--primary)'
               />
               <label
@@ -117,6 +210,7 @@ const AdopterAdoptionForm = () => {
             className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
             defaultValue=""
             onChange={(e) => handleInputChange(field, e.target.value)}
+            onBlur={() => handleBlur(`field-${index}`)}
           >
             <option value="" disabled>Seleccioná una opción</option>
             {field.options.map((option, index) => (
@@ -135,6 +229,7 @@ const AdopterAdoptionForm = () => {
             id={`question${index + 1}`}
             type='text'
             onChange={(e) => handleInputChange(field, e.target.value)}
+            onBlur={() => handleBlur(`field-${index}`)}
             className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
           />
         );
@@ -175,6 +270,7 @@ const AdopterAdoptionForm = () => {
             <section className='p-6 my-8 mx-auto max-w-7xl rounded-md bg-(--secondary)'>
               <form
                 noValidate
+                onSubmit={handleSubmit}
                 className='container relative'
               >
                 {success && (
@@ -203,14 +299,23 @@ const AdopterAdoptionForm = () => {
                           {field.label}
                         </label>
                         {handleInputType(field, index)}
+                        {validationErrors[`field-${index}`] && (
+                          <p className='text-red-500 text-sm mt-1'>La respuesta no puede quedar vacía</p>
+                        )}
                       </div>
                     ))}
                     <Button
                       type='submit'
-                      className={`mx-auto w-40 text-xl`}
+                      disabled={isLoading || !hasChanges || hasValidationErrors(validationErrors)}
+                      className={`mx-auto w-40 text-xl ${isLoading || !hasChanges|| hasValidationErrors(validationErrors) ? 'grayscale cursor-not-allowed' : ''}`}
                     >
                       {isLoading ? 'Enviando...' : 'Enviar'}
                     </Button>
+                    {postError && (
+                      <p className='text-red-500 mt-2 text-center'>
+                        {postError}
+                      </p>
+                    )}
                   </div>
                 </fieldset>
               </form>
