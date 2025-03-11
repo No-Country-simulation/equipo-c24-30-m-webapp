@@ -19,5 +19,19 @@ adoptionFormRouter.get(
     FormController.getFormByShelterId
 );  
 
+adoptionFormRouter.put(
+    "/",
+    authenticate,
+    authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
+    FormController.updateForm
+); 
+
+adoptionFormRouter.delete(
+    "/",
+    authenticate,
+    authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
+    FormController.deleteForm
+); 
+
 
 export default adoptionFormRouter;

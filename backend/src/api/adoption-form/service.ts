@@ -93,4 +93,89 @@ export default class FormService {
       );
     }
   }
+
+  static async updateAdoptionForm(
+      shelterId: string,
+      updateFields: Partial<IForm>
+    ): Promise<Partial<IForm>> {
+      try {
+        const adoptionFormDao = new FormDAO(Form);
+
+        const formShelter = await adoptionFormDao.findByShelterId(shelterId);
+
+        if (!formShelter) {
+          throw new HttpError(
+            "Adoption form not found",
+            "ADOPTION_FORM_NOT_FOUND",
+            HTTP_STATUS.NOT_FOUND
+          );
+        }
+
+        if (!formShelter.id) {
+          throw new HttpError(
+            "Form shelter ID is undefined",
+            "FORM_SHELTER_ID_UNDEFINED",
+            HTTP_STATUS.SERVER_ERROR
+          );
+        }
+        const updatedForm = await adoptionFormDao.update(formShelter.id.toString(), updateFields);
+  
+        if (!updatedForm) {
+          throw new HttpError(
+            "Form adoption not updated",
+            "FORM_REQUEST_NOT_UPDATED",
+            HTTP_STATUS.SERVER_ERROR
+          );
+        }
+  
+        return updatedForm;
+      } catch (err: any) {
+        throw new HttpError(
+          err.description || err.message,
+          err.details || err.message,
+          err.status || HTTP_STATUS.SERVER_ERROR
+        );
+      }
+    }
+
+  
+    static async deleteAdoptionForm(shelterId: string): Promise<void> {
+      try {
+        const adoptionFormDao = new FormDAO(Form);
+
+        const formShelter = await adoptionFormDao.findByShelterId(shelterId);
+
+        if (!formShelter) {
+          throw new HttpError(
+            "Adoption form not found",
+            "ADOPTION_FORM_NOT_FOUND",
+            HTTP_STATUS.NOT_FOUND
+          );
+        }
+
+        if (!formShelter.id) {
+          throw new HttpError(
+            "Form shelter ID is undefined",
+            "FORM_SHELTER_ID_UNDEFINED",
+            HTTP_STATUS.SERVER_ERROR
+          );
+        }
+        
+        const deletedForm = await adoptionFormDao.delete(formShelter.id.toString());
+  
+        if (!deletedForm) {
+          throw new HttpError(
+            "Form request not found",
+            "FORM_REQUEST_NOT_FOUND",
+            HTTP_STATUS.NOT_FOUND
+          );
+        }
+      } catch (err: any) {
+        throw new HttpError(
+          err.description || err.message,
+          err.details || err.message,
+          err.status || HTTP_STATUS.SERVER_ERROR
+        );
+      }
+    }
 }

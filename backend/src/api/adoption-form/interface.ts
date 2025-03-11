@@ -9,6 +9,7 @@ export interface IField {
 }
 
 export interface IForm extends Document {
+    id: Types.ObjectId;
     name: string; 
     fields: IField[]; 
     shelterId: Types.ObjectId;
