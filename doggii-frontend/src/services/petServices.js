@@ -10,6 +10,11 @@ const getPet = async (petId) => {
   return response.data;
 }
 
+const getPets = async () => {
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/api/pet`);
+  return response.data;
+}
+
 const getPetsByShelter = async (shelterId) => {
   const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/api/pet/shelter/${shelterId}`);
   return response.data;
@@ -39,6 +44,7 @@ const petServices = {
   getPetsByShelter,
   getPetsByCity,
   getPet,
+  getPets,
   updatePet,
   deletePet
 };

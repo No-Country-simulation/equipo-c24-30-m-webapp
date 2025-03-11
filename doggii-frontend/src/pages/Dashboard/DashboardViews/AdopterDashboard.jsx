@@ -11,7 +11,7 @@ const AdopterDashboard = () => {
   const [pets, setPets] = useState([]);
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentCity, setCurrentCity] = useState(user.address.city);
+  const [currentCity, setCurrentCity] = useState("");
 
   const fetchPetsByCity = useCallback(async (city) => {
     if (!city.trim()) return;
@@ -31,9 +31,29 @@ const AdopterDashboard = () => {
     }
   }, []);
 
+  const fetchAllPets = useCallback(async () => {
+    try {
+      setFetchError(null);
+      setIsLoading(true);
+      const response = await petServices.getPets();
+      const availablePets = response.payload.filter(pet => pet.available);
+      const randomPets = availablePets.sort(() => 0.5 - Math.random()).slice(0, 3);
+      setPets(randomPets);
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+      setFetchError('No pudimos cargar las mascotas. Tocá el botón para intentar de nuevo.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    fetchPetsByCity(currentCity);
-  }, [fetchPetsByCity, currentCity]);
+    if (user.address?.city) {
+      fetchPetsByCity(user.address.city);
+    } else {
+      fetchAllPets();
+    }
+  }, [fetchPetsByCity, fetchAllPets, user.address?.city]);
 
   const handleGoToPetsSection = () => {
     navigate('/pets');
@@ -43,10 +63,16 @@ const AdopterDashboard = () => {
     navigate(`/pet/${id}`);
   }
 
+  const handleGoToProfile = () => {
+    navigate('/profile');
+  }
+
   return (
     <div className="pl-8 pr-8 pb-8">
       <p>En esta sección, podés ver un resumen de la información importante de tu cuenta.</p>
-      <h2 className='text-3xl text-center mt-6'>Estas mascotas buscan hogar en {currentCity}</h2>
+      <h2 className='text-3xl text-center mt-6'>
+        {currentCity ? `Estas mascotas buscan hogar en ${currentCity}` : 'Estas mascotas buscan hogar'}
+      </h2>
       {isLoading ? (
         <div className='flex items-center justify-center h-150'>
           <div className='animate-spin rounded-full h-30 w-30 my-auto border-b-8 border-(--secondary)'></div>
@@ -62,45 +88,60 @@ const AdopterDashboard = () => {
             <span className='text-lg'>{fetchError}</span>
           </div>
           <Button 
-            onClick={() => fetchPetsByCity(currentCity)}
+            onClick={user.address?.city ? () => fetchPetsByCity(currentCity) : fetchAllPets}
             className="mx-auto w-50 text-lg"
           >
             Reintentar
           </Button>
         </>
       ) : (
-        <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 py-8'>
-          {pets.length === 0 ? (
-            <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
-              <img src="/src/assets/images/hound.png" alt="Sin contenido" />
-              <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en tu ciudad.</p>
-              <Button
-                onClick={handleGoToPetsSection}
-                className='text-xl w-65'
-              >
-                Buscar en otra ciudad
-              </Button>
+        <>
+          <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 py-8'>
+            {pets.length === 0 ? (
+              <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
+                <img src="/src/assets/images/hound.png" alt="Sin contenido" />
+                <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción{currentCity ? ' en tu ciudad' : ''}.</p>
+                <Button
+                  onClick={handleGoToPetsSection}
+                  className='text-xl w-65'
+                >
+                  {currentCity ? 'Buscar en otra ciudad' : 'Buscar por ciudad'}
+                </Button>
+              </div>
+            ) : (
+              <>
+                {pets.map((pet) => (
+                  <VerticalCard
+                    key={pet.id}
+                    image={pet.photos[0]}
+                    title={pet.name}
+                    description={`Refugio: ${pet.shelter.shelterName}`} 
+                    onSee={() => handleGoToPetDetails(pet.id)}
+                  />
+                ))}
+                <Button
+                  onClick={handleGoToPetsSection}
+                  className='col-span-full mx-auto w-50 mt-8 text-xl'
+                >
+                  Ver todas
+                </Button>
+              </>
+            )}
+          </div>
+          {!user.address?.city && (
+            <div className='flex flex-col items-center justify-center gap-6 mt-6'>
+              <div className='text-center'>
+                <p className="text-2xl">Completá tu perfil para que te mostremos las mascotas que están en adopción en tu ciudad.</p>
+                <Button
+                  onClick={handleGoToProfile}
+                  className="mx-auto w-50 mt-6 text-lg"
+                >
+                  Completar perfil
+                </Button>
+              </div>
             </div>
-          ) : (
-            <>
-              {pets.map((pet) => (
-                <VerticalCard
-                  key={pet.id}
-                  image={pet.photos[0]}
-                  title={pet.name}
-                  description={`Refugio: ${pet.shelter.shelterName}`} 
-                  onSee={() => handleGoToPetDetails(pet.id)}
-                />
-              ))}
-              <Button
-                onClick={handleGoToPetsSection}
-                className='col-span-full mx-auto w-50 mt-8 text-xl'
-              >
-                Ver todas
-              </Button>
-            </>
           )}
-        </div>
+        </>
       )}
     </div>
   )
