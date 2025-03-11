@@ -218,7 +218,7 @@ const ShelterAdoptionForm = () => {
     };
 
     if (selectValue === 'select') {
-      newQuestion.options = ['Sí', 'No'];
+      newQuestion.options = ['Sí', 'No', 'No aplica'];
     }
 
     setCustomQuestions(prev => prev.map(question => 
@@ -261,12 +261,27 @@ const ShelterAdoptionForm = () => {
         "fields": [...formFields, ...formattedCustomQuestions]
       };
 
-      const response = await formServices.createAdoptionForm(formData);
-      setSuccess(response.success);
-      if (!formId && response.success) {
-        setFormId(response.payload._id);
+      let response;
+      if (formId) {
+        response = await formServices.updateAdoptionForm(formData);
+      } else {
+        response = await formServices.createAdoptionForm(formData);
+        if (response.success) {
+          setFormId(response.payload.id);
+        }
       }
-      setTimeout(() => setSuccess(false), 3000);
+
+      if (response.success) {
+        setInitialFormState({
+          predefinedFields: formFields.map(field => field.label).sort(),
+          customFields: formattedCustomQuestions.map(field => ({
+            label: field.label,
+            type: field.type
+          }))
+        });
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 3000);
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Error al guardar el formulario. Intentá de nuevo.');
       setTimeout(() => setError(null), 3000);
@@ -307,7 +322,7 @@ const ShelterAdoptionForm = () => {
         className="container relative"
       >
         {success && (
-          <div className='absolute inset-0 pb-10 flex items-end justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
+          <div className='absolute inset-0 pt-30 flex items-start justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
             <div className='py-2 px-3 bg-(--accent) rounded-xl flex items-center gap-2'>
               <div>    
                 <svg className='w-8 h-8 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
