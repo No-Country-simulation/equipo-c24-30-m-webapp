@@ -81,6 +81,10 @@ const PetDetails = () => {
     navigate(`/pet/edit/${petId}`);
   }
 
+  const handleGoToAdoptionForm = () => {
+    navigate(`/adoption-form/${petId}`);
+  }
+
   return (
     <div className='p-8'>
       <div className='flex items-center gap-6'>
@@ -216,7 +220,10 @@ const PetDetails = () => {
                 </Button>
               </div>
               :
-              <Button className='text-2xl mx-auto w-60 col-span-5'>
+              <Button
+                onClick={handleGoToAdoptionForm}
+                className='text-2xl mx-auto w-60 col-span-5'
+              >
                 Adoptar
               </Button>
             }
