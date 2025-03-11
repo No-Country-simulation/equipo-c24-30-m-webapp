@@ -20,8 +20,12 @@ class FormDAO{
         return await this.model.find();
     }
 
-    async update(id: string, data: IForm): Promise<IForm | null> {
-        return await this.model.findByIdAndUpdate(id, data, { new: true });
+    async update(id: string, data: Partial<IForm>): Promise<IForm | null> {
+        console.log('Updating ID:', id);
+  console.log('Data:', data);
+  const result = await this.model.findByIdAndUpdate(id, data, { new: true });
+  console.log('Updated Form:', result);
+  return result;
     }
 
     async delete(id: string): Promise<IForm | null> {
