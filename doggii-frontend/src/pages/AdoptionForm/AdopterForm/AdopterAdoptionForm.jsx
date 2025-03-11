@@ -175,13 +175,20 @@ const AdopterAdoptionForm = () => {
 
       const response = await applicationServices.createApplication(applicationData);
       console.log(response);
-      setSuccess(response.success);
-      setTimeout(() => setSuccess(false), 3000);
-      navigate(`/adoption-request/${response.payload.id}`);
+      
+      if (response.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          setSuccess(false);
+          navigate(`/adoption-request/${response.payload.id}`);
+        }, 3000);
+      }
     } catch (error) {
       console.error('Error creating application:', error);
       setPostError('No pudimos enviar tu solicitud. Intentá de nuevo.');
       setTimeout(() => setPostError(null), 3000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -298,7 +305,7 @@ const AdopterAdoptionForm = () => {
                 className='container relative'
               >
                 {success && (
-                  <div className='absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
+                  <div className='absolute inset-0 p-30 flex items-start justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
                     <div className='py-2 px-3 bg-(--accent) rounded-xl flex items-center gap-2'>
                       <div>    
                         <svg className='w-8 h-8 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
