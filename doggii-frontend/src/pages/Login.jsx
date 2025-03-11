@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
 import { setUserInfo } from "../redux/slices/userSlice";
@@ -11,18 +11,18 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      //reeemplazar por la url de la api
       const response = await axios.post(import.meta.env.VITE_BACKEND_URI + "/api/auth/login", {
         email,
         password,
       });
       const { token, user } = response.data.payload;
-      
+
       if (!token) {
         alert("Usuario no encontrado. Verifica tus credenciales.");
         return;
@@ -34,7 +34,9 @@ export default function Login() {
       dispatch(setUserInfo(user));
       dispatch(loginSuccess(token));
 
-      navigate("/dashboard");
+      // Redirigir al usuario basado en su ubicación anterior
+      const from = location.state?.from?.pathname || "/dashboard";
+      navigate(from);
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       alert("Hubo un error al iniciar sesión. Intenta nuevamente.");
