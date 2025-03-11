@@ -10,6 +10,7 @@ const AdopterAdoptionForm = () => {
   const petId = useParams().id;
   const [pet, setPet] = useState(null);
   const [form, setForm] = useState(null);
+  const [applicationFields, setApplicationFields] = useState([]);
 
   const [fetchError, setFetchError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -25,8 +26,6 @@ const AdopterAdoptionForm = () => {
 
       const formData = await formServices.getAdoptionForm(petData.payload.shelter._id);
       setForm(formData.payload);
-      console.log(formData.payload);
-
     } catch (error) {
       console.error('Error fetching data:', error);
       setFetchError('No pudimos cargar los datos. Tocá el botón para intentar de nuevo.');
@@ -43,14 +42,52 @@ const AdopterAdoptionForm = () => {
     navigate(-1);
   }
 
-  const handleInputType = (field, index, onChange) => {
+  const handleInputChange = (field, value, optionIndex = null) => {
+    setApplicationFields(prevFields => {
+      const existingFieldIndex = prevFields.findIndex(f => f.question === field.label);
+      
+      let newAnswer;
+      if (field.type === 'checkbox') {
+        const prevAnswer = existingFieldIndex >= 0 ? prevFields[existingFieldIndex].answer : [];
+        if (Array.isArray(prevAnswer)) {
+          if (value) {
+            newAnswer = [...prevAnswer, field.options[optionIndex]];
+          } else {
+            newAnswer = prevAnswer.filter(option => option !== field.options[optionIndex]);
+          }
+        } else {
+          newAnswer = value ? [field.options[optionIndex]] : [];
+        }
+      } else {
+        newAnswer = value;
+      }
+
+      if (existingFieldIndex >= 0) {
+        const newFields = [...prevFields];
+        newFields[existingFieldIndex] = {
+          question: field.label,
+          answer: newAnswer
+        };
+        return newFields;
+      } else {
+        return [...prevFields, {
+          question: field.label,
+          answer: newAnswer
+        }];
+      }
+    });
+
+    console.log(applicationFields);
+  };
+
+  const handleInputType = (field, index) => {
     switch (field.type) {
       case 'text':
         return (
           <input
             id={`question${index + 1}`}
             type='text'
-            onChange={onChange}
+            onChange={(e) => handleInputChange(field, e.target.value)}
             className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
           />
         );
@@ -61,7 +98,7 @@ const AdopterAdoptionForm = () => {
               <input
                 id={`question${index + 1}-${i + 1}`}
                 type='checkbox'
-                onChange={onChange}
+                onChange={(e) => handleInputChange(field, e.target.checked, i)}
                 className='mr-2 h-4 w-4 rounded-md accent-(--primary) checked:bg-(--primary) checked:hover:bg-(--primary) focus:ring-(--primary)'
               />
               <label
@@ -79,7 +116,7 @@ const AdopterAdoptionForm = () => {
             id={`question${index + 1}`}
             className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
             defaultValue=""
-            onChange={onChange}
+            onChange={(e) => handleInputChange(field, e.target.value)}
           >
             <option value="" disabled>Seleccioná una opción</option>
             {field.options.map((option, index) => (
@@ -97,7 +134,7 @@ const AdopterAdoptionForm = () => {
           <input
             id={`question${index + 1}`}
             type='text'
-            onChange={onChange}
+            onChange={(e) => handleInputChange(field, e.target.value)}
             className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
           />
         );
@@ -108,7 +145,7 @@ const AdopterAdoptionForm = () => {
     <div className="m-8">
       <div className='flex items-center gap-6'>
         <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
-        <h1 className='text-5xl'>Formulario de adopción {`de ${pet?.shelter.shelterName}`}</h1>
+        <h1 className='text-5xl'>Formulario de adopción {pet?.shelter?.shelterName ? `de ${pet.shelter.shelterName}` : ''}</h1>
       </div>
       {isLoading ? (
         <div className='flex items-center justify-center h-150'>
