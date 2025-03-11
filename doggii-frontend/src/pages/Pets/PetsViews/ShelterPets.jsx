@@ -6,6 +6,7 @@ import Button from '../../../components/Button';
 import Modal from '../../../components/Modal/Modal';
 import petServices from '../../../services/petServices';
 import { useProfileValidation } from '../../../hooks/useProfileValidation';
+import { useAdoptionFormValidation } from '../../../hooks/useAdoptionFormValidation';
 
 const ShelterPets = () => {
   const user = useSelector((state) => state.user);
@@ -15,6 +16,7 @@ const ShelterPets = () => {
   const [updateError, setUpdateError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { showProfileModal, setShowProfileModal, checkProfileCompletion } = useProfileValidation();
+  const { showFormModal, setShowFormModal, checkFormExists } = useAdoptionFormValidation();
 
   const handleGetPets = useCallback(async () => {
     try {
@@ -44,15 +46,24 @@ const ShelterPets = () => {
 
   const handleGoToPetPost = async () => {
     const isComplete = await checkProfileCompletion();
-    if (isComplete) {
-      navigate('/pets/post');
-    } else {
+    if (!isComplete) {
       setShowProfileModal(true);
+      return;
     }
+    const hasForm = await checkFormExists();
+    if (!hasForm) {
+      setShowFormModal(true);
+      return;
+    }
+    navigate('/pets/post');
   };
 
   const handleGoToProfile = () => {
     navigate('/profile');
+  }
+
+  const handleGoToForm = () => {
+    navigate('/adoption-form');
   }
 
   const handleGoToPetDetails = (petId) => {
@@ -163,10 +174,19 @@ const ShelterPets = () => {
       {showProfileModal && (
         <Modal
           title="Perfil incompleto"
-          description="Para poder publicar mascotas en adopción, necesitás completar todos los datos de tu perfil primero."
+          description="Para poder publicar mascotas en adopción, primero debés completar todos los datos de tu perfil."
           buttonText="Ir a mi perfil"
           buttonAction={handleGoToProfile}
           onClose={() => setShowProfileModal(false)}
+        />
+      )}
+      {showFormModal && (
+        <Modal
+          title="Formulario de adopción no encontrado"
+          description="Para poder publicar mascotas en adopción, primero debés crear un formulario de adopción."
+          buttonText="Crear formulario"
+          buttonAction={handleGoToForm}
+          onClose={() => setShowFormModal(false)}
         />
       )}
     </div>
