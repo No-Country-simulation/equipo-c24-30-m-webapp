@@ -5,6 +5,7 @@ import Button from '../../../components/Button';
 import Modal from '../../../components/Modal/Modal';
 import getTimeElapsed from '../../../utils/getTimeElapsed';
 import petServices from '../../../services/petServices';
+import { useProfileValidation } from '../../../hooks/useProfileValidation';
 
 const PetDetails = () => {
   const user = useSelector((state) => state.user);
@@ -16,6 +17,7 @@ const PetDetails = () => {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { checkProfileCompletion, showProfileModal, setShowProfileModal } = useProfileValidation();
 
   const handleGetPet = useCallback(async () => {
     try {
@@ -81,8 +83,17 @@ const PetDetails = () => {
     navigate(`/pet/edit/${petId}`);
   }
 
-  const handleGoToAdoptionForm = () => {
-    navigate(`/adoption-form/${petId}`);
+  const handleGoToAdoptionForm = async () => {
+    const isProfileComplete = await checkProfileCompletion();
+    if (isProfileComplete) {
+      navigate(`/adoption-form/${petId}`);
+    } else {
+      setShowProfileModal(true);
+    }
+  }
+
+  const handleGoToProfile = () => {
+    navigate('/profile');
   }
 
   return (
@@ -234,6 +245,15 @@ const PetDetails = () => {
                 buttonText="Eliminar"
                 buttonAction={handleDeletePet}
                 onClose={() => setShowDeleteModal(false)}
+              />
+            )}
+            {showProfileModal && (
+              <Modal
+                title="Perfil incompleto"
+                description="Para poder iniciar una solicitud de adopción, primero debés completar todos los datos de tu perfil."
+                buttonText="Ir a mi perfil"
+                buttonAction={handleGoToProfile}
+                onClose={() => setShowProfileModal(false)}
               />
             )}
           </>

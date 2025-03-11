@@ -4,10 +4,13 @@ import petServices from '../../../services/petServices';
 import formServices from '../../../services/formServices';
 import applicationServices from '../../../services/applicationServices';
 import Button from '../../../components/Button';
+import Modal from '../../../components/Modal/Modal';
+import { useProfileValidation } from '../../../hooks/useProfileValidation';
 
 const AdopterAdoptionForm = () => {
   const navigate = useNavigate();
   const petId = useParams().id;
+  const { checkProfileCompletion, showProfileModal, setShowProfileModal } = useProfileValidation();
 
   //Datos de la mascota, del formulario de adopción y respuestas del formulario
   const [pet, setPet] = useState(null);
@@ -42,8 +45,20 @@ const AdopterAdoptionForm = () => {
   }, [petId]);
 
   useEffect(() => {
-    handleGetPetAndForm();
-  }, [handleGetPetAndForm]);
+    const validateAndLoad = async () => {
+      const isProfileComplete = await checkProfileCompletion();
+      if (!isProfileComplete) {
+        setShowProfileModal(true);
+        return;
+      }
+      handleGetPetAndForm();
+    };
+    validateAndLoad();
+  }, [handleGetPetAndForm, checkProfileCompletion, setShowProfileModal]);
+
+  const handleGoToProfile = () => {
+    navigate('/profile');
+  };
 
   //Volver a la sección anterior
   const handleGoBack = () => {
@@ -238,6 +253,15 @@ const AdopterAdoptionForm = () => {
 
   return (
     <div className="m-8">
+      {showProfileModal && (
+        <Modal
+          title="Perfil incompleto"
+          description="Para poder iniciar una solicitud de adopción, primero debés completar todos los datos de tu perfil."
+          buttonText="Ir a mi perfil"
+          buttonAction={handleGoToProfile}
+          onClose={handleGoToProfile}
+        />
+      )}
       <div className='flex items-center gap-6'>
         <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
         <h1 className='text-5xl'>Formulario de adopción {pet?.shelter?.shelterName ? `de ${pet.shelter.shelterName}` : ''}</h1>
