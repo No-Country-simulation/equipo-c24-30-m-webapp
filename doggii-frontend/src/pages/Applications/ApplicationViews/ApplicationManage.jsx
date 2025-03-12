@@ -167,16 +167,16 @@ const ApplicationManage = () => {
       <div>
         <h3 className="text-3xl pb-5">Preguntas y respuestas del Formulario</h3>
         {formAnswers && formAnswers.length > 0 ? (
-          <ul>
+          <ul className="space-y-4">
             {formAnswers.map((answer, index) => (
-              <li key={index}>
-                <strong>Pregunta:</strong> {answer.question} <br />
-                <strong>Respuesta:</strong> {answer.answer}
+              <li key={index} className="p-4 border rounded-lg shadow-sm bg-gray-50">
+                <strong>{index+1}.-</strong> {answer.question} <br />
+                <strong>R:</strong> {answer.answer}
               </li>
             ))}
           </ul>
         ) : (
-          <p className="p-5">No se encontraron respuestas del formulario.</p>
+          <p className="p-5 text-center text-gray-500">No se encontraron respuestas del formulario.</p>
         )}
       </div>
       {/* Estado de la solicitud */}
