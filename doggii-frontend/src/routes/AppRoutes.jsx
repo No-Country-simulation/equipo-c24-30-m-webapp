@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
+import ProtectedRoute from './ProtectedRoute';
 import Login from '../pages/Login';
 import OptionsForms from '../pages/OptionsForms';
 import FormAdopter from '../pages/FormAdopter';
@@ -30,7 +31,11 @@ function AppRoutes() {
       <Route path='/options-forms' element={<OptionsForms />} />
       <Route path='/form-adopter' element={<FormAdopter />} />
       <Route path='/form-shelter' element={<FormShelter />} />
-      <Route element={<PlatformLayout/>}>
+      <Route element={
+        <ProtectedRoute>
+          <PlatformLayout/>
+        </ProtectedRoute>
+        }>
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/pets' element={<Pets />} />
