@@ -180,7 +180,7 @@ const AdopterAdoptionForm = () => {
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
-          navigate(`/adoption-request/${response.payload.id}`);
+          navigate(`/adoption-request/${response.payload._id}`);
         }, 3000);
       }
     } catch (error) {
