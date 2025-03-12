@@ -67,7 +67,7 @@ export const useAuth = () => {
   };
 
   useEffect(() => {
-    // Verificar autenticación al montar el componente
+    // Verificar autenticación al montar el componente y cuando cambia la ruta
     checkAuth();
 
     // Verificar autenticación cada 5 minutos (300000 ms)
@@ -76,5 +76,5 @@ export const useAuth = () => {
     // Limpiar intervalo al desmontar
     return () => clearInterval(interval);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
 };
