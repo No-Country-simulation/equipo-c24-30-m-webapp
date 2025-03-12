@@ -113,7 +113,7 @@ const AdopterDashboard = () => {
                 {pets.map((pet) => (
                   <VerticalCard
                     key={pet.id}
-                    image={pet.photos[0]}
+                    image={pet.photos?.[0] || "/src/assets/images/pet-not-available.jpg"}
                     title={pet.name}
                     description={`Refugio: ${pet.shelter.shelterName}`} 
                     onSee={() => handleGoToPetDetails(pet.id)}
