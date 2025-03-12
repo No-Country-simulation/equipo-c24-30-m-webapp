@@ -41,9 +41,13 @@ export default function Login() {
       dispatch(setUserInfo(user));
       dispatch(loginSuccess(token));
 
-      // Redirigir al usuario basado en su ubicación anterior
-      const from = location.state?.from?.pathname || "/dashboard";
-      navigate(from);
+      // Redirigir al usuario basado en su ubicación anterior o la última ruta guardada
+      const savedLocation = location.state?.from;
+      if (savedLocation && !savedLocation.pathname.includes('/login')) {
+        navigate(savedLocation.pathname);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       alert("Hubo un error al iniciar sesión. Intenta nuevamente.");
