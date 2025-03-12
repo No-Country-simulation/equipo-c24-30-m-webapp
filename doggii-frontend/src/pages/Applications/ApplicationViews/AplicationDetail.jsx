@@ -1,18 +1,45 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 //import Button from '../../../components/Button';
 //import getTimeElapsed from '../../../utils/getTimeElapsed';
 //import petDataMock from '../../../test/petsDataMock.json';
 //import amplicationDataMock from '../../../test/applicationsDataMock.json';
 
 const AplicationDetail = () => {
+  const { id } = useParams();
   const userRole = useSelector((state) => state.user.role);
   const navigate = useNavigate();
   const location = useLocation();
-  const { petData } = location.state || {};
+ const [petData, setPetData] = useState(location.state?.petData || null);
+
+  useEffect(() => {
+    const fetchApplicationDetails = async () => {
+      if (petData) return; // Evita llamadas innecesarias si ya tenemos los datos
+
+      try {
+        // Obtener la solicitud de adopción
+        const { data: adoptionRequestResponse } = await axios.get(import.meta.env.VITE_BACKEND_URI + `/api/adoptionRequest/${id}`);
+        const adoptionRequestData = adoptionRequestResponse.payload;
+
+        // Obtener los datos de la mascota
+        const { data: petResponse } = await axios.get(import.meta.env.VITE_BACKEND_URI + `/api/pet/${adoptionRequestData.pet}`
+        );
+        const petDetails = petResponse.payload;
+
+        // Reemplazar la referencia 'pet' con los datos completos de la mascota
+        setPetData({ ...adoptionRequestData, pet: petDetails });
+      } catch (error) {
+        console.error('Error al obtener los detalles:', error);
+      }
+    };
+
+    fetchApplicationDetails();
+  }, [id, petData]);
 
   if (!petData) {
-    return <p>No se encontró la información de la mascota.</p>;
+    return <p>Cargando detalles de la solicitud...</p>;
   }
 
   // Usamos petData.pet para obtener los detalles de la mascota
