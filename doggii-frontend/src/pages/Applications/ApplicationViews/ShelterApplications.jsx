@@ -11,17 +11,15 @@ const ShelterApplications = () => {
   const [applications, setApplications] = useState(petsData.slice(0, visibleItems));
   const [adoptionRequest, setAdoptionRequest] = useState(true);
   const navigate = useNavigate();
-
-   const { id: shelterId } = useSelector((state) => state.user);
+  const idShelter = useSelector((state) => state.user.id);
 
   useEffect(() => {
     const fetchAdoptionRequestsAndPets = async () => {
       const adoptionRequestsEndpoint =  import.meta.env.VITE_BACKEND_URI +
-        `/api/adoptionRequest/filter?shelter=${shelterId}`;
+        "/api/adoptionRequest/filter?shelter=" + idShelter;
       
       try {
-        
-        // Obtener las solicitudes de adopción para el refugio
+        // Obtener las solicitudes de adopción del refugio
         const response = await axios.get(adoptionRequestsEndpoint);
         console.log('Respuesta del backend (solicitudes de adopción para refugio):', response);
         
@@ -36,6 +34,7 @@ const ShelterApplications = () => {
               // Crear un nuevo objeto combinando la info de la mascota con el status y adopter de la solicitud
             const newPetDetail = {
               ...petResponse.data,
+              _id: request._id,
               payload: {
                 ...petResponse.data.payload,
                 status: request.status,      // Se reemplaza el status del pet por el status de la solicitud
@@ -66,7 +65,7 @@ const ShelterApplications = () => {
 
     fetchAdoptionRequestsAndPets();
     
-  }, [shelterId, visibleItems]);
+  }, [idShelter, visibleItems]);
 
   console.log('Pets data:', petsData);
 
@@ -76,9 +75,9 @@ const ShelterApplications = () => {
     setApplications(petsData.slice(0, newVisibleItems));
   };
 
-  const handleGoToApplicationDetails = (id) => {
-    const petData = petsData.find((pet) => pet.payload.id === id);
-    navigate(`/application-manage/${id}`, { state: { petData } });
+  const handleGoToApplicationDetails = (petId, requestId) => {
+    const petData = petsData.find((pet) => pet.payload.id === petId);
+    navigate(`/application-manage/${requestId}`, { state: { petData } });
   };
   const handleTranslateStatus = (status) => {
     switch (status) {
@@ -105,8 +104,9 @@ const ShelterApplications = () => {
                             subtitle1='Estado' 
                             text1={handleTranslateStatus(petData.payload.status)} 
                             image={petData.payload.photos} title={petData.payload.name} 
-                            subtitle2={`Refugio: ${petData.payload.shelter.shelterName}`} 
-                            onSee={() => handleGoToApplicationDetails(petData.payload.id)}
+                            subtitle2={`Solicitante:`}
+                            text2={petData.payload.adopter.name} 
+                            onSee={() => handleGoToApplicationDetails(petData.payload.id, petData._id)}
                             isShelter={true}
                           />
                   ))}

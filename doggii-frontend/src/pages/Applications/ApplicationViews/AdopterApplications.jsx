@@ -53,7 +53,7 @@ const AdopterApplications = () => {
 
     fetchAdoptionRequestsAndPets();
     
-  }, []);
+  }, [idAdopter, visibleItems]);
   console.log('Adoption requests data:', adoptionRequestsData);
 
   const handleSeeMore = () => {
@@ -62,12 +62,7 @@ const AdopterApplications = () => {
     setApplications(adoptionRequestsData.slice(0, newVisibleItems));
   };
 
-/*   const handleGoToApplicationDetails = (id) => {
-    const requestData = adoptionRequestsData.find(request => request.pet.id === id);
-    navigate(`/adoption-request/${id}`, { state: { petData: requestData } });
-  }; */
    const handleGoToApplicationDetails = (requestId, petId) => {
-    // Se busca la solicitud correspondiente 
     const requestData = adoptionRequestsData.find(request => request.pet.id === petId);
     navigate(`/adoption-request/${requestId}`, { state: { petData: requestData } });
   };
@@ -84,7 +79,6 @@ const AdopterApplications = () => {
         return 'Cancelado';
     }
   };
-  
 
   return (
     <div className='pl-8 pr-8'>
@@ -93,8 +87,6 @@ const AdopterApplications = () => {
       <div>
         <div className='flex flex-wrap justify-center gap-6 pt-8'>
           {applications.map((request, index) => (
-            console.log(request.pet.id),
-            console.log(request._id),
             <HorizontalCard 
               key={index} 
               id={request.pet.id} 
