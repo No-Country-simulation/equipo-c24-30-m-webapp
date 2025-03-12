@@ -1,28 +1,35 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import {Link, useNavigate} from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
 import { setUserInfo } from "../redux/slices/userSlice";
 
 export default function Login() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const userRole = useSelector((state) => state.user.role);
+
+  // Redirigir si el usuario ya está autenticado
+  useEffect(() => {
+    if (userRole && localStorage.getItem('accessToken')) {
+      navigate('/dashboard');
+    }
+  }, [userRole, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      //reeemplazar por la url de la api
       const response = await axios.post(import.meta.env.VITE_BACKEND_URI + "/api/auth/login", {
         email,
         password,
       });
       const { token, user } = response.data.payload;
-      
+
       if (!token) {
         alert("Usuario no encontrado. Verifica tus credenciales.");
         return;
@@ -34,7 +41,13 @@ export default function Login() {
       dispatch(setUserInfo(user));
       dispatch(loginSuccess(token));
 
-      navigate("/dashboard");
+      // Redirigir al usuario basado en su ubicación anterior o la última ruta guardada
+      const savedLocation = location.state?.from;
+      if (savedLocation && !savedLocation.pathname.includes('/login')) {
+        navigate(savedLocation.pathname);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       alert("Hubo un error al iniciar sesión. Intenta nuevamente.");
@@ -44,9 +57,7 @@ export default function Login() {
   return (
     <div className='mx-auto w-1/2 max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
       <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
-
       <h1 className='py-4 text-center text-2xl font-bold'>Iniciar sesión</h1>
-
       <form onSubmit={handleLogin} noValidate='' action='' className='space-y-6'>
         <div className='space-y-1 text-sm'>
           <label htmlFor='email' className='block dark:text-gray-600'>
