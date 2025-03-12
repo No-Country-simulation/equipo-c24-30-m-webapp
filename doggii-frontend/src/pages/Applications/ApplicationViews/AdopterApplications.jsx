@@ -1,56 +1,52 @@
 import { useState, useEffect } from 'react';
-import HorizontalCard from '../../../components/Cards/HorizontalCard'
-import Button from '../../../components/Button'
+import HorizontalCard from '../../../components/Cards/HorizontalCard';
+import Button from '../../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const AdopterApplications = () => {
   const [visibleItems, setVisibleItems] = useState(6);
-  const [petsData, setPetsData] = useState([]);
-  const [applications, setApplications] = useState(petsData.slice(0, visibleItems));
-  const [adoptionRequest, setAdoptionRequest] = useState(true);
+  const [adoptionRequestsData, setAdoptionRequestsData] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [adoptionRequestExists, setAdoptionRequestExists] = useState(true);
   const navigate = useNavigate();
+  const idAdopter = useSelector((state) => state.user.id);
 
   useEffect(() => {
     const fetchAdoptionRequestsAndPets = async () => {
-      const adoptionRequestsEndpoint = import.meta.env.VITE_BACKEND_URI + "/api/adoptionRequest/";
+      const adoptionRequestsEndpoint = import.meta.env.VITE_BACKEND_URI + "/api/adoptionRequest/filter?adopter=" + idAdopter;
       
       try {
-        // Obtener las solicitudes de adopción
+        // Obtener las solicitudes de adopción del adoptante
         const response = await axios.get(adoptionRequestsEndpoint);
         console.log('Respuesta del backend (solicitudes de adopción):', response);
         
-        // Validar que la respuesta contenga datos y que el array de solicitudes no esté vacío
         if (response.data && Array.isArray(response.data.payload) && response.data.payload.length > 0) {
           const adoptionRequests = response.data.payload;
           
           // Para cada solicitud, obtener la información completa de la mascota
-          const petDetailsPromises = adoptionRequests.map(async (request) => {
+          const adoptionRequestsWithPetDetailsPromises = adoptionRequests.map(async (request) => {
             const petEndpoint = import.meta.env.VITE_BACKEND_URI + '/api/pet/' + request.pet;
             const petResponse = await axios.get(petEndpoint);
-             // Crear un nuevo objeto que combine la información de la mascota con el status de la solicitud
-            const newPetDetail = {
-              ...petResponse.data,
-              payload: {
-                ...petResponse.data.payload,
-                status: request.status // Se reemplaza el status del pet por el status de la solicitud
-              }
+            // Se crea un nuevo objeto con la misma estructura de la solicitud, reemplazando "pet" con la info completa de la mascota
+            return {
+              ...request,
+              pet: petResponse.data.payload
             };
-            return newPetDetail;
           });
           
-          // Ejecutar todas las peticiones de forma concurrente
-          const combinedPetsDetails = await Promise.all(petDetailsPromises);
-          console.log('Detalles combinados de las mascotas:', combinedPetsDetails);
+          const combinedAdoptionRequests = await Promise.all(adoptionRequestsWithPetDetailsPromises);
+          console.log('Solicitudes combinadas con detalle de mascota:', combinedAdoptionRequests);
           
-          // Guardar los datos para renderizarlos
-          setPetsData(combinedPetsDetails);
+          setAdoptionRequestsData(combinedAdoptionRequests);
+          setApplications(combinedAdoptionRequests.slice(0, visibleItems));
         } else {
-          setAdoptionRequest(false);
+          setAdoptionRequestExists(false);
           console.warn('No se encontraron solicitudes de adopción.');
         }
       } catch (error) {
-        setAdoptionRequest(false);
+        setAdoptionRequestExists(false);
         console.error('Error al obtener solicitudes de adopción o detalles de mascotas:', error);
       }
     };
@@ -58,18 +54,24 @@ const AdopterApplications = () => {
     fetchAdoptionRequestsAndPets();
     
   }, []);
-  console.log('Pets data:', petsData);
+  console.log('Adoption requests data:', adoptionRequestsData);
 
   const handleSeeMore = () => {
     const newVisibleItems = visibleItems + 6;
     setVisibleItems(newVisibleItems);
-    setApplications(petsData.slice(0, newVisibleItems));
-  }
+    setApplications(adoptionRequestsData.slice(0, newVisibleItems));
+  };
 
-    const handleGoToApplicationDetails = (id) => {
-       const petData = petsData.find(pet => pet.payload.id === id);
-    navigate(`/adoption-request/${id}`, {state: {petData}}); //componente ApplicationDetail.jsx
-  }
+/*   const handleGoToApplicationDetails = (id) => {
+    const requestData = adoptionRequestsData.find(request => request.pet.id === id);
+    navigate(`/adoption-request/${id}`, { state: { petData: requestData } });
+  }; */
+   const handleGoToApplicationDetails = (requestId, petId) => {
+    // Se busca la solicitud correspondiente 
+    const requestData = adoptionRequestsData.find(request => request.pet.id === petId);
+    navigate(`/adoption-request/${requestId}`, { state: { petData: requestData } });
+  };
+
   const handleTranslateStatus = (status) => {
     switch (status) {
       case 'Pending':
@@ -81,25 +83,32 @@ const AdopterApplications = () => {
       default:
         return 'Cancelado';
     }
-  }
+  };
+  
+
   return (
     <div className='pl-8 pr-8'>
       <p>Consultá todas las solicitudes de adopción que iniciaste y sus estados.</p>
-      {adoptionRequest ? 
+      {adoptionRequestExists ? 
       <div>
         <div className='flex flex-wrap justify-center gap-6 pt-8'>
-          {petsData.map((petData, index) => (
-                    <HorizontalCard 
-                      key={index} 
-                      id={petData.payload.id} 
-                      subtitle1='Estado' 
-                      text1={handleTranslateStatus(petData.payload.status)} 
-                      subtitle2='Refugio' text2={petData.payload.shelter.shelterName} 
-                      image={petData.payload.photos} title={petData.payload.name} 
-                      onSee={() => handleGoToApplicationDetails(petData.payload.id)}/>
-            ))}
+          {applications.map((request, index) => (
+            console.log(request.pet.id),
+            console.log(request._id),
+            <HorizontalCard 
+              key={index} 
+              id={request.pet.id} 
+              subtitle1='Estado' 
+              text1={handleTranslateStatus(request.status)} 
+              subtitle2='Refugio' 
+              text2={request.pet.shelter.shelterName} 
+              image={request.pet.photos} 
+              title={request.pet.name} 
+              onSee={() => handleGoToApplicationDetails(request._id, request.pet.id)}
+            />
+          ))}
         </div>
-        {visibleItems < applications.length && (
+        {visibleItems < adoptionRequestsData.length && (
           <Button
             className='m-auto mt-8 text-xl'
             onClick={handleSeeMore}
@@ -110,7 +119,7 @@ const AdopterApplications = () => {
       </div> : <p className='flex justify-center mt-10'>No hay solicitudes de adopción.</p>}
       
     </div>
-  )
-}
+  );
+};
 
 export default AdopterApplications;
