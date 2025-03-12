@@ -1,28 +1,62 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 //import Button from '../../../components/Button';
 //import getTimeElapsed from '../../../utils/getTimeElapsed';
 //import petDataMock from '../../../test/petsDataMock.json';
 //import amplicationDataMock from '../../../test/applicationsDataMock.json';
 
 const AplicationDetail = () => {
+  const { id } = useParams();
   const userRole = useSelector((state) => state.user.role);
   const navigate = useNavigate();
   const location = useLocation();
-  const { petData } = location.state || {};
+ const [petData, setPetData] = useState(location.state?.petData || null);
+
+  useEffect(() => {
+    const fetchApplicationDetails = async () => {
+      if (petData) return; // Evita llamadas innecesarias si ya tenemos los datos
+
+      try {
+        // Obtener la solicitud de adopción
+        const { data: adoptionRequestResponse } = await axios.get(import.meta.env.VITE_BACKEND_URI + `/api/adoptionRequest/${id}`);
+        const adoptionRequestData = adoptionRequestResponse.payload;
+
+        // Obtener los datos de la mascota
+        const { data: petResponse } = await axios.get(import.meta.env.VITE_BACKEND_URI + `/api/pet/${adoptionRequestData.pet}`
+        );
+        const petDetails = petResponse.payload;
+
+        // Reemplazar la referencia 'pet' con los datos completos de la mascota
+        setPetData({ ...adoptionRequestData, pet: petDetails });
+      } catch (error) {
+        console.error('Error al obtener los detalles:', error);
+      }
+    };
+
+    fetchApplicationDetails();
+  }, [id, petData]);
 
   if (!petData) {
-    return <p>No se encontró la información de la mascota.</p>;
+    return <p>Cargando detalles de la solicitud...</p>;
   }
 
-  const age = petData.payload.age.years > 0 ? `${petData.payload.age.years} años` : 
-              (petData.payload.age.months > 0 ? `${petData.payload.age.months} meses` :
-              (petData.payload.age.days > 0 ? `${petData.payload.age.days} días` : '')); 
+  // Usamos petData.pet para obtener los detalles de la mascota
+  const age =
+    petData.pet.age.years > 0
+      ? `${petData.pet.age.years} años`
+      : petData.pet.age.months > 0
+      ? `${petData.pet.age.months} meses`
+      : petData.pet.age.days > 0
+      ? `${petData.pet.age.days} días`
+      : '';
 
   const handleGoBack = () => {
     navigate(-1);
-  }
-    const handleTranslateStatus = (status) => {
+  };
+
+  const handleTranslateStatus = (status) => {
     switch (status) {
       case 'Pending':
         return 'Pendiente';
@@ -33,57 +67,60 @@ const AplicationDetail = () => {
       default:
         return 'Cancelado';
     }
-  }
+  };
 
   return (
     <div className='p-8'>
       <div className='flex items-center gap-6'>
-        <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
-        <h1 className='text-5xl'>{petData.payload.name}</h1>
+        <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>
+          ←
+        </button>
+        <h1 className='text-5xl'>{petData.pet.name}</h1>
       </div>
       <div className='py-10 grid lg:grid-cols-5 sm:grid-cols-1 gap-10'>
         <div className='lg:col-span-2'>
-          <img src={petData.payload.photos} alt={petData.payload.name} className='min-h-110 object-cover rounded-xl'/>
+          <img
+            src={petData.pet.photos}
+            alt={petData.pet.name}
+            className='min-h-110 object-cover rounded-xl'
+          />
         </div>
         <div className='lg:col-span-3 flex flex-col justify-between py-2'>
           <p className='pb-2 text-xl'>
             <span className='font-medium'>Sexo: </span>
-            <span>{(petData.payload.sex === "male" ? "Macho" : "Hembra")}</span>
+            <span>{petData.pet.sex === 'male' ? 'Macho' : 'Hembra'}</span>
           </p>
           <p className='pb-2 text-xl'>
             <span className='font-medium'>Edad: </span>
             <span>{age}</span>
           </p>
-          {petData.payload.specialCare && (
+          {petData.pet.specialCare && (
             <p className='pb-2 text-xl'>
               <span className='font-medium'>Cuidados especiales: </span>
-              <span>{petData.payload.specialCare}</span>
+              <span>{petData.pet.specialCare}</span>
             </p>
           )}
           <p className='pb-2 text-xl'>
             <span className='font-medium'>Descripción: </span>
-            <span>{petData.payload.description}</span>
-          </p> 
-          {userRole === "adopter" && (
+            <span>{petData.pet.description}</span>
+          </p>
+          {userRole === 'adopter' && (
             <p className='pb-2 text-xl'>
               <span className='font-medium'>Refugio: </span>
-              <span>{petData.payload.shelter.shelterName}</span>
+              <span>{petData.pet.shelter.shelterName}</span>
             </p>
           )}
           <p className='pb-2 text-xl'>
             <span className='font-medium'>Estado: </span>
-            <span>{handleTranslateStatus(petData.payload.status)}</span>
+            <span>{handleTranslateStatus(petData.status)}</span>
           </p>
-
-{/*       
-Se quito la parte de "Solicitud enviada hace:" porque no se tiene la informacion de la fecha de creacion de la solicitud
-    <p className='pb-2 text-xl'>
-            <span className='font-medium'>Solicitud enviada hace: </span>
-            <span>{getTimeElapsed(petData.payload.createdAt)}</span>
-          </p>  */}
+          {/*
+          Se eliminó la parte "Solicitud enviada hace:" ya que no se tiene la fecha de creación de la solicitud
+          */}
         </div>
       </div>
-      {/* {userRole === "shelter" ?
+      {/*
+      {userRole === "shelter" ?
         <div className='flex justify-around'>
           <Button className='text-2xl w-50'>
             Eliminar
@@ -92,7 +129,7 @@ Se quito la parte de "Solicitud enviada hace:" porque no se tiene la informacion
             Editar
           </Button>
           <Button className='text-2xl w-50'>
-            {petData.payload.available ? 'Pausar' : 'Reanudar'}
+            {petData.pet.available ? 'Pausar' : 'Reanudar'}
           </Button>
         </div>
         :
@@ -101,7 +138,7 @@ Se quito la parte de "Solicitud enviada hace:" porque no se tiene la informacion
         </Button>
       } */}
     </div>
-  )
-}
+  );
+};
 
 export default AplicationDetail;

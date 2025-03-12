@@ -61,7 +61,7 @@ const ShelterDashboard = () => {
 
   //A implementar cuando esté lista la vista de edición de una solicitud
 /*   const handleGoToApplicationEdit = (id) => {
-    navigate(`/application/${id}`);
+    navigate(`/application-manage/${id}`);
   } */
 
   return (
