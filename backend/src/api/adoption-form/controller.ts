@@ -54,8 +54,6 @@ export default class FormController {
       const { ...updateFields } = req.body;
       const { user } = res.locals;
 
-      console.log("userid", user.id);
-      console.log(updateFields);
       const newForm = await FormService.updateAdoptionForm(
         user.id,
         updateFields

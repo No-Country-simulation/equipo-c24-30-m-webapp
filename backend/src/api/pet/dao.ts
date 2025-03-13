@@ -27,7 +27,6 @@ class PetDAO {
   }
 
   async update(id: string, data: Partial<IPet>): Promise<IPet | null> {
-    console.log(data);
     return await this.model.findByIdAndUpdate(id, data, { new: true });
   }
 

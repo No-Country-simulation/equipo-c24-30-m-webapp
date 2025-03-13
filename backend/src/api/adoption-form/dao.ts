@@ -21,10 +21,7 @@ class FormDAO {
   }
 
   async update(id: string, data: Partial<IForm>): Promise<IForm | null> {
-    console.log("Updating ID:", id);
-    console.log("Data:", data);
     const result = await this.model.findByIdAndUpdate(id, data, { new: true });
-    console.log("Updated Form:", result);
     return result;
   }
 

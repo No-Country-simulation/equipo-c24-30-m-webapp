@@ -10,8 +10,6 @@ export default class AdoptionRequestController {
     try {
       const { user } = res.locals;
       const { ...adoptionRequestFields } = req.body;
-      console.log("adopter", user);
-      console.log("adoptionRequestFields", adoptionRequestFields);
 
       const shelterId = PetService.getPetById(adoptionRequestFields.pet);
 

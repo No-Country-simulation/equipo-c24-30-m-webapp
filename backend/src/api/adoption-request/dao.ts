@@ -20,7 +20,6 @@ class AdoptionRequestDAO {
     id: string,
     data: Partial<IAdoptionRequest>
   ): Promise<IAdoptionRequest | null> {
-    console.log(data);
     return this.model.findByIdAndUpdate(id, data, { new: true }).exec();
   }
 

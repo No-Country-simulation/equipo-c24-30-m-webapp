@@ -49,7 +49,6 @@ export default class AdoptionRequestService {
       }
 
       const pet = await petDao.read(adoptionRequestFields.pet.toString());
-      console.log("pet found: ", pet);
       if (!pet) {
         throw new HttpError(
           "Pet not found",
@@ -249,8 +248,6 @@ export default class AdoptionRequestService {
       if (filter.shelter) query.shelter = filter.shelter;
       if (filter.pet) query.pet = filter.pet;
       if (filter.adopter) query.adopter = filter.adopter;
-
-      console.log("Query: ", query);
 
       const adoptionRequests = await adoptionRequestDao.find(query);
 

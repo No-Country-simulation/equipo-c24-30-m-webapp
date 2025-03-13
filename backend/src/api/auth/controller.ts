@@ -21,11 +21,9 @@ export default class AuthController {
 
       if (req.body.role === "Adopter") {
         const adopterData: AdopterCreateFields = req.body;
-        console.log(adopterData);
         userResponse = await AdopterService.createAdopter(adopterData);
       } else if (req.body.role === "Shelter") {
         const shelterData: ShelterCreateFields = req.body;
-        console.log(shelterData);
         userResponse = await ShelterService.createShelter(shelterData);
       } else if (req.body.role === "Admin") {
         const userData: AdminCreateFields = req.body;
@@ -71,14 +69,11 @@ export default class AuthController {
 
   static async login(req: Request, res: Response): Promise<void> {
     try {
-      console.log("Login request");
       const userData: UserLoginFields = req.body;
-      console.log(userData);
 
       let { token, userWithoutPassword } = await UserService.loginUser(
         userData
       );
-      console.log(token);
       if (!token) {
         throw new HttpError(
           "Invalid credentials",

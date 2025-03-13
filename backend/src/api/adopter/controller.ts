@@ -31,15 +31,10 @@ export default class AdopterController {
       const { user } = res.locals;
       const { ...updateFields } = req.body;
 
-      console.log(updateFields);
-      console.log(user);
-
       const updatedAdopter = await AdopterService.updateAdopter(
         user,
         updateFields
       );
-
-      console.log("updatedAdopter", updatedAdopter);
 
       const response = apiResponse(true, updatedAdopter);
       res.status(HTTP_STATUS.OK).json(response);

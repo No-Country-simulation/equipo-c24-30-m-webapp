@@ -29,7 +29,6 @@ export default class ShelterService {
       const shelterFound = await shelterDao.find({
         email: shelter.email,
       });
-      console.log("este es ", shelterFound);
       if (shelterFound && shelterFound.length > 0) {
         throw new HttpError(
           "User already exists",

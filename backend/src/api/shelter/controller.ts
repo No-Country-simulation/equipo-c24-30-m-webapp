@@ -32,15 +32,10 @@ export default class ShelterController {
       const { user } = res.locals;
       const { ...updateFields } = req.body;
 
-      console.log(updateFields);
-      console.log(user);
-
       const updatedShelter = await ShelterService.updateShelter(
         user,
         updateFields
       );
-
-      console.log("updatedShelter", updatedShelter);
 
       const response = apiResponse(true, updatedShelter);
       res.status(HTTP_STATUS.OK).json(response);
@@ -60,7 +55,6 @@ export default class ShelterController {
   static async CreateAdoptionPost(req: Request, res: Response) {
     try {
       const shelterId = res.locals.user.id;
-      console.log(shelterId);
       const petData = {
         ...req.body,
         shelter: shelterId,
@@ -96,7 +90,6 @@ export default class ShelterController {
           HTTP_STATUS.NOT_FOUND
         );
       }
-      console.log(petData);
       const pet = await PetService.updatePet(petID, petData);
 
       const response = apiResponse(true, pet);
