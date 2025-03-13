@@ -11,8 +11,7 @@ const Button = ({
     <Component 
       className={`
         flex items-center justify-center
-        px-10 py-4
-        text-lg
+        px-6 py-2
         bg-[#FFDC64]
         border-2 border-[#E6C65A]
         rounded-[50px]
