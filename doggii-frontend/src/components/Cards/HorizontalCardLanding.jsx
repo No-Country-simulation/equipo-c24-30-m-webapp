@@ -14,7 +14,7 @@ const HorizontalCardLanding = ({image, title, text}) => {
           ))}
         </h3>
       </div>
-      <p className="p-8 text-md text-justify">{text}</p>
+      <p className="p-6 text-md text-justify">{text}</p>
     </div>
   )
 }
