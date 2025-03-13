@@ -29,6 +29,7 @@ const ShelterDashboard = () => {
             userServices.getUser(app.adopter, 'adopter')
           ]);
           return {
+            id: app._id,
             pet: petResponse.payload,
             adopter: adopterResponse.payload
           };
@@ -57,12 +58,11 @@ const ShelterDashboard = () => {
 
   const handleGoToApplicationsSection = () => {
     navigate('/applications');
-  } 
+  }
 
-  //A implementar cuando esté lista la vista de edición de una solicitud
-/*   const handleGoToApplicationEdit = (id) => {
+  const handleGoToApplicationDetails = (id) => {
     navigate(`/application-manage/${id}`);
-  } */
+  };
 
   return (
     <div className='pl-8 pr-8 pb-8'>
@@ -104,15 +104,16 @@ const ShelterDashboard = () => {
             </div>
           ) : (
             <>
-              {applications.map(({ pet, adopter }, index) => (
+              {applications.map((application, index) => (
                 <HorizontalCard 
                   key={index}
-                  image={pet.photos[0]} 
-                  title={pet.name} 
+                  image={application.pet.photos[0]} 
+                  title={application.pet.name} 
                   subtitle1='Estado' 
                   text1='pendiente'
                   subtitle2='Solicitante' 
-                  text2={adopter.userName}
+                  text2={application.adopter.userName}
+                  onSee={() => handleGoToApplicationDetails(application.id)}
                 />
               ))}
               <Button
