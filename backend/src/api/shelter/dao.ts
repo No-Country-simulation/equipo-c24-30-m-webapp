@@ -1,11 +1,10 @@
 // MODELS
-import { Types, FilterQuery } from "mongoose";
+import { FilterQuery } from "mongoose";
 import Shelter from "./model";
 // DAOS
 import UserDAO from "../user/dao";
 // INTERFACES
 import { IShelter } from "../shelter/interface";
-import Pet from "../pet/model";
 
 class ShelterDAO extends UserDAO<IShelter> {
   constructor() {
@@ -13,7 +12,9 @@ class ShelterDAO extends UserDAO<IShelter> {
   }
 
   async read(id: string): Promise<IShelter | null> {
-    return await Shelter.findById(id).populate([{ path: "Pet", options: { strictPopulate: false } }]).lean();
+    return await Shelter.findById(id)
+      .populate([{ path: "Pet", options: { strictPopulate: false } }])
+      .lean();
   }
 
   async update(id: string, data: Partial<IShelter>): Promise<IShelter | null> {
@@ -30,7 +31,9 @@ class ShelterDAO extends UserDAO<IShelter> {
   }
 
   async find(query: FilterQuery<IShelter>): Promise<IShelter[]> {
-    return await Shelter.find(query).populate([{ path: "Pet", options: { strictPopulate: false } }]).lean();
+    return await Shelter.find(query)
+      .populate([{ path: "Pet", options: { strictPopulate: false } }])
+      .lean();
   }
 }
 

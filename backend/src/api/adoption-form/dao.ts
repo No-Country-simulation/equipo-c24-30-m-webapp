@@ -1,42 +1,40 @@
 import { Model, FilterQuery } from "mongoose";
 import { IForm } from "./interface";
 
-class FormDAO{
-    private model: Model<IForm>;
+class FormDAO {
+  private model: Model<IForm>;
 
-    constructor(model: Model<IForm>){
-        this.model = model;
-    }
+  constructor(model: Model<IForm>) {
+    this.model = model;
+  }
 
-    async create(data: IForm): Promise<IForm>{
-        return await this.model.create(data);
-    }
+  async create(data: IForm): Promise<IForm> {
+    return await this.model.create(data);
+  }
 
-    async findById(id: string): Promise<IForm | null> {
-        return await this.model.findById(id);
-    }
+  async findById(id: string): Promise<IForm | null> {
+    return await this.model.findById(id);
+  }
 
-    async findAll(): Promise<IForm[]> {
-        return await this.model.find();
-    }
+  async findAll(): Promise<IForm[]> {
+    return await this.model.find();
+  }
 
-    async update(id: string, data: Partial<IForm>): Promise<IForm | null> {
-        console.log('Updating ID:', id);
-  console.log('Data:', data);
-  const result = await this.model.findByIdAndUpdate(id, data, { new: true });
-  console.log('Updated Form:', result);
-  return result;
-    }
+  async update(id: string, data: Partial<IForm>): Promise<IForm | null> {
+    console.log("Updating ID:", id);
+    console.log("Data:", data);
+    const result = await this.model.findByIdAndUpdate(id, data, { new: true });
+    console.log("Updated Form:", result);
+    return result;
+  }
 
-    async delete(id: string): Promise<IForm | null> {
-        return await this.model.findByIdAndDelete(id);
-    }
+  async delete(id: string): Promise<IForm | null> {
+    return await this.model.findByIdAndDelete(id);
+  }
 
-    async findByShelterId(shelterId: string): Promise<IForm | null> {
-        return await this.model.findOne({ shelterId });
-    }
-    
+  async findByShelterId(shelterId: string): Promise<IForm | null> {
+    return await this.model.findOne({ shelterId });
+  }
 }
-
 
 export default FormDAO;

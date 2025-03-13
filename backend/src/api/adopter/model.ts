@@ -8,22 +8,22 @@ import { IAdopter } from "./interface";
 import { Genders } from "../../constants/Genders";
 
 const Adopter = User.discriminator(
-    "Adopter",
-    new Schema<IAdopter>({
-        favoritePets: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Pet",
-            },
-        ],
-        gender: {
-            type: String,
-            enum: Genders,
-        },
-        dateOfBirth: { 
-            type: Date 
-        },
-    })
+  "Adopter",
+  new Schema<IAdopter>({
+    favoritePets: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Pet",
+      },
+    ],
+    gender: {
+      type: String,
+      enum: Genders,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+  })
 );
 
 export default Adopter;

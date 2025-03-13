@@ -9,21 +9,19 @@ import { shelterUpdatePayloadValidator } from "./validator";
 const shelterRouter = Router();
 
 shelterRouter.get(
-    "/:id",
-    authenticate,
-    authorizeRoles([Roles.SHELTER, Roles.ADMIN, Roles.ADOPTER]),
-    ShelterController.getShelter
+  "/:id",
+  authenticate,
+  authorizeRoles([Roles.SHELTER, Roles.ADMIN, Roles.ADOPTER]),
+  ShelterController.getShelter
 );
-
 
 shelterRouter.put(
-    "/", 
-    authenticate,
-    authorizeRoles([Roles.SHELTER]),
-    schemaValidator(shelterUpdatePayloadValidator, null),
-    ShelterController.updateShelter
+  "/",
+  authenticate,
+  authorizeRoles([Roles.SHELTER]),
+  schemaValidator(shelterUpdatePayloadValidator, null),
+  ShelterController.updateShelter
 );
-
 
 // shelterRouter.post("/createAdoptionPost",
 //     authenticate,
@@ -38,10 +36,9 @@ shelterRouter.put(
 // );
 
 // shelterRouter.delete("/deleteAdoptionPost/:id",
-//     authenticate, 
-//     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),  
+//     authenticate,
+//     authorizeRoles([Roles.SHELTER, Roles.ADMIN]),
 //     ShelterController.DeleteAdoptionPost
 // );
-
 
 export default shelterRouter;

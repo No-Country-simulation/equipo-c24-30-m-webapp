@@ -21,7 +21,10 @@ class ReportService {
     return await this.reportDAO.findAll();
   }
 
-  async updateReport(id: string, data: ReportUpdateFields): Promise<IReport | null> {
+  async updateReport(
+    id: string,
+    data: ReportUpdateFields
+  ): Promise<IReport | null> {
     return await this.reportDAO.update(id, data);
   }
 

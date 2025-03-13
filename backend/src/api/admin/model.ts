@@ -6,15 +6,20 @@ import User from "../user/model";
 import { IAdmin } from "../admin/interface";
 
 const Admin = User.discriminator(
-    "Admin",
-    new Schema<IAdmin>({
-        permissions: [
-            {
-                type: String,
-                enum: ["MANAGE_USERS", "MANAGE_SHELTERS", "MANAGE_ADOPTIONS", "MANAGE_DONATIONS"],
-            },
+  "Admin",
+  new Schema<IAdmin>({
+    permissions: [
+      {
+        type: String,
+        enum: [
+          "MANAGE_USERS",
+          "MANAGE_SHELTERS",
+          "MANAGE_ADOPTIONS",
+          "MANAGE_DONATIONS",
         ],
-    })
+      },
+    ],
+  })
 );
 
 export default Admin;
