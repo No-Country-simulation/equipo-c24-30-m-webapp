@@ -10,10 +10,10 @@ const VerticalCardLanding = ({image, title, description}) => {
       </div>
       <div className='flex justify-between rounded-xl p-4 bg-(--accent)'>
         <div className='space-y-1'>
-          <h2>{title}</h2>
+          <h2 className='text-xl'>{title}</h2>
           <p>{description}</p>
         </div>
-        <Button className='w-25 h-10 bg-(--primary)'>
+        <Button className='h-10'>
           Ver más
         </Button>
       </div>

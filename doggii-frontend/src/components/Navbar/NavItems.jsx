@@ -14,7 +14,7 @@ const NavItems = () => {
       <li className="m-0">
         <Link 
           onClick={(e) => scrollToSection(e, 'how-it-works')} 
-          className="flex items-center px-4 font-normal hover:border-b-4 hover:border-(--primary)" 
+          className="flex items-center px-2 font-normal hover:border-b-4 hover:border-(--primary)" 
           to="#how-it-works"
         >
           Funcionamiento
@@ -23,7 +23,7 @@ const NavItems = () => {
       <li className="m-0">
         <Link 
           onClick={(e) => scrollToSection(e, 'pets')} 
-          className="flex items-center px-4 font-normal hover:border-b-4 hover:border-(--primary)" 
+          className="flex items-center px-2 font-normal hover:border-b-4 hover:border-(--primary)" 
           to="#pets"
         >
           Mascotas
@@ -32,7 +32,7 @@ const NavItems = () => {
       <li className="m-0">
         <Link 
           onClick={(e) => scrollToSection(e, 'testimonials')} 
-          className="flex items-center px-4 font-normal hover:border-b-4 hover:border-(--primary)" 
+          className="flex items-center px-2 font-normal hover:border-b-4 hover:border-(--primary)" 
           to="#testimonials"
         >
           Testimonios
@@ -41,7 +41,7 @@ const NavItems = () => {
       <li className="m-0">
         <Link 
           onClick={(e) => scrollToSection(e, 'benefits')} 
-          className="flex items-center px-4 font-normal hover:border-b-4 hover:border-(--primary)" 
+          className="flex items-center px-2 font-normal hover:border-b-4 hover:border-(--primary)" 
           to="#benefits"
         >
           Beneficios
