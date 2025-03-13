@@ -5,7 +5,6 @@ import authorizeRoles from "../../middleware/authorization.middleware";
 import { Roles } from "../../constants/Roles";
 import schemaValidator from "../../middleware/schemaValidators.middlewares";
 import { petCreatePayloadValidator, petUpdatePayloadValidator } from "./validator";
-import upload from "../../config/uploadImage";
 
 
 const petRouter = Router();
@@ -16,7 +15,6 @@ petRouter.post(
     authenticate,
     authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
     schemaValidator(petCreatePayloadValidator, null),
-    upload.array('photos'),
     PetController.createPet
 );
 petRouter.put(

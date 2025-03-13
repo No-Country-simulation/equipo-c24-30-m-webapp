@@ -2,33 +2,13 @@ import { Request, Response } from "express";
 import HTTP_STATUS from "../../constants/HttpStatus";
 import PetService from "./service";
 import apiResponse from "../../utils/apiResponse.utils";
-import { v2 as cloudinary } from 'cloudinary';
 import { PetCreateFields } from "./interface";
 
 
 export default class PetController {
-    static async createPet(req: Request, res: Response): Promise<void> {
+    static async createPet(req: Request, res: Response) {
         try {
-          
-          const files = req.files as Express.Multer.File[];
-      
-          let imageUrls: string[] = [];
-      
-          
-          if (files && files.length > 0) {
-            const uploadPromises = files.map((file) => cloudinary.uploader.upload(file.path));
-            const cloudinaryResponses = await Promise.all(uploadPromises);
-            imageUrls = cloudinaryResponses.map((response) => response.secure_url); 
-          }
-      
-         
-          const petData: PetCreateFields = {
-            ...req.body,
-            photos: imageUrls, 
-          };
-      
-          
-          const newPet = await PetService.createPet(petData);
+          const newPet = await PetService.createPet(req.body);
       
           res.status(HTTP_STATUS.CREATED).json(apiResponse(true, newPet));
         } catch (err: any) {
