@@ -18,7 +18,6 @@ export default class AdoptionRequestController {
           user.id,
           adoptionRequestFields
         );
-      console.log("adoptionRequest", adoptionRequest);
       const response = apiResponse(true, adoptionRequest);
       res.status(HTTP_STATUS.OK).json(response);
     } catch (err: any) {
@@ -112,16 +111,11 @@ export default class AdoptionRequestController {
   static async getAdoptionRequestsByFilter(req: Request, res: Response) {
     try {
       const { shelter, pet, adopter } = req.query;
-      console.log("shelter", shelter);
-      console.log("pet", pet);
-      console.log("adopter", adopter);
       const filter: any = {};
       if (shelter) filter.shelter = shelter;
       if (pet) filter.pet = pet;
       if (adopter) filter.adopter = adopter;
-
-      console.log("filter", filter);
-
+      
       const adoptionRequests =
         await AdoptionRequestService.getAdoptionRequestsByFilter(filter);
       res.status(HTTP_STATUS.OK).json(apiResponse(true, adoptionRequests));
