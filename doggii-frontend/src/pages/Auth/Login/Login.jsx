@@ -59,12 +59,12 @@ export default function Login() {
     <div 
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-[url(/src/assets/images/login-background.jpeg)] bg-black/50 bg-opacity-10 bg-blend-multiply"
     >
-      <div className='max-w-lg p-8 rounded-xl bg-(--accent) shadow-2xl brightness-100'>
-        <img src="/src/assets/logo/inline-logo.png" alt="Logo" className="w-2/3 h-auto mx-auto mb-6"/>
-        <h1 className='text-center text-4xl font-bold mb-8'>Iniciar sesión</h1>
-        <form onSubmit={handleLogin} noValidate='' action='' className='space-y-8'>
-          <div className='space-y-2'>
-            <label htmlFor='email' className='block text-md font-medium'>
+      <div className='max-w-lg min-w-md p-10 rounded-xl bg-(--accent) shadow-2xl brightness-100'>
+        <img src="/src/assets/logo/inline-logo.png" alt="Logo" className="w-50 h-auto mx-auto mb-4"/>
+        <h1 className='text-center text-2xl font-bold mb-4'>Iniciar sesión</h1>
+        <form onSubmit={handleLogin} noValidate='' action='' className='space-y-4'>
+          <div className='space-y-1'>
+            <label htmlFor='email' className='block text-sm font-medium'>
               Correo electrónico
             </label>
             <input
@@ -74,11 +74,11 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder='Correo electrónico'
-              className='w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white'
+              className='w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white'
             />
           </div>
-          <div className='space-y-2'>
-            <label htmlFor='password' className='block text-md font-medium'>
+          <div className='space-y-1'>
+            <label htmlFor='password' className='block text-sm font-medium'>
               Contraseña
             </label>
             <input
@@ -88,16 +88,16 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder='Contraseña'
-              className='w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white'
+              className='w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white'
             />
-            <div className='flex justify-end text-md text-gray-600'>
+            <div className='flex justify-end text-sm text-gray-800'>
               <Link to='#' className="hover:text-(--secondary-dark)">
                 ¿Olvidaste la contraseña?
               </Link>
             </div>
           </div>
           <Button
-            className="mx-auto text-xl"
+            className="mx-auto text-base"
           >
           Iniciar sesión
           </Button>
@@ -138,13 +138,13 @@ export default function Login() {
           </svg>
         </button>
       </div> */}
-        <div className='flex items-center justify-center gap-2 mt-6'>
-          <p className='text-center text-md text-gray-600'>
+        <div className='flex items-center justify-center gap-2 mt-4'>
+          <p className='text-center text-sm text-gray-800'>
             ¿Aún no tenés una cuenta?
           </p>
           <Link
             to='/options-forms'
-            className='font-medium text-gray-600 hover:text-(--secondary-dark)'
+            className='font-medium text-gray-800 text-sm hover:text-(--secondary-dark)'
           >
             Registrate
           </Link>
