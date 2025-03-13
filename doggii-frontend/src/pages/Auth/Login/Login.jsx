@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
-import { loginSuccess } from "../redux/slices/authSlice";
-import { setUserInfo } from "../redux/slices/userSlice";
-import Button from "../components/Button";
+import { loginSuccess } from "../../../redux/slices/authSlice";
+import { setUserInfo } from "../../../redux/slices/userSlice";
+import Button from "../../../components/Button";
 
 export default function Login() {
   const [email, setEmail] = useState("");
