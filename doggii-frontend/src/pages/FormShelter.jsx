@@ -3,12 +3,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
+import { setUserInfo } from "../redux/slices/userSlice";
 
 const FormShelter = () => {
   const [formData, setFormData] = useState({
     shelterName: "",       // Nombre del refugio
     userName: "",          // Nombre del responsable
-    address: "",           // Dirección del refugio
     email: "",             // Correo electrónico
     password: "",          // Contraseña
     confirmPassword: "",   // Repetir contraseña
@@ -38,7 +38,6 @@ const FormShelter = () => {
     let newErrors = {};
     if (!formData.shelterName.trim()) newErrors.shelterName = "El nombre del refugio es obligatorio.";
     if (!formData.userName.trim()) newErrors.userName = "El nombre del responsable es obligatorio.";
-    if (!formData.address.trim()) newErrors.address = "La dirección del refugio es obligatoria.";
     if (!formData.email.trim()) newErrors.email = "El correo electrónico es obligatorio.";
     if (!formData.password) newErrors.password = "La contraseña es obligatoria.";
     if (formData.password !== formData.confirmPassword)
@@ -67,33 +66,37 @@ const FormShelter = () => {
       password: formData.password,
       email: formData.email,
       shelterName: formData.shelterName,
-      address: formData.address,
       admin: false,
       role: "Shelter",
     };
 
     try {
-      const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
-      console.log(response);
+      // Registrar al usuario
+      const registerResponse = await axios.post("http://localhost:8082/api/auth/register", newUser);
       
-     if (response.data.success) {
-      const userData = {
-        id: response.data.payload.id,
-        userName: newUser.userName, // Lo tomamos del formulario original
-        email: newUser.email,
-        phone: "",
-        address: {
-          street: newUser.address,
-          city: "",
-          province: "",
-          country: "",
-        },
-        userRole: "shelter",
-      };
+      if (registerResponse.data.success) {
+        // Iniciar sesión automáticamente
+        const loginResponse = await axios.post("http://localhost:8082/api/auth/login", {
+          email: formData.email,
+          password: formData.password,
+        });
 
-      dispatch(loginSuccess(userData)); // Guardamos en Redux
-      navigate("/dashboard");
-    }
+        const { token, user } = loginResponse.data.payload;
+
+        if (token) {
+          // Guardar el token en localStorage
+          localStorage.setItem("accessToken", token);
+          // Configurar el token en los headers de axios
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          
+          // Actualizar el estado de Redux
+          dispatch(setUserInfo(user));
+          dispatch(loginSuccess(token));
+          
+          // Redirigir al dashboard
+          navigate("/dashboard");
+        }
+      }
     } catch (error) {
       console.error("Error al registrar:", error);
       alert("Hubo un error en el registro, intenta nuevamente.");
@@ -135,19 +138,6 @@ const FormShelter = () => {
               className="border p-2 w-full rounded"
             />
             {errors.userName && <p className="text-red-500 text-sm">{errors.userName}</p>}
-          </div>
-
-          {/* Campo: Dirección del refugio */}
-          <div>
-            <input
-              type="text"
-              name="address"
-              placeholder="Dirección del refugio"
-              value={formData.address}
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-            />
-            {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
           </div>
 
           {/* Campo: Correo electrónico */}
