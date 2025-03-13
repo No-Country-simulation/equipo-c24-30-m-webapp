@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
-import { loginSuccess } from "../redux/slices/authSlice";
-import { setUserInfo } from "../redux/slices/userSlice";
+import { loginSuccess } from "../../../redux/slices/authSlice";
+import { setUserInfo } from "../../../redux/slices/userSlice";
+import Button from "../../../components/Button";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -55,47 +56,52 @@ export default function Login() {
   };
 
   return (
-    <div className='mx-auto w-1/2 max-w-md space-y-3 rounded-xl p-8 dark:bg-gray-50 dark:text-gray-800'>
-      <img src="src/assets/logo/inline-logo.png" alt="" className="w-full h-auto"/>
-      <h1 className='py-4 text-center text-2xl font-bold'>Iniciar sesión</h1>
-      <form onSubmit={handleLogin} noValidate='' action='' className='space-y-6'>
-        <div className='space-y-1 text-sm'>
-          <label htmlFor='email' className='block dark:text-gray-600'>
-            Correo electrónico
-          </label>
-          <input
-            type='email'
-            name='email'
-            id='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder='Correo electrónico'
-            className='w-full rounded-md px-4 py-3 dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600'
-          />
-        </div>
-        <div className='space-y-1 text-sm'>
-          <label htmlFor='password' className='block dark:text-gray-600'>
-            Contraseña
-          </label>
-          <input
-            type='password'
-            name='password'
-            id='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder='Password'
-            className='w-full rounded-md px-4 py-3 dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600'
-          />
-          <div className='flex justify-end text-xs dark:text-gray-600'>
-            <a rel='noopener noreferrer' href='#'>
-              ¿Olvidaste la contraseña?
-            </a>
+    <div 
+      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-[url(/src/assets/images/login-background.jpeg)] bg-black/50 bg-opacity-10 bg-blend-multiply"
+    >
+      <div className='max-w-lg min-w-md p-10 rounded-xl bg-(--accent) shadow-2xl brightness-100'>
+        <img src="/src/assets/logo/inline-logo.png" alt="Logo" className="w-50 h-auto mx-auto mb-4"/>
+        <h1 className='text-center text-2xl font-bold mb-4'>Iniciar sesión</h1>
+        <form onSubmit={handleLogin} noValidate='' action='' className='space-y-4'>
+          <div className='space-y-1'>
+            <label htmlFor='email' className='block text-sm font-medium'>
+              Correo electrónico
+            </label>
+            <input
+              type='email'
+              name='email'
+              id='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder='Correo electrónico'
+              className='w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white'
+            />
           </div>
-        </div>
-        <button className='block w-full rounded-sm p-3 text-center bg-gray-50 dark:bg-violet-600 dark:text-gray-50'>
+          <div className='space-y-1'>
+            <label htmlFor='password' className='block text-sm font-medium'>
+              Contraseña
+            </label>
+            <input
+              type='password'
+              name='password'
+              id='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Contraseña'
+              className='w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white'
+            />
+            <div className='flex justify-end text-sm text-gray-800'>
+              <Link to='#' className="hover:text-(--secondary-dark)">
+                ¿Olvidaste la contraseña?
+              </Link>
+            </div>
+          </div>
+          <Button
+            className="mx-auto text-base"
+          >
           Iniciar sesión
-        </button>
-      </form>
+          </Button>
+        </form>
 {/*       <div className='flex items-center space-x-1 pt-4'>
         <div className='h-px flex-1 sm:w-16 dark:bg-gray-300'></div>
         <p className='px-3 text-sm dark:text-gray-600'>
@@ -132,16 +138,18 @@ export default function Login() {
           </svg>
         </button>
       </div> */}
-      <p className='text-center text-xs sm:px-6 dark:text-gray-600'>
-        No tienes una cuenta?{' '}
-        <Link
-          rel='noopener noreferrer'
-          to='/options-forms'
-          className='underline dark:text-gray-800 text-blue-500 mt-4'
-        >
-          Crear cuenta
-        </Link>
-      </p>
+        <div className='flex items-center justify-center gap-2 mt-4'>
+          <p className='text-center text-sm text-gray-800'>
+            ¿Aún no tenés una cuenta?
+          </p>
+          <Link
+            to='/options-forms'
+            className='font-medium text-gray-800 text-sm hover:text-(--secondary-dark)'
+          >
+            Registrate
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

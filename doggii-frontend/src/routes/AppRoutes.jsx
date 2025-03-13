@@ -2,10 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 import ProtectedRoute from './ProtectedRoute';
-import Login from '../pages/Login';
-import OptionsForms from '../pages/OptionsForms';
-import FormAdopter from '../pages/FormAdopter';
-import FormShelter from '../pages/FormShelter';
+import Login from '../pages/Auth/Login/Login';
+import OptionsForms from '../pages/Auth/Registration/OptionsForms';
+import FormAdopter from '../pages/Auth/Registration/FormAdopter';
+import FormShelter from '../pages/Auth/Registration/FormShelter';
 import PlatformLayout from '../layouts/PlatformLayout';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Profile from '../pages/Profile/Profile';
