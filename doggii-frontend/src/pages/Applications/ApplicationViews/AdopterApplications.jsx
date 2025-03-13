@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const AdopterApplications = () => {
-  const [visibleItems, setVisibleItems] = useState(6);
+  const [visibleItems, setVisibleItems] = useState(4);
   const [adoptionRequestsData, setAdoptionRequestsData] = useState([]);
   const [applications, setApplications] = useState([]);
   const [adoptionRequestExists, setAdoptionRequestExists] = useState(true);
@@ -81,11 +81,10 @@ const AdopterApplications = () => {
   };
 
   return (
-    <div className='pl-8 pr-8'>
-      <p>Consultá todas las solicitudes de adopción que iniciaste y sus estados.</p>
+    <div className='px-8'>
+      <p className='text-lg'>Consultá todas las solicitudes de adopción que iniciaste y sus estados.</p>
       {adoptionRequestExists ? 
-      <div>
-        <div className='flex flex-wrap justify-center gap-6 pt-8'>
+      <div className='grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 py-8'>
           {applications.map((request, index) => (
             <HorizontalCard 
               key={index} 
@@ -99,16 +98,15 @@ const AdopterApplications = () => {
               onSee={() => handleGoToApplicationDetails(request._id, request.pet.id)}
             />
           ))}
-        </div>
         {visibleItems < adoptionRequestsData.length && (
           <Button
-            className='m-auto mt-8 text-xl'
+            className='col-span-full mx-auto mt-4 text-lg'
             onClick={handleSeeMore}
           >
             Ver más
           </Button>
         )}
-      </div> : <p className='flex justify-center mt-10'>No hay solicitudes de adopción.</p>}
+      </div> : <p className='flex justify-center mt-8 text-lg'>No hay solicitudes de adopción.</p>}
       
     </div>
   );
