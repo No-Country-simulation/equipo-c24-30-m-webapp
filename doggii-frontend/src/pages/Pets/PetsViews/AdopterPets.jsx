@@ -68,32 +68,31 @@ const AdopterPets = () => {
   }
 
   return (
-    <div className='pl-8 pr-8 pb-8'>
-      <p>En esta sección, podés ver las mascotas que están en adopción.</p>
-      <div className='flex items-center justify-start mt-6'>
+    <div className='px-8'>
+      <p className='text-lg'>En esta sección, podés ver las mascotas que están en adopción.</p>
+      <div className='flex items-center justify-start mt-4'>
         <input
           value={inputCity}
           onChange={(e) => setInputCity(e.target.value)}
           onKeyPress={handleKeyPress}
           type='text'
           placeholder='🔍  Ciudad'
-          className='w-60 h-10 rounded-md focus:ring focus:ring-opacity-75 border-4 border-(--secondary) font-light pl-4 text-lg'
+          className='w-60 px-3 py-2 rounded-md focus:outline-none focus:border-(--secondary-dark) border-2 border-(--secondary) font-light'
         />
         <Button
           onClick={handleSearch}
-          className='ml-4 w-25 h-10 text-lg'
+          className='ml-4'
         >
           Buscar
         </Button>
       </div>
       {!currentCity ? (
-        <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6 mt-6'>
-          <img src="/src/assets/images/hound.png" alt="Sin contenido" />
-          <div>
-            <p className="text-gray-500 px-20 text-2xl text-center">Cómo no tenemos tu dirección, no te podemos mostrar las mascotas que están en adopción en tu ciudad. Completá tu perfil para que se muestren de forma automática o usá el buscador que se encuentra arriba para hacerlo manualmente.</p>
+        <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6 mt-16'>
+          <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
+            <img src="/src/assets/images/hound.png" alt="Sin contenido" />
+            <p className="text-gray-500 text-xl text-center px-20">Cómo no tenemos tu dirección, no te podemos mostrar las mascotas que están en adopción en tu ciudad. Completá tu perfil para que se muestren de forma automática o usá el buscador que se encuentra arriba para hacerlo manualmente.</p>
             <Button
               onClick={handleGoToProfile}
-              className="mx-auto w-50 mt-6 text-lg"
             >
               Completar perfil
             </Button>
@@ -108,9 +107,9 @@ const AdopterPets = () => {
             </div>
           ) : fetchError ? (
             <>
-              <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
+              <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-8 rounded-md bg-red-100">
                 <div className="flex items-center self-stretch justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
                   </svg>
                 </div>
@@ -118,24 +117,23 @@ const AdopterPets = () => {
               </div>
               <Button 
                 onClick={() => fetchPetsByCity(currentCity)}
-                className="mx-auto w-50 text-lg"
+                className="mx-auto"
               >
                 Reintentar
               </Button>
             </>
           ) : (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8'>
               {pets.length === 0 ? (
-                <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
+                <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6 mt-8'>
                   <img src="/src/assets/images/hound.png" alt="Sin contenido" />
                   <div>
-                    <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
-                    <p className="text-gray-500 text-2xl text-center">Probá buscar en otra ciudad.</p>
+                    <p className="text-gray-500 text-xl text-center">No hay ninguna mascota en adopción en esta ciudad.</p>
+                    <p className="text-gray-500 text-xl text-center">Probá buscar en otra ciudad.</p>
                   </div>
                   {user.address?.city !== currentCity && user.address?.city && (
                     <Button
                       onClick={() => fetchPetsByCity(user.address.city)}
-                      className='text-xl w-60'
                     >
                       Buscar en tu ciudad
                     </Button>
@@ -146,7 +144,7 @@ const AdopterPets = () => {
                   {visiblePets.map((pet) => (
                     <VerticalCard
                       key={pet.id}
-                      image={pet.photos[0]}
+                      image={pet.photos[0] || "/src/assets/images/pet-not-available.png"}
                       title={pet.name}
                       description={`Refugio: ${pet.shelter.shelterName}`} 
                       onSee={() => handleGoToPetDetails(pet.id)}
@@ -154,7 +152,7 @@ const AdopterPets = () => {
                   ))}
                   {visibleItems < pets.length && (
                     <Button
-                      className='col-span-full mx-auto w-50 mt-8 text-xl'
+                      className='col-span-full mx-auto mt-4 text-lg'
                       onClick={handleSeeMore}
                     >
                       Ver más

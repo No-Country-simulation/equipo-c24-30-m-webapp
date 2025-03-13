@@ -71,46 +71,48 @@ const AplicationDetail = () => {
 
   return (
     <div className='p-8'>
-      <div className='flex items-center gap-6'>
-        <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>
+      <div className='flex items-center gap-4'>
+        <button onClick={handleGoBack} className='text-4xl text-(--secondary) cursor-pointer'>
           ←
         </button>
-        <h1 className='text-5xl'>{petData.pet.name}</h1>
+        <h1 className='text-3xl'>{petData.pet.name}</h1>
       </div>
-      <div className='py-10 grid lg:grid-cols-5 sm:grid-cols-1 gap-10'>
-        <div className='lg:col-span-2'>
-          <img
-            src={petData.pet.photos}
-            alt={petData.pet.name}
-            className='min-h-110 object-cover rounded-xl'
-          />
+      <div className='py-8 grid lg:grid-cols-3 sm:grid-cols-1 gap-10'>
+        <div className='lg:col-span-1'>
+          <div className='w-full aspect-square relative'>
+            <img
+              src={petData.pet.photos}
+              alt={petData.pet.name}
+              className='absolute inset-0 w-full h-full object-cover rounded-xl'
+            />
+          </div>
         </div>
-        <div className='lg:col-span-3 flex flex-col justify-between py-2'>
-          <p className='pb-2 text-xl'>
+        <div className='lg:col-span-2 flex flex-col justify-between py-2'>
+          <p className='pb-2 text-lg'>
             <span className='font-medium'>Sexo: </span>
             <span>{petData.pet.sex === 'male' ? 'Macho' : 'Hembra'}</span>
           </p>
-          <p className='pb-2 text-xl'>
+          <p className='pb-2 text-lg'>
             <span className='font-medium'>Edad: </span>
             <span>{age}</span>
           </p>
           {petData.pet.specialCare && (
-            <p className='pb-2 text-xl'>
+            <p className='pb-2 text-lg'>
               <span className='font-medium'>Cuidados especiales: </span>
               <span>{petData.pet.specialCare}</span>
             </p>
           )}
-          <p className='pb-2 text-xl'>
+          <p className='pb-2 text-lg'>
             <span className='font-medium'>Descripción: </span>
             <span>{petData.pet.description}</span>
           </p>
           {userRole === 'adopter' && (
-            <p className='pb-2 text-xl'>
+            <p className='pb-2 text-lg'>
               <span className='font-medium'>Refugio: </span>
               <span>{petData.pet.shelter.shelterName}</span>
             </p>
           )}
-          <p className='pb-2 text-xl'>
+          <p className='pb-2 text-lg'>
             <span className='font-medium'>Estado: </span>
             <span>{handleTranslateStatus(petData.status)}</span>
           </p>

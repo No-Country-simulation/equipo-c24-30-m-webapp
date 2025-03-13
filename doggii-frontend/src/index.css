@@ -59,17 +59,23 @@
 :root {
   --primary: #FFDC64;
   --primary-light: #ffe89d;
-  --primary-ultralight: #fff2cc;
+  --primary-ultralight: #fdf9d4;
+  --primary-dark: #E6C65A;
+  --primary-ultradark: #C7A74A;
   --secondary: #A7D8B9;
   --secondary-light: #CCEBD6;
   --secondary-ultralight: #e1f2e6;
   --secondary-dark: #86B99A;
+  --secondary-ultradark: #659377;
   --accent: #FFFFFB;
+  --accent-dark: #f7f7ed;
+  --accent-ultradark: #d7d7c7;
 }
 
 @layer base {
   body {
     font-family: 'Rubik', sans-serif;
+    background-color: var(--accent);
   }
 
   h1 {
@@ -87,4 +93,36 @@
   p {
     font-weight: 100;
   }
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border: 2px solid var(--primary-dark);
+  box-shadow: inset 4px 4px 10px var(--primary-ultradark),
+              inset -4px -4px 10px var(--primary-ultralight);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  box-shadow: inset 2px 2px 5px var(--primary-ultradark),
+              inset -2px -2px 5px var(--primary-ultralight),
+              2px 2px 5px var(--primary-ultradark),
+              -2px -2px 5px var(--primary-ultralight);
+  outline: none;
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  border: 2px solid var(--secondary-dark);
+  box-shadow: inset 4px 4px 10px var(--secondary-ultradark),
+              inset -4px -4px 10px var(--secondary-ultralight);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  box-shadow: inset 2px 2px 5px var(--secondary-ultradark),
+              inset -2px -2px 5px var(--secondary-ultralight),
+              2px 2px 5px var(--secondary-ultradark),
+              -2px -2px 5px var(--secondary-ultralight);
+  outline: none;
 }

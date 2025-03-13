@@ -221,11 +221,11 @@ const PetForm = ({
 
   return (
     <div className='p-8'>
-      <div className='flex items-center gap-6'>
-        <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
-        <h1 className='text-5xl'>{title}</h1>
+      <div className='flex items-center gap-4'>
+        <button onClick={handleGoBack} className='text-4xl text-(--secondary) cursor-pointer'>←</button>
+        <h1 className='text-3xl'>{title}</h1>
       </div>
-      <section className='p-6 my-8 mx-10 xl:mx-40 rounded-md bg-(--secondary)'>
+      <section className='p-6 my-6 mx-10 xl:mx-40 rounded-md bg-(--secondary)'>
         <form
           noValidate
           onSubmit={handleSubmit}
@@ -235,12 +235,12 @@ const PetForm = ({
             <div className='absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
               <div className='py-2 px-3 bg-(--accent) rounded-xl flex items-center gap-2'>
                 <div>    
-                  <svg className='w-8 h-8 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
+                  <svg className='w-7 h-7 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
                     <circle fill="currentColor" cx="24" cy="24" r="22"/>
                     <path fill="none" stroke="#FFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" d="M14 27l5.917 4.917L34 17"/>
                   </svg>
                 </div>
-                <p className='p-2 text-2xl'>
+                <p className='p-2 text-xl'>
                   {isEdit ? 'Tu mascota se actualizó correctamente.' : 'Tu mascota se publicó correctamente.'}
                 </p>
               </div>
@@ -248,9 +248,9 @@ const PetForm = ({
           )}
           <fieldset className='p-6 rounded-md shadow-sm bg-(--accent)'>
             <div className='flex flex-col gap-6 px-20'>
-              <h2 className='text-3xl text-center'>Datos de la mascota</h2>
+              <h2 className='text-2xl text-center'>Datos de la mascota</h2>
               <div>
-                <label htmlFor='name' className='text-lg'>Nombre *</label>
+                <label htmlFor='name'>Nombre *</label>
                 <input
                   id='name'
                   name='name'
@@ -258,27 +258,27 @@ const PetForm = ({
                   value={formData.name}
                   onChange={handleFieldChange}
                   onBlur={() => handleBlur('name')}
-                  className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                  className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                 />
                 {validationErrors.name && (
                   <p className='text-red-500 text-sm mt-1'>El nombre es obligatorio</p>
                 )}
               </div>
               <div>
-                <label htmlFor='sex' className='text-lg'>Sexo *</label>
+                <label htmlFor='sex'>Sexo *</label>
                 <select
                   id='sex'
                   name='sex'
                   value={formData.sex}
                   onChange={handleFieldChange}
-                  className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                  className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                 >
                   <option value='female'>Hembra</option>
                   <option value='male'>Macho</option>
                 </select>
               </div>
               <div>
-                <p className='text-lg font-medium'>Edad *</p>
+                <p className='font-medium'>Edad *</p>
                 <div className='grid grid-cols-2 gap-4 pt-1'>
                   <input
                     type='number'
@@ -287,7 +287,7 @@ const PetForm = ({
                     value={formData.age.days || formData.age.months || formData.age.years || ''}
                     onChange={handleFieldChange}
                     onBlur={() => handleBlur('age')}
-                    className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                    className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                   />
                   <select
                     name='unit'
@@ -297,7 +297,7 @@ const PetForm = ({
                       formData.age.years > 0 ? 'years' : 'days'
                     }
                     onChange={handleFieldChange}
-                    className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                    className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                   >
                     <option value='days'>día(s)</option>
                     <option value='months'>mes(es)</option>
@@ -309,13 +309,13 @@ const PetForm = ({
                 )}
               </div>
               <div>
-                <label htmlFor='size' className='text-lg font-medium'>Tamaño *</label>
+                <label htmlFor='size'>Tamaño *</label>
                 <select
                   id='size'
                   name='size'
                   value={formData.size}
                   onChange={handleFieldChange}
-                  className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                  className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                 >
                   <option value='pequeño'>Pequeño</option>
                   <option value='mediano'>Mediano</option>
@@ -323,26 +323,26 @@ const PetForm = ({
                 </select>
               </div>
               <div>
-                <label htmlFor='vaccinated' className='text-lg font-medium'>¿Tiene las vacunas al día? *</label>
+                <label htmlFor='vaccinated'>¿Tiene las vacunas al día? *</label>
                 <select
                   id='vaccinated'
                   name='vaccinated'
                   value={formData.vaccinated.toString()}
                   onChange={handleFieldChange}
-                  className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                  className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                 >
                   <option value='true'>Sí</option>
                   <option value='false'>No</option>
                 </select>
               </div>
               <div>
-                <label htmlFor='neutered' className='text-lg font-medium'>¿Está castrada? *</label>
+                <label htmlFor='neutered'>¿Está castrada? *</label>
                 <select
                   id='neutered'
                   name='neutered'
                   value={formData.neutered.toString()}
                   onChange={handleFieldChange}
-                  className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                  className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                 >
                   <option value='true'>Sí</option>
                   <option value='false'>No</option>
@@ -350,7 +350,7 @@ const PetForm = ({
               </div>
               <div>
                 <div className='flex items-center pb-1'>
-                  <label htmlFor='requires-care' className='text-lg'>¿Requiere algún cuidado especial?</label>
+                  <label htmlFor='requires-care'>¿Requiere algún cuidado especial?</label>
                   <input
                     id='requires-care'
                     type='checkbox'
@@ -359,39 +359,39 @@ const PetForm = ({
                       setRequiresSpecialCare(e.target.checked);
                       setHasChanges(checkFormChanges(formData, e.target.checked));
                     }}
-                    className='ml-4 h-5 w-5 rounded-md focus:dark:ring-(--primary) focus:dark:border-(--primary) focus:ring-2 dark:accent-(--primary)'
+                    className='ml-4 h-4 w-4 rounded-md focus:dark:ring-(--primary) focus:dark:border-(--primary) focus:ring-2 dark:accent-(--primary)'
                   />
                 </div>
                 {requiresSpecialCare && (
                   <div>
-                    <label htmlFor='specialCare' className='text-lg'>Cuidados especiales</label>
+                    <label htmlFor='specialCare'>Cuidados especiales</label>
                     <input
                       id='specialCare'
                       name='specialCare'
                       type='text'
                       value={formData.specialCare || ''}
                       onChange={handleFieldChange}
-                      className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+                      className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                     />
                   </div>
                 )}
               </div>
               <div>
-                <label htmlFor='description' className='text-lg'>Descripción *</label>
+                <label htmlFor='description'>Descripción *</label>
                 <textarea
                   id='description'
                   name='description'
                   value={formData.description}
                   onChange={handleFieldChange}
                   onBlur={() => handleBlur('description')}
-                  className='w-full rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light p-4'
+                  className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                 />
                 {validationErrors.description && (
                   <p className='text-red-500 text-sm mt-1'>La descripción es obligatoria</p>
                 )}
               </div>
               <div>
-                <label htmlFor='photo' className='text-lg'>Foto *</label>
+                <label htmlFor='photo'>Foto *</label>
                 <input
                   ref={fileInputRef}
                   id='photo'
@@ -409,7 +409,7 @@ const PetForm = ({
                   <div className='animate-spin rounded-full h-10 w-10 mx-auto mt-8 border-b-8 border-(--secondary)'></div>
                 )}
                 {(formData.photos[0] && !isUploading) && (
-                  <div className='max-w-50 mx-auto rounded-xl'>
+                  <div className='max-w-40 mx-auto rounded-xl mt-4'>
                     <img
                       src={formData.photos[0]}
                       alt='Preview'
@@ -421,12 +421,12 @@ const PetForm = ({
               <Button
                 type='submit'
                 disabled={isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData)) || !hasChanges}
-                className={`mx-auto mt-6 w-50 text-xl ${(isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData)) || !hasChanges) ? 'grayscale cursor-not-allowed' : ''}`}
+                className={`mx-auto text-lg ${(isLoading || isUploading || hasValidationErrors(checkValidationErrors(formData)) || !hasChanges) ? 'grayscale cursor-not-allowed' : ''}`}
               >
                 {isLoading ? 'Guardando...' : submitButtonText}
               </Button>
               {formError && (
-                <p className='text-red-500 mt-2 text-center'>
+                <p className='text-red-500 text-center'>
                   {formError}
                 </p>
               )}

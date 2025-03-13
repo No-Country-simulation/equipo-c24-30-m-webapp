@@ -68,8 +68,8 @@ const AdopterDashboard = () => {
   }
 
   return (
-    <div className="pl-8 pr-8 pb-8">
-      <p>En esta sección, podés ver un resumen de la información importante de tu cuenta.</p>
+    <div className="px-8 pb-8">
+      <p className='text-lg'>En esta sección, podés ver un resumen de la información importante de tu cuenta.</p>
       <h2 className='text-3xl text-center mt-6'>
         {currentCity ? `Estas mascotas buscan hogar en ${currentCity}` : 'Estas mascotas buscan hogar'}
       </h2>
@@ -79,9 +79,9 @@ const AdopterDashboard = () => {
         </div>
       ) : fetchError ? (
         <>
-          <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
+          <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-8 rounded-md bg-red-100">
             <div className="flex items-center self-stretch justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
               </svg>
             </div>
@@ -89,7 +89,7 @@ const AdopterDashboard = () => {
           </div>
           <Button 
             onClick={user.address?.city ? () => fetchPetsByCity(currentCity) : fetchAllPets}
-            className="mx-auto w-50 text-lg"
+            className="mx-auto"
           >
             Reintentar
           </Button>
@@ -100,10 +100,9 @@ const AdopterDashboard = () => {
             {pets.length === 0 ? (
               <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
                 <img src="/src/assets/images/hound.png" alt="Sin contenido" />
-                <p className="text-gray-500 text-2xl text-center">No hay ninguna mascota en adopción{currentCity ? ' en tu ciudad' : ''}.</p>
+                <p className="text-gray-500 text-xl text-center">No hay ninguna mascota en adopción{currentCity ? ' en tu ciudad' : ''}.</p>
                 <Button
                   onClick={handleGoToPetsSection}
-                  className='text-xl w-65'
                 >
                   {currentCity ? 'Buscar en otra ciudad' : 'Buscar por ciudad'}
                 </Button>
@@ -121,7 +120,7 @@ const AdopterDashboard = () => {
                 ))}
                 <Button
                   onClick={handleGoToPetsSection}
-                  className='col-span-full mx-auto w-50 mt-8 text-xl'
+                  className='col-span-full mx-auto mt-4 text-lg'
                 >
                   Ver todas
                 </Button>
@@ -130,15 +129,13 @@ const AdopterDashboard = () => {
           </div>
           {!user.address?.city && (
             <div className='flex flex-col items-center justify-center gap-6 mt-6'>
-              <div className='text-center'>
-                <p className="text-2xl">Completá tu perfil para que te mostremos las mascotas que están en adopción en tu ciudad.</p>
-                <Button
-                  onClick={handleGoToProfile}
-                  className="mx-auto w-50 mt-6 text-lg"
-                >
-                  Completar perfil
-                </Button>
-              </div>
+              <p className="text-lg text-center text-gray-800">Completá tu perfil para que te mostremos las mascotas que están en adopción en tu ciudad.</p>
+              <Button
+                onClick={handleGoToProfile}
+                className="mx-auto btn-secondary"
+              >
+                Completar perfil
+              </Button>
             </div>
           )}
         </>

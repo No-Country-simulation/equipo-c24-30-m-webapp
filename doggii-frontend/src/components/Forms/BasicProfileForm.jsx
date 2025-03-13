@@ -184,16 +184,16 @@ const BasicProfileForm = ({title, description}) => {
   };
 
   return (
-    <section className="p-6 my-8 rounded-md bg-(--secondary)">
+    <section className="p-6 my-6 rounded-md bg-(--secondary)">
       <form
         noValidate
         onSubmit={handleSubmit}
         className="container flex flex-col mx-auto"
       >
-        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm bg-(--accent)">
+        <fieldset className="grid grid-cols-4 gap-8 p-6 rounded-md shadow-sm bg-(--accent)">
           <div className="space-y-2 col-span-full lg:col-span-1">
-            <p className="font-medium">{title}</p>
-            <p className="text-sm">{description}</p>
+            <p className="text-xl font-medium">{title}</p>
+            <p>{description}</p>
           </div>
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
             {user.role === "shelter" ? (
@@ -205,7 +205,7 @@ const BasicProfileForm = ({title, description}) => {
                   type="text"
                   value={formData.shelterName}
                   onChange={handleFieldChange}
-                  className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                  className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
                 />
                 {validationErrors.shelterName && (
                   <p className="text-red-500 text-sm mt-1">{validationErrors.shelterName}</p>
@@ -220,7 +220,7 @@ const BasicProfileForm = ({title, description}) => {
                   type="text"
                   value={formData.userName}
                   onChange={handleFieldChange}
-                  className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                  className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
                 />
                 {validationErrors.userName && (
                   <p className="text-red-500 text-sm mt-1">{validationErrors.userName}</p>
@@ -235,7 +235,7 @@ const BasicProfileForm = ({title, description}) => {
                 type="email"
                 value={user.role === "shelter" ? formData.shelterEmail : formData.email}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors[user.role === "shelter" ? "shelterEmail" : "email"] && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors[user.role === "shelter" ? "shelterEmail" : "email"]}</p>
@@ -249,7 +249,7 @@ const BasicProfileForm = ({title, description}) => {
                 type="tel"
                 value={user.role === "shelter" ? formData.shelterPhone : formData.phone}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors[user.role === "shelter" ? "shelterPhone" : "phone"] && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors[user.role === "shelter" ? "shelterPhone" : "phone"]}</p>
@@ -263,7 +263,7 @@ const BasicProfileForm = ({title, description}) => {
                 type="text"
                 value={formData.address.street}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors['address.street'] && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors['address.street']}</p>
@@ -277,7 +277,7 @@ const BasicProfileForm = ({title, description}) => {
                 type="text"
                 value={formData.address.city}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors['address.city'] && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors['address.city']}</p>
@@ -291,7 +291,7 @@ const BasicProfileForm = ({title, description}) => {
                 type="text"
                 value={formData.address.province}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors['address.province'] && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors['address.province']}</p>
@@ -305,7 +305,7 @@ const BasicProfileForm = ({title, description}) => {
                 type="text"
                 value={formData.address.country}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors['address.country'] && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors['address.country']}</p>
@@ -314,17 +314,17 @@ const BasicProfileForm = ({title, description}) => {
             <Button
               type="submit"
               disabled={!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '')}
-              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '') ? "grayscale cursor-not-allowed" : ''}`}
+              className={`col-span-full mx-auto mt-4 ${!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '') ? "grayscale cursor-not-allowed" : ''}`}
             >
               {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>
             {error && (
-              <p className="text-red-500 mt-2 text-center col-span-full">
+              <p className="text-red-500 text-center col-span-full">
                 {error}
               </p>
             )}
             {success && (
-              <p className="text-green-500 mt-2 text-center col-span-full">
+              <p className="text-green-500 text-center col-span-full">
                 ¡Perfil actualizado con éxito!
               </p>
             )}

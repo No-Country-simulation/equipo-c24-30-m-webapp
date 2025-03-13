@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 
 const ShelterApplications = () => {
-  const [visibleItems, setVisibleItems] = useState(6);
+  const [visibleItems, setVisibleItems] = useState(4);
   const [petsData, setPetsData] = useState([]);
   const navigate = useNavigate();
   const idShelter = useSelector((state) => state.user.id);
@@ -90,11 +90,10 @@ const ShelterApplications = () => {
   };
 
   return (
-    <div className='pl-8 pr-8'>
-      <p>Consultá todas las solicitudes de adopción que recibiste y gestionalas.</p>
+    <div className='px-8'>
+      <p className='text-lg'>Consultá todas las solicitudes de adopción que recibiste y gestionalas.</p>
       {petsData.length > 0 ? (
-        <div>
-          <div className='flex flex-wrap justify-center gap-6 pt-8'>
+        <div className='grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 py-8'>
             {applications.map((data, index) => (
               <HorizontalCard
                 key={index}
@@ -111,15 +110,14 @@ const ShelterApplications = () => {
                 isShelter={true}
               />
             ))}
-          </div>
           {visibleItems < petsData.length && (
-            <Button className='m-auto mt-8 text-xl' onClick={handleSeeMore}>
+            <Button className='col-span-full mx-auto mt-4 text-lg' onClick={handleSeeMore}>
               Ver más
             </Button>
           )}
         </div>
       ) : (
-        <p className='flex justify-center mt-10'>No hay solicitudes de adopción.</p>
+        <p className='flex justify-center mt-8 text-lg'>No hay solicitudes de adopción.</p>
       )}
     </div>
   );

@@ -8,7 +8,7 @@ const Pets = () => {
 
   return (
     <div>
-      <h1 className="m-9 mb-4">Mascotas</h1>
+      <h1 className="m-8 mb-4 text-3xl">Mascotas</h1>
 
       {user.role === "admin" ?
         <AdminPets />

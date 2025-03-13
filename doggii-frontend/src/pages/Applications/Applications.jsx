@@ -7,7 +7,7 @@ const Applications = () => {
 
   return (
     <div>
-      <h1 className="m-9 mb-4">Solicitudes de adopción</h1>
+      <h1 className="m-8 mb-4 text-3xl">Solicitudes de adopción</h1>
 
       {user.role === "adopter" ?
         <AdopterApplications />

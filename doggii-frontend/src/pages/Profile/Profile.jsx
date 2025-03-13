@@ -8,7 +8,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h1 className="m-9">Tu perfil</h1>
+      <h1 className="m-8 mb-4 text-3xl">Tu perfil</h1>
 
       {user.role === "admin" ?
         <AdminProfile />
