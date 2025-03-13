@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
 import { setUserInfo } from "../redux/slices/userSlice";
+import Button from "../components/Button";
 
 const FormShelter = () => {
   const [formData, setFormData] = useState({
@@ -104,64 +105,77 @@ const FormShelter = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat bg-[url(/src/assets/images/login-background.jpeg)] bg-black/50 bg-opacity-10 bg-blend-multiply">
+      <div className="max-w-xl min-w-md p-10 rounded-xl bg-(--accent) shadow-2xl">
         <button
           onClick={() => navigate("/options-forms")}
-          className="text-blue-500 mb-4"
+          className="text-(--secondary-dark) hover:text-(--secondary) text-base self-start"
         >
           ← Regresar
         </button>
-        <h2 className="text-2xl font-bold mb-4 text-center">Registro para refugios</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <img src="/src/assets/logo/inline-logo.png" alt="Logo" className="w-50 h-auto mx-auto mb-4"/>
+        <h1 className="text-2xl font-bold mb-4 text-center">Registro para refugios</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Campo: Nombre del refugio */}
-          <div>
+          <div className='space-y-1'>
+            <label htmlFor='shelterName' className='block text-sm font-medium'>
+              Nombre del refugio
+            </label>
             <input
               type="text"
               name="shelterName"
               placeholder="Nombre del refugio"
               value={formData.shelterName}
               onChange={handleChange}
-              className="border p-2 w-full rounded"
+              className="w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white"
             />
             {errors.shelterName && <p className="text-red-500 text-sm">{errors.shelterName}</p>}
           </div>
 
           {/* Campo: Nombre del responsable */}
-          <div>
+          <div className='space-y-1'>
+            <label htmlFor='userName' className='block text-sm font-medium'>
+              Nombre del responsable
+            </label>
             <input
               type="text"
               name="userName"
               placeholder="Nombre del responsable"
               value={formData.userName}
               onChange={handleChange}
-              className="border p-2 w-full rounded"
+              className="w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white"
             />
             {errors.userName && <p className="text-red-500 text-sm">{errors.userName}</p>}
           </div>
 
           {/* Campo: Correo electrónico */}
-          <div>
+          <div className='space-y-1'>
+            <label htmlFor='email' className='block text-sm font-medium'>
+              Correo electrónico
+            </label>
             <input
               type="email"
               name="email"
               placeholder="Correo electrónico"
               value={formData.email}
               onChange={handleChange}
-              className="border p-2 w-full rounded"
+              className="w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white"
             />
             {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
 
           {/* Campo: Contraseña */}
-          <div>
+          <div className='space-y-1'>
+            <label htmlFor='password' className='block text-sm font-medium'>
+              Contraseña
+            </label>
             <input
               type="password"
               name="password"
               placeholder="Contraseña"
               value={formData.password}
               onChange={handleChange}
-              className="border p-2 w-full rounded"
+              className="w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white"
             />
             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
@@ -174,7 +188,7 @@ const FormShelter = () => {
               placeholder="Repetir contraseña"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="border p-2 w-full rounded"
+              className="w-full px-3 py-2 text-base font-normal rounded-md border border-gray-300 focus:outline-none focus:ring-3 focus:ring-(--secondary-dark) focus:border-white"
             />
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
@@ -188,10 +202,11 @@ const FormShelter = () => {
               name="termsAccepted"
               checked={formData.termsAccepted}
               onChange={handleChange}
+              className="shrink-0 rounded-md accent-(--primary) checked:bg-(--primary) checked:hover:bg-(--primary) focus:ring-(--primary)"
             />
-            <label>
+            <label className="block font-medium">
               Al crear una cuenta aceptas los{" "}
-              <a href="/terms" className="text-blue-500 underline">
+              <a href="/terms" className="text-(--secondary-dark) hover:text-(--secondary) underline">
                 Términos y condiciones
               </a>
             </label>
@@ -201,12 +216,12 @@ const FormShelter = () => {
           )}
 
           {/* Botón de envío */}
-          <button
+          <Button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="mx-auto text-base"
           >
             Crear cuenta
-          </button>
+          </Button>
         </form>
       </div>
     </div>
