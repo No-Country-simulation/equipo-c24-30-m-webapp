@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loginSuccess } from "../redux/slices/authSlice";
+import { setUserInfo } from "../redux/slices/userSlice";
 
 const FormAdopter = () => {
   const [formData, setFormData] = useState({
@@ -64,31 +65,37 @@ const FormAdopter = () => {
       role: "Adopter",
     };
 
-     try {
-    const response = await axios.post("http://localhost:8082/api/auth/register", newUser);
+    try {
+      // Registrar al usuario
+      const registerResponse = await axios.post("http://localhost:8082/api/auth/register", newUser);
 
-    if (response.data.success) {
-      const userData = {
-        id: response.data.payload.id,
-        userName: newUser.userName, // Lo tomamos del formulario original
-        email: newUser.email,
-        phone: "",
-        address: {
-          street: "",
-          city: "",
-          province: "",
-          country: "",
-        },
-        userRole: "adopter",
-      };
+      if (registerResponse.data.success) {
+        // Iniciar sesión automáticamente
+        const loginResponse = await axios.post("http://localhost:8082/api/auth/login", {
+          email: formData.email,
+          password: formData.password,
+        });
 
-      dispatch(loginSuccess(userData)); // Guardamos en Redux
-      navigate("/dashboard");
+        const { token, user } = loginResponse.data.payload;
+
+        if (token) {
+          // Guardar el token en localStorage
+          localStorage.setItem("accessToken", token);
+          // Configurar el token en los headers de axios
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          
+          // Actualizar el estado de Redux
+          dispatch(setUserInfo(user));
+          dispatch(loginSuccess(token));
+          
+          // Redirigir al dashboard
+          navigate("/dashboard");
+        }
+      }
+    } catch (error) {
+      console.error("Error en el registro:", error);
+      alert("Hubo un error en el registro, intenta nuevamente.");
     }
-  } catch (error) {
-    console.error("Error en el registro:", error);
-    alert("Hubo un error en el registro, intenta nuevamente.");
-  }
   };
 
   return (
