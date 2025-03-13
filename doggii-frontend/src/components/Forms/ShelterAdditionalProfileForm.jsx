@@ -121,16 +121,16 @@ const ShelterAdditionalProfileForm = () => {
   };
 
   return (
-    <section className="p-6 my-8 rounded-md bg-(--secondary)">
+    <section className="p-6 my-6 rounded-md bg-(--secondary)">
       <form
         noValidate
         onSubmit={handleSubmit}
         className="container flex flex-col mx-auto"
       >
-        <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm bg-(--accent)">
+        <fieldset className="grid grid-cols-4 gap-8 p-6 rounded-md shadow-sm bg-(--accent)">
           <div className="space-y-2 col-span-full lg:col-span-1">
-            <p className="font-medium">Datos del representante</p>
-            <p className="text-sm">Estos son los datos del representante de la asociación.</p>
+            <p className="text-xl font-medium">Datos del representante</p>
+            <p>Estos son los datos del representante de la asociación.</p>
           </div>
           <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
             <div className="col-span-full">
@@ -141,7 +141,7 @@ const ShelterAdditionalProfileForm = () => {
                 type="text"
                 value={formData.userName}
                 onChange={handleFieldChange}
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors.userName && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors.userName}</p>
@@ -156,7 +156,7 @@ const ShelterAdditionalProfileForm = () => {
                 value={formData.email}
                 onChange={handleFieldChange}
                 placeholder=""
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors.email && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
@@ -171,7 +171,7 @@ const ShelterAdditionalProfileForm = () => {
                 value={formData.phone}
                 onChange={handleFieldChange}
                 placeholder=""
-                className="w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4 focus:dark:ring-violet-600 dark:border-gray-300"
+                className="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light"
               />
               {validationErrors.phone && (
                 <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
@@ -180,17 +180,17 @@ const ShelterAdditionalProfileForm = () => {
             <Button
               type="submit"
               disabled={!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '')}
-              className={`col-span-full mx-auto mt-6 ${!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '') ? 'grayscale cursor-not-allowed' : ''}`}
+              className={`col-span-full mx-auto mt-4 ${!hasChanges || isLoading || Object.values(validationErrors).some(error => error !== '') ? 'grayscale cursor-not-allowed' : ''}`}
             >
               {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>
             {error && (
-              <p className="text-red-500 mt-2 text-center col-span-full">
+              <p className="text-red-500 text-center col-span-full">
                 {error}
               </p>
             )}
             {success && (
-              <p className="text-green-500 mt-2 text-center col-span-full">
+              <p className="text-green-500 text-center col-span-full">
                 ¡Perfil actualizado con éxito!
               </p>
             )}
