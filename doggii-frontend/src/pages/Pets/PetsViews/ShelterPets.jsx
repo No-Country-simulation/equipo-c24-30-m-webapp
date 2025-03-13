@@ -103,12 +103,12 @@ const ShelterPets = () => {
   }
 
   return (
-    <div className='pl-8 pr-8'>
+    <div className='px-8'>
       <div className='flex justify-between items-center'>
-        <p>Estas son las mascotas que publicaste para dar en adopción.</p>
+        <p className='text-lg'>Estas son las mascotas que publicaste para dar en adopción.</p>
         <Button
           onClick={handleGoToPetPost}
-          className='w-50 text-lg'
+          className='text-lg'
         >
           Nueva publicación
         </Button>
@@ -120,9 +120,9 @@ const ShelterPets = () => {
       ) : (
       fetchError ? (
         <>
-        <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
+        <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-8 rounded-md bg-red-100">
           <div className="flex items-center self-stretch justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
             </svg>
           </div>
@@ -130,17 +130,17 @@ const ShelterPets = () => {
         </div>
         <Button 
           onClick={handleGetPets}
-          className="mx-auto w-50 text-lg"
+          className="mx-auto"
         >
           Reintentar
         </Button>
         </>
       ) : (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8'>
           {pets.length === 0 ? (
             <div className='col-span-full flex flex-col items-center justify-center h-120 gap-6'>
               <img src="/src/assets/images/hound.png" alt="Sin contenido" />
-              <p className="text-gray-500 text-2xl text-center">Todavía no publicaste ninguna mascota.</p>
+              <p className="text-gray-500 text-xl text-center">Todavía no publicaste ninguna mascota.</p>
             </div>
           ) : (
             pets.map((pet) => (
@@ -158,7 +158,7 @@ const ShelterPets = () => {
                   </div>
                 )}
                 <VerticalCard
-                  image={pet.photos[0]}
+                  image={pet.photos[0] || "/src/assets/images/pet-not-available.png"}
                   title={pet.name}
                   description={`Última actualización: ${formatDate(pet.updatedAt)}`} 
                   isPaused={!pet.available} 
