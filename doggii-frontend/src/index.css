@@ -59,10 +59,11 @@
 :root {
   --primary: #FFDC64;
   --primary-light: #ffe89d;
+  --primary-ultralight: #fff2cc;
   --secondary: #A7D8B9;
   --secondary-light: #CCEBD6;
   --secondary-ultralight: #e1f2e6;
-  --secondary-dark: #84d2a1;
+  --secondary-dark: #86B99A;
   --accent: #FFFFFB;
 }
 
@@ -72,22 +73,18 @@
   }
 
   h1 {
-    font-size: var(--text-4xl);
     font-weight: medium;
   }
 
   h2 {
-    font-size: var(--text-2xl);
     font-weight: medium;
   }
 
   h3 {
-    font-size: var(--text-xl);
     font-weight: medium;
   }
 
   p {
-    font-size: var(--text-lg);
     font-weight: 100;
   }
 }
