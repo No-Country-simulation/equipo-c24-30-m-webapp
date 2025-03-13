@@ -1,14 +1,8 @@
 import { Request, Response } from "express";
-import passport from "passport";
 import HTTP_STATUS from "../../constants/HttpStatus";
 import HttpError from "../../utils/HttpError.utils";
 import AdopterService from "../adopter/service";
-import {
-  AdopterResponse,
-  AdopterCreateFields,
-  AdopterLoginFields,
-  AdopterUpdateFields,
-} from "../adopter/interface";
+import { AdopterResponse, AdopterCreateFields } from "../adopter/interface";
 import { ShelterCreateFields, ShelterResponse } from "../shelter/interface";
 import { AdminCreateFields, AdminResponse } from "../admin/interface";
 import { UserLoginFields } from "../user/interface";
@@ -21,20 +15,20 @@ export default class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     // FIXME: Check if the requester is an admin, and admit only admins to create users with roles
     try {
-      let userResponse: Partial<AdopterResponse | ShelterResponse | AdminResponse> = {};
+      let userResponse: Partial<
+        AdopterResponse | ShelterResponse | AdminResponse
+      > = {};
 
       if (req.body.role === "Adopter") {
         const adopterData: AdopterCreateFields = req.body;
-        console.log(adopterData);
         userResponse = await AdopterService.createAdopter(adopterData);
       } else if (req.body.role === "Shelter") {
         const shelterData: ShelterCreateFields = req.body;
-        console.log(shelterData);
         userResponse = await ShelterService.createShelter(shelterData);
-      } else if(req.body.role === "Admin"){
-         const userData: AdminCreateFields = req.body;
-         userResponse = await AdminService.createAdmin(userData);
-       }
+      } else if (req.body.role === "Admin") {
+        const userData: AdminCreateFields = req.body;
+        userResponse = await AdminService.createAdmin(userData);
+      }
 
       const response = apiResponse(true, userResponse);
       res.status(HTTP_STATUS.CREATED).json(response);
@@ -75,12 +69,11 @@ export default class AuthController {
 
   static async login(req: Request, res: Response): Promise<void> {
     try {
-      console.log("Login request");
       const userData: UserLoginFields = req.body;
-      console.log(userData);
-      
-      let {token, userWithoutPassword} = await UserService.loginUser(userData);
-      console.log(token);
+
+      let { token, userWithoutPassword } = await UserService.loginUser(
+        userData
+      );
       if (!token) {
         throw new HttpError(
           "Invalid credentials",

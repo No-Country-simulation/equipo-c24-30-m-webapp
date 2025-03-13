@@ -6,32 +6,31 @@ import { Roles } from "../../constants/Roles";
 const adoptionFormRouter = Router();
 
 adoptionFormRouter.post(
-    "/",
-    authenticate,
-    authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
-    FormController.createForm
-);  
+  "/",
+  authenticate,
+  authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
+  FormController.createForm
+);
 
 adoptionFormRouter.get(
-    "/getFormByShelter/:id",
-    authenticate,
-    authorizeRoles([Roles.ADMIN, Roles.SHELTER, Roles.ADOPTER]),
-    FormController.getFormByShelterId
-);  
+  "/getFormByShelter/:id",
+  authenticate,
+  authorizeRoles([Roles.ADMIN, Roles.SHELTER, Roles.ADOPTER]),
+  FormController.getFormByShelterId
+);
 
 adoptionFormRouter.put(
-    "/",
-    authenticate,
-    authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
-    FormController.updateForm
-); 
+  "/",
+  authenticate,
+  authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
+  FormController.updateForm
+);
 
 adoptionFormRouter.delete(
-    "/",
-    authenticate,
-    authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
-    FormController.deleteForm
-); 
-
+  "/",
+  authenticate,
+  authorizeRoles([Roles.ADMIN, Roles.SHELTER]),
+  FormController.deleteForm
+);
 
 export default adoptionFormRouter;

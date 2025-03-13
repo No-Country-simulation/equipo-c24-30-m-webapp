@@ -1,5 +1,5 @@
 export interface ITokenPayload {
-    id: string;
-    email: string;
-    role: string;
+  id: string;
+  email: string;
+  role: string;
 }
