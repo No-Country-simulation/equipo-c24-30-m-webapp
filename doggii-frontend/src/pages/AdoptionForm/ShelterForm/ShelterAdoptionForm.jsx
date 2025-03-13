@@ -292,8 +292,8 @@ const ShelterAdoptionForm = () => {
 
   return(
     <div className="m-8">
-      <h1>Formulario de adopción</h1>
-      <p>En esta sección, podés definir las preguntas que querés incluir en el formulario que los adoptantes deben completar para solicitar la adopción de alguna de tus mascotas publicadas. En <strong>Preguntas predefinidas</strong>, podés marcar las preguntas que quieras incluir en el formulario. En <strong>Preguntas personalizadas</strong>, podés agregar tus propias preguntas.</p>
+      <h1 className='text-3xl mb-2'>Formulario de adopción</h1>
+      <p className="text-lg">En esta sección, podés definir las preguntas que querés incluir en el formulario que los adoptantes deben completar para solicitar la adopción de alguna de tus mascotas publicadas. En <strong>Preguntas predefinidas</strong>, podés marcar las preguntas que quieras incluir en el formulario. En <strong>Preguntas personalizadas</strong>, podés agregar tus propias preguntas.</p>
       {isLoading ? (
         <div className='flex items-center justify-center h-150'>
           <div className='animate-spin rounded-full h-30 w-30 my-auto border-b-8 border-(--secondary)'></div>
@@ -301,7 +301,7 @@ const ShelterAdoptionForm = () => {
       ) : (
       fetchError ? (
         <>
-        <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
+        <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-8 rounded-md bg-red-100">
           <div className="flex items-center self-stretch justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
@@ -311,7 +311,7 @@ const ShelterAdoptionForm = () => {
         </div>
         <Button 
           onClick={handleGetForm}
-          className="mx-auto w-50 text-lg"
+          className="mx-auto"
         >
           Reintentar
         </Button>
@@ -322,25 +322,25 @@ const ShelterAdoptionForm = () => {
         className="container relative"
       >
         {success && (
-          <div className='absolute inset-0 pt-30 flex items-start justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
+          <div className='absolute inset-0 pt-50 flex items-start justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
             <div className='py-2 px-3 bg-(--accent) rounded-xl flex items-center gap-2'>
               <div>    
-                <svg className='w-8 h-8 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
+                <svg className='w-7 h-7 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
                   <circle fill="currentColor" cx="24" cy="24" r="22"/>
                   <path fill="none" stroke="#FFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" d="M14 27l5.917 4.917L34 17"/>
                 </svg>
               </div>
-              <p className='p-2 text-2xl'>
+              <p className='p-2 text-xl'>
                 El formulario se guardó correctamente.
               </p>
             </div>
           </div>
         )}
         <fieldset>
-          <div className="my-10">
-            <h2 >Preguntas predefinidas</h2>
-            <p className="mb-4">Marcá las preguntas que quieras incluir en el formulario de adopción.</p>
-            <div className="flex flex-col gap-6">
+          <div className="my-4">
+            <h2 className="text-2xl">Preguntas predefinidas</h2>
+            <p className="text-lg mb-2">Marcá las preguntas que quieras incluir en el formulario de adopción.</p>
+            <div className="flex flex-col gap-4">
               {predefinedQuestions.map((question, index) => (
                 <div key={index} className="border-3 border-(--secondary) p-4 rounded-lg shadow-md">
                   <div className='flex items-center'>
@@ -353,19 +353,19 @@ const ShelterAdoptionForm = () => {
                       />
                     <label
                       htmlFor={`predefinedQuestion${index + 1}`}
-                      className='text-xl font-light'
+                      className='text-lg font-light'
                     >
                       {`"${question.label}"`}
                     </label>
                   </div>
-                  <div className='pt-2 flex gap-4'>
+                  <div className='pt-1 flex gap-4'>
                     <p className='font-normal'>Opciones de respuesta:</p>
                       {question.options ? (
-                        <ul className='list-disc pl-5 text-lg'>
+                        <ul className='list-disc pl-5'>
                           {question.options.map((option, index) => (
                             <li
                               key={index}
-                              className='text-lg font-light'
+                              className='font-light'
                             >
                               {`"${option}"`}
                             </li>
@@ -373,7 +373,7 @@ const ShelterAdoptionForm = () => {
                         </ul>
                         )
                         :
-                        <p className='text-lg font-light'>Texto libre</p>
+                        <p className='font-light'>Texto libre</p>
                       }
                   </div>
                 </div>
@@ -381,32 +381,32 @@ const ShelterAdoptionForm = () => {
             </div>
           </div>
 
-          <div className="my-10">
-            <h2>Preguntas personalizadas</h2>
-            <p className="mb-4">Tocá el botón <strong>Nueva pregunta</strong> para agregar una pregunta personalizada. Podés agregar tantas como quieras.</p>
+          <div className="my-4 mt-8">
+            <h2 className="text-2xl">Preguntas personalizadas</h2>
+            <p className="text-lg mb-2">Tocá el botón <strong>Nueva pregunta</strong> para agregar una pregunta personalizada. Podés agregar tantas como quieras.</p>
             <div>
               {customQuestions.map((question) => (
                 <div key={question.id}>
                   <div className="flex items-end gap-4">
                     <div className="w-8/12">
-                      <label htmlFor={`customQuestion-${question.id}`} className='text-lg font-medium'>Pregunta</label>
+                      <label htmlFor={`customQuestion-${question.id}`} className='text-base font-medium'>Pregunta</label>
                       <input 
                         ref={el => inputRefs.current[question.id] = el}
                         id={`customQuestion-${question.id}`} 
                         type="text" 
                         placeholder="Escribí la pregunta" 
-                        className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+                        className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                         defaultValue={question.label}
                         onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
                       />
                     </div>
                     <div className="w-2/12">
-                      <label htmlFor={`responseType-${question.id}`} className='text-lg font-medium'>Tipo de respuesta</label>
+                      <label htmlFor={`responseType-${question.id}`} className='text-base font-medium'>Tipo de respuesta</label>
                       <select
                         ref={el => selectRefs.current[question.id] = el}
                         id={`responseType-${question.id}`}
                         name={`responseType-${question.id}`}
-                        className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+                        className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
                         defaultValue={question.type}
                         onChange={() => setHasChanges(prev => ({...prev, [question.id]: true}))}
                       >
@@ -416,7 +416,7 @@ const ShelterAdoptionForm = () => {
                     </div>
                     <div className="w-1/12">
                       <Button
-                        className={`w-full h-10 bg-(--primary) ${!hasChanges[question.id] ? 'bg-gray-400 cursor-not-allowed' : ''}`}
+                        className={`w-full h-10 btn-secondary ${!hasChanges[question.id] ? 'grayscale cursor-not-allowed' : ''}`}
                         onClick={() => {
                           handleSaveCustomQuestion(question.id, inputRefs.current[question.id].value, selectRefs.current[question.id].value);
                         }}
@@ -428,7 +428,7 @@ const ShelterAdoptionForm = () => {
                     </div>
                     <div className="w-1/12">
                       <Button
-                        className="w-full h-10 bg-red-400"
+                        className="w-full h-10"
                         onClick={() => handleRemoveCustomQuestion(question.id)}
                         type="button"
                       >
@@ -444,7 +444,7 @@ const ShelterAdoptionForm = () => {
                 </div>
               ))}
               <Button 
-                className="w-50 h-10 mt-6"
+                className="mt-6"
                 onClick={handleAddCustomQuestion}
                 type="button"
               >
@@ -455,12 +455,12 @@ const ShelterAdoptionForm = () => {
           <Button 
             type="submit"
             disabled={isLoading || !hasFormChanged()}
-            className={`w-60 h-12 mt-6 mx-auto text-lg ${(isLoading || !hasFormChanged()) ? 'grayscale cursor-not-allowed' : ''}`}
+            className={`mt-4 mx-auto text-lg ${(isLoading || !hasFormChanged()) ? 'grayscale cursor-not-allowed' : ''}`}
           >
             {isLoading ? 'Guardando...' : 'Guardar formulario'}
           </Button>
           {error && (
-            <p className="text-red-500 mt-2 text-center col-span-full">
+            <p className="text-red-500 mt-4 text-center col-span-full">
               {error}
             </p>
           )}

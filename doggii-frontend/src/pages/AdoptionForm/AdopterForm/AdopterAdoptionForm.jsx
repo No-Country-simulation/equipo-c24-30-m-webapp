@@ -202,7 +202,7 @@ const AdopterAdoptionForm = () => {
             type='text'
             onChange={(e) => handleInputChange(field, e.target.value)}
             onBlur={() => handleBlur(`field-${index}`)}
-            className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+            className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
           />
         );
       case 'checkbox':
@@ -214,11 +214,11 @@ const AdopterAdoptionForm = () => {
                 type='checkbox'
                 onChange={(e) => handleInputChange(field, e.target.checked, i)}
                 onBlur={() => handleBlur(`field-${index}`)}
-                className='mr-2 h-4 w-4 rounded-md accent-(--primary) checked:bg-(--primary) checked:hover:bg-(--primary) focus:ring-(--primary)'
+                className='h-4 w-4 rounded-md accent-(--primary) checked:bg-(--primary) checked:hover:bg-(--primary) focus:ring-(--primary)'
               />
               <label
                 htmlFor={`question${index + 1}-${i + 1}`}
-                className='font-light text-lg'
+                className='font-light'
               >
                 {option}
               </label>
@@ -229,7 +229,7 @@ const AdopterAdoptionForm = () => {
         return (
           <select
             id={`question${index + 1}`}
-            className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 font-light pl-4 bg-(--secondary-light)'
+            className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
             defaultValue=""
             onChange={(e) => handleInputChange(field, e.target.value)}
             onBlur={() => handleBlur(`field-${index}`)}
@@ -252,7 +252,7 @@ const AdopterAdoptionForm = () => {
             type='text'
             onChange={(e) => handleInputChange(field, e.target.value)}
             onBlur={() => handleBlur(`field-${index}`)}
-            className='w-full h-10 rounded-md focus:ring focus:ring-opacity-75 bg-(--secondary-light) font-light pl-4'
+            className='w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-(--secondary-dark) bg-(--secondary-ultralight) font-light'
           />
         );
     }
@@ -269,9 +269,9 @@ const AdopterAdoptionForm = () => {
           onClose={handleGoToProfile}
         />
       )}
-      <div className='flex items-center gap-6'>
-        <button onClick={handleGoBack} className='text-5xl text-(--secondary) cursor-pointer'>←</button>
-        <h1 className='text-5xl'>Formulario de adopción {pet?.shelter?.shelterName ? `de ${pet.shelter.shelterName}` : ''}</h1>
+      <div className='flex items-center gap-4'>
+        <button onClick={handleGoBack} className='text-4xl text-(--secondary) cursor-pointer'>←</button>
+        <h1 className='text-3xl'>Formulario de adopción {pet?.shelter?.shelterName ? `de ${pet.shelter.shelterName}` : ''}</h1>
       </div>
       {isLoading ? (
         <div className='flex items-center justify-center h-150'>
@@ -280,7 +280,7 @@ const AdopterAdoptionForm = () => {
       ) : (
       fetchError ? (
         <>
-        <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-10 rounded-md bg-red-100">
+        <div className="flex items-center justify-center max-w-3xl p-6 space-x-4 mx-auto my-8 rounded-md bg-red-100">
           <div className="flex items-center self-stretch justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path>
@@ -290,7 +290,7 @@ const AdopterAdoptionForm = () => {
         </div>
         <Button 
           onClick={handleGetPetAndForm}
-          className="mx-auto w-50 text-lg"
+          className="mx-auto"
         >
           Reintentar
         </Button>
@@ -298,34 +298,34 @@ const AdopterAdoptionForm = () => {
       ) : (
         <div>
           {form && (
-            <section className='p-6 my-8 mx-auto max-w-7xl rounded-md bg-(--secondary)'>
+            <section className='p-6 my-6 mx-10 xl:mx-40 rounded-md bg-(--secondary)'>
               <form
                 noValidate
                 onSubmit={handleSubmit}
                 className='container relative'
               >
                 {success && (
-                  <div className='absolute inset-0 p-30 flex items-start justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
+                  <div className='absolute inset-0 p-50 flex items-start justify-center bg-black/10 backdrop-blur-xs z-10 rounded-md'>
                     <div className='py-2 px-3 bg-(--accent) rounded-xl flex items-center gap-2'>
                       <div>    
-                        <svg className='w-8 h-8 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
+                        <svg className='w-7 h-7 text-(--secondary-dark)' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
                           <circle fill="currentColor" cx="24" cy="24" r="22"/>
                           <path fill="none" stroke="#FFF" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" d="M14 27l5.917 4.917L34 17"/>
                         </svg>
                       </div>
-                      <p className='p-2 text-2xl'>
+                      <p className='p-2 text-xl'>
                         El formulario se envió correctamente.
                       </p>
                     </div>
                   </div>
                 )}
                 <fieldset className='p-6 rounded-md shadow-sm bg-(--accent)'>
-                  <div className='flex flex-col gap-8 px-20'>
+                  <div className='flex flex-col gap-6 px-20'>
                     {form.fields.map((field, index) => (
-                      <div key={index} className='flex flex-col gap-1'>
+                      <div key={index} className='flex flex-col gap-2'>
                         <label
                           htmlFor={`question${index + 1}`}
-                          className='text-xl'
+                          className='text-lg'
                         >
                           {field.label}
                         </label>
@@ -338,12 +338,12 @@ const AdopterAdoptionForm = () => {
                     <Button
                       type='submit'
                       disabled={isLoading || !hasChanges || hasValidationErrors(validationErrors)}
-                      className={`mx-auto w-40 text-xl ${isLoading || !hasChanges|| hasValidationErrors(validationErrors) ? 'grayscale cursor-not-allowed' : ''}`}
+                      className={`mx-auto text-lg ${isLoading || !hasChanges|| hasValidationErrors(validationErrors) ? 'grayscale cursor-not-allowed' : ''}`}
                     >
                       {isLoading ? 'Enviando...' : 'Enviar'}
                     </Button>
                     {postError && (
-                      <p className='text-red-500 mt-2 text-center'>
+                      <p className='text-red-500 text-center'>
                         {postError}
                       </p>
                     )}
