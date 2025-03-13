@@ -15,7 +15,6 @@ import AdopterAdoptionForm from '../pages/AdoptionForm/AdopterForm/AdopterAdopti
 import Applications from '../pages/Applications/Applications';
 import ApplicationDetail from '../pages/Applications/ApplicationViews/AplicationDetail';
 import Users from '../pages/Users/Users';
-import Reports from '../pages/Reports/Reports';
 import PetPost from '../pages/Pets/PetPost/PetPost';
 import PetDetails from '../pages/Pets/PetDetails/PetDetails';
 import PetEdit from '../pages/Pets/PetEdit/PetEdit';
@@ -45,7 +44,6 @@ function AppRoutes() {
         <Route path='/application-manage/:id' element={<ApplicationManage />} />
         <Route path='/adoption-request/:id' element={<ApplicationDetail />} />
         <Route path='/users' element={<Users />} />
-        <Route path='/reports' element={<Reports />} />
         <Route path='/pets/post' element={<PetPost />} />
         <Route path='/pet/:id' element={<PetDetails />} />
         <Route path='/pet/edit/:id' element={<PetEdit />} />
